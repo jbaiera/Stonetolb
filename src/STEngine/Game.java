@@ -21,6 +21,8 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -33,141 +35,229 @@ import static org.lwjgl.opengl.GL11.*;
  * @author comet
  */
 public class Game {
-	public static boolean	gameRunning		= true;
-	private static boolean	isApplication;
-	private boolean 		fullscreen;
-	private int 			width;
-	private int 			height;
-	private String			WINDOW_TITLE 	= "Stonetolb 0.1.0";
-	Sprite 					test;
+
+	/** The normal title of the window */
+	private String				WINDOW_TITLE					= "Space Invaders 104 (for LWJGL)";
+
+	/** The width of the game display area */
+	private int						width									= 800;
+
+	/** The height of the game display area */
+	private int						height								= 600;
+
+	/** The time at which the last rendering looped started from the point of view of the game logic */
+	private long					lastLoopTime					= getTime();
+
+	/** The time since the last record of fps */
+	private long					lastFpsTime;
+
+	/** The recorded fps */
+	private int						fps;
+	private static long		timerTicksPerSecond		= Sys.getTimerResolution();
+
+	/** True if the game is currently "running", i.e. the game loop is looping */
+	public static boolean	gameRunning						= true;
+
+	/** Whether we're running in fullscreen mode */
+	private boolean				fullscreen;
+
+	/** Is this an application or applet */
+	private static boolean isApplication;
+
+	//Sprite tests
+	Sprite  test;
+	int 	testx;
+	int 	testy;
 	
 	/**
-	 * Create the Game Object and initialize it
-	 * 
+	 * Construct our game and set it running.
 	 * @param fullscreen
+	 *
 	 */
 	public Game(boolean fullscreen) {
 		this.fullscreen = fullscreen;
 		initialize();
 	}
-	
+
 	/**
-	 * Begin Game main loop
+	 * Get the high resolution time in milliseconds
+	 *
+	 * @return The high resolution time in milliseconds
 	 */
-	public void execute() {
-		gameLoop();
+	public static long getTime() {
+		// we get the "timer ticks" from the high resolution timer
+		// multiply by 1000 so our end result is in milliseconds
+		// then divide by the number of ticks in a second giving
+		// us a nice clear time in milliseconds
+		return (Sys.getTime() * 1000) / timerTicksPerSecond;
 	}
-	
+
 	/**
-	 * Called at object creation to configure the screen, openGL,
-	 * and create all environment items.
+	 * Sleep for a fixed number of milliseconds.
+	 *
+	 * @param duration The amount of time in milliseconds to sleep for
 	 */
-	private void initialize(){
+	public static void sleep(long duration) {
+		try {
+			Thread.sleep((duration * timerTicksPerSecond) / 1000);
+		} catch (InterruptedException inte) {
+		}
+	}
+
+	/**
+	 * Intialise the common elements for the game
+	 */
+	public void initialize() {
+		// initialize the window beforehand
 		try {
 			setDisplayMode();
 			Display.setTitle(WINDOW_TITLE);
 			Display.setFullscreen(fullscreen);
 			Display.create();
-			
-			if(isApplication) {
+
+			// grab the mouse, dont want that hideous cursor when we're playing!
+			if (isApplication) {
 				Mouse.setGrabbed(true);
 			}
-			
-			setGLOptions();
-		} catch (LWJGLException e) {
+
+			// enable textures since we're going to use these for our sprites
+			glEnable(GL_TEXTURE_2D);
+
+			// disable the OpenGL depth test since we're rendering 2D graphics
+			glDisable(GL_DEPTH_TEST);
+
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+
+			glOrtho(0, width, height, 0, -1, 1);
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glViewport(0, 0, width, height);
+		} catch (LWJGLException le) {
 			System.out.println("Game exiting - exception in initialization:");
-			e.printStackTrace();
+			le.printStackTrace();
 			Game.gameRunning = false;
 			return;
 		}
-		
-		initEnviron();
+
+		// setup the initial game state
+		startGame();
 	}
-	
-	private void gameLoop() {
-		while (gameRunning) {
-			Display.sync(60);
-			
-			//draw everything
-			test.draw(20, 40);
-			//do some logic
-			
-			//update the window
-			Display.update();
-		}
-		
-		//clean uparg0
-		Display.destroy();
-	}
-	
-	private boolean setDisplayMode(){
-		try {
-			// Get the display modes
-			DisplayMode [] dm = org.lwjgl.util.Display.getAvailableDisplayModes(width, height, -1, -1, -1, -1, 60, 60);
-			
-			org.lwjgl.util.Display.setDisplayMode(dm
-				, new String[] {"width=" + width, "height=" + height, "freq=" + 60, "bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()}
-			);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Unable to enter fullscreen, continuing in windowed mode");
-		}
+
+	/**
+   * Sets the display mode for fullscreen mode
+	 */
+	private boolean setDisplayMode() {
+    try {
+		// get modes
+		DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(width, height, -1, -1, -1, -1, 60, 60);
+
+		org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
+												"width=" + width,
+												"height=" + height,
+												"freq=" + 60,
+												"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()});
+		return true;
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		System.out.println("Unable to enter fullscreen, continuing in windowed mode");
+    	}
+
 		return false;
 	}
-	
-	private void setGLOptions() {
-		//enable textures
-		glEnable(GL_TEXTURE_2D);
-		
-		//disable depth test
-		glDisable(GL_DEPTH_TEST);
-		
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		
-		glOrtho(0,width,height,0,-1,1);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glViewport(0,0,width,height);
+
+	/**
+	 * Start a fresh game, this should clear out any old data and
+	 * create a new set.
+	 */
+	private void startGame() {
+		// clear out any existing entities and intialise a new set
+		initEntities();
 	}
-	
-	private void initEnviron() {
+
+	/**
+	 * Initialise the starting state of the entities (ship and aliens). Each
+	 * entitiy will be added to the overall list of entities in the game.
+	 */
+	private void initEntities() {
+		// create the player ship and place it roughly in the center of the screen
 		test = new Sprite("test.gif");
+		testx = 200;
+		testy = 200;
 	}
-	
+
+	/**
+	 * Run the main game loop. This method keeps rendering the scene
+	 * and requesting that the callback update its screen.
+	 */
+	private void gameLoop() {
+		while (Game.gameRunning) {
+			// clear screen
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+
+			// let subsystem paint
+			frameRendering();
+
+			// update window contents
+			Display.update();
+		}
+
+		// clean up
+		Display.destroy();
+	}
+
+	/**
+	 * Notification that a frame is being rendered. Responsible for
+	 * running game logic and rendering the scene.
+	 */
+	public void frameRendering() {
+		//SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+		Display.sync(60);
+
+		// work out how long its been since the last update, this
+		// will be used to calculate how far the entities should
+		// move this loop
+		long delta = getTime() - lastLoopTime;
+		lastLoopTime = getTime();
+		lastFpsTime += delta;
+		fps++;
+
+		// update our FPS counter if a second has passed
+		if (lastFpsTime >= 1000) {
+			Display.setTitle(WINDOW_TITLE + " (FPS: " + fps + ")");
+			lastFpsTime = 0;
+			fps = 0;
+		}
+
+		//draw the sprites
+		test.draw(testx, testy);
+		
+		// if escape has been pressed, stop the game
+		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
+			Game.gameRunning = false;
+		}
+	}
+
+	/**
+	 * The entry point into the game. We'll simply create an
+	 * instance of class which will start the display and game
+	 * loop.
+	 *
+	 * @param argv The arguments that are passed into our game
+	 */
 	public static void main(String argv[]) {
 		isApplication = true;
 		System.out.println("Use -fullscreen for fullscreen mode");
 		new Game((argv.length > 0 && "-fullscreen".equalsIgnoreCase(argv[0]))).execute();
 		System.exit(0);
 	}
+
+	/**
+	 *
+	 */
+	public void execute() {
+		gameLoop();
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
