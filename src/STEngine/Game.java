@@ -37,7 +37,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game {
 
 	/** The normal title of the window */
-	private String				WINDOW_TITLE					= "Space Invaders 104 (for LWJGL)";
+	private String				WINDOW_TITLE					= "Stonetolb 0.1.0";
 
 	/** The width of the game display area */
 	private int						width									= 800;
@@ -65,9 +65,9 @@ public class Game {
 	private static boolean isApplication;
 
 	//Sprite tests
-	Sprite  test;
-	int 	testx;
-	int 	testy;
+	Animation  	test;
+	int 		testx;
+	int 		testy;
 	
 	/**
 	 * Construct our game and set it running.
@@ -181,7 +181,11 @@ public class Game {
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		test = new Sprite("test.gif");
+		test = new Animation(400);
+		test.addFrame(new Sprite("test.gif"));
+		test.addFrame(new Sprite("test2.gif"));
+		test.addFrame(new Sprite("test.gif"));
+		test.addFrame(new Sprite("test3.gif"));
 		testx = 200;
 		testy = 200;
 	}
@@ -232,7 +236,7 @@ public class Game {
 		}
 
 		//draw the sprites
-		test.draw(testx, testy);
+		test.draw(testx, testy, delta);
 		
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
