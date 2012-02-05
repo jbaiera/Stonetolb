@@ -37,7 +37,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game {
 
 	/** The normal title of the window */
-	private String				WINDOW_TITLE					= "Stonetolb 0.1.0";
+	private String				WINDOW_TITLE					= "Stonetolb 0.1.3";
 
 	/** The width of the game display area */
 	private int						width									= 800;
@@ -66,6 +66,7 @@ public class Game {
 
 	//Sprite tests
 	Animation  	test;
+	Entity 		test2;
 	int 		testx;
 	int 		testy;
 	
@@ -129,7 +130,7 @@ public class Game {
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 
-			glOrtho(0, width, height, 0, -1, 1);
+			glOrtho(0, width, height, 0, 1, -1);
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			glViewport(0, 0, width, height);
@@ -150,13 +151,19 @@ public class Game {
 	private boolean setDisplayMode() {
     try {
 		// get modes
-		DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(width, height, -1, -1, -1, -1, 60, 60);
+		//DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(width, height, -1, -1, -1, -1, 60, 60);
 
-		org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
+		/*org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
 												"width=" + width,
 												"height=" + height,
 												"freq=" + 60,
 												"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()});
+		*/
+    	
+    	width = 400;
+    	height = 400;
+    	DisplayMode dm = new DisplayMode(width,height);
+    	Display.setDisplayMode(dm);
 		return true;
     	} catch (Exception e) {
     		e.printStackTrace();
@@ -181,13 +188,15 @@ public class Game {
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		test = new Animation(400);
+		test = new Animation(600);
 		test.addFrame(new Sprite("test.gif"));
 		test.addFrame(new Sprite("test2.gif"));
 		test.addFrame(new Sprite("test.gif"));
 		test.addFrame(new Sprite("test3.gif"));
+		test2 = new Entity(100,100,test);
 		testx = 200;
 		testy = 200;
+		test2.setHorizontalMovement(1);
 	}
 
 	/**
@@ -237,6 +246,19 @@ public class Game {
 
 		//draw the sprites
 		test.draw(testx, testy, delta);
+		
+		if (test2.getX() < 200) {
+			test2.setHorizontalMovement(200);
+			test2.setVerticalMovement(100);
+		} else if (test2.getX() > 300) {
+			test2.setHorizontalMovement(-200);
+			test2.setVerticalMovement(-100);
+		}
+		
+		test2.move(delta);
+		test2.draw();
+		
+		System.out.println("(" + test2.getX() + "," + test2.getY() + ") + [" + test2.getHorizontalMovement() + "," + test2.getVerticalMovement() + "]");
 		
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
