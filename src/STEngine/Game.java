@@ -37,32 +37,32 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game {
 
 	/** The normal title of the window */
-	private String				WINDOW_TITLE					= "Stonetolb 0.1.3";
+	private String				WINDOW_TITLE		= "Stonetolb 0.1.3";
 
 	/** The width of the game display area */
-	private int						width									= 800;
+	private int					width				= 800;
 
 	/** The height of the game display area */
-	private int						height								= 600;
+	private int					height				= 600;
 
 	/** The time at which the last rendering looped started from the point of view of the game logic */
-	private long					lastLoopTime					= getTime();
+	private long				lastLoopTime		= getTime();
 
 	/** The time since the last record of fps */
-	private long					lastFpsTime;
+	private long				lastFpsTime;
 
 	/** The recorded fps */
-	private int						fps;
-	private static long		timerTicksPerSecond		= Sys.getTimerResolution();
+	private int					fps;
+	private static long			timerTicksPerSecond	= Sys.getTimerResolution();
 
 	/** True if the game is currently "running", i.e. the game loop is looping */
-	public static boolean	gameRunning						= true;
+	public static boolean		gameRunning			= true;
 
 	/** Whether we're running in fullscreen mode */
 	private boolean				fullscreen;
 
 	/** Is this an application or applet */
-	private static boolean isApplication;
+	private static boolean 		isApplication;
 
 	//Sprite tests
 	Animation  	test;
@@ -106,7 +106,7 @@ public class Game {
 	}
 
 	/**
-	 * Intialise the common elements for the game
+	 * Initialize the common elements for the game
 	 */
 	public void initialize() {
 		// initialize the window beforehand
@@ -183,8 +183,8 @@ public class Game {
 	}
 
 	/**
-	 * Initialise the starting state of the entities (ship and aliens). Each
-	 * entitiy will be added to the overall list of entities in the game.
+	 * Initialize the starting state of the entities. Each
+	 * Entitiy will be added to the overall list of entities in the game.
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
@@ -193,7 +193,7 @@ public class Game {
 		test.addFrame(new Sprite("test2.gif"));
 		test.addFrame(new Sprite("test.gif"));
 		test.addFrame(new Sprite("test3.gif"));
-		test2 = new Entity(100,100,test);
+		test2 = new Entity(50,50,test);
 		testx = 200;
 		testy = 200;
 		test2.setHorizontalMovement(1);
@@ -247,12 +247,12 @@ public class Game {
 		//draw the sprites
 		test.draw(testx, testy, delta);
 		
-		if (test2.getX() < 200) {
-			test2.setHorizontalMovement(200);
-			test2.setVerticalMovement(100);
+		if (test2.getX() < 100) {
+			test2.setHorizontalMovement(75);
+			test2.setVerticalMovement(30);
 		} else if (test2.getX() > 300) {
-			test2.setHorizontalMovement(-200);
-			test2.setVerticalMovement(-100);
+			test2.setHorizontalMovement(-75);
+			test2.setVerticalMovement(-30);
 		}
 		
 		test2.move(delta);
