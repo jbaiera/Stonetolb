@@ -17,41 +17,35 @@
 
 package STEngine;
 
-public class WorldModule extends Module {
-	private Animation 		test;
-	private Entity			test2;
-	private int				testx;
-	private int 			testy;
+import java.util.HashMap;
+
+public class Actor extends Entity {
+
+	private HashMap<String, Animation> actionbank = new HashMap<String,Animation>();
 	
-	@Override
-	public void init() {
-		test = new Animation(600);
-		test.addFrame(new Sprite("test.gif"));
-		test.addFrame(new Sprite("test2.gif"));
-		test.addFrame(new Sprite("test.gif"));
-		test.addFrame(new Sprite("test3.gif"));
-		
-		test2 = new Entity(70, 190);
-		test2.addAnimation("wiggle",test);
-		test2.setHorizontalMovement(75);
-		
-		testx = 200;
-		testy = 200;
+	/**
+	 * Create an Actor with null animation at point x, y
+	 * 
+	 * @param x x coordinate of Actor
+	 * @param y y coordinate of Actor
+	 */
+	public Actor(int x, int y) {
+		super(x,y);
+		this.actionbank.put("NULL_ACTION", new NullAnimation(1000));
+		this.sprt = actionbank.get("NULL_ANIMATION");
 	}
-
-	@Override
-	public void step() {
-		if (test2.getX() < 100) {
-			test2.setHorizontalMovement(75);
-		} else if (test2.getX() > 300) {
-			test2.setHorizontalMovement(-75);
+	
+	/**
+	 * Adds an Animation to the list of Animations the Actor has
+	 */
+	public void addAnimation(String s, Animation a){
+		this.actionbank.put(s, a);
+	}
+	
+	public void setAnimation(String s){
+		this.sprt = actionbank.get(s);
+		if (this.sprt == null) {
+			this.sprt = new NullAnimation(1000);
 		}
-	}
-
-	@Override
-	public void render(long delta) {
-		test.draw(testx, testy, delta);
-		test2.move(delta);
-		test2.draw();
 	}
 }

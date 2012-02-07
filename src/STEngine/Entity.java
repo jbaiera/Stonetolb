@@ -24,12 +24,12 @@ package STEngine;
  * @author comet
  */
 public class Entity {
-	private float 	xPos;
-	private float 	yPos;
-	private int 	dx;
-	private int		dy;
-	private Animation	sprt;
-	private long 	thisDelta;
+	protected float 	xPos;
+	protected float 	yPos;
+	protected int 	dx;
+	protected int		dy;
+	protected Animation	sprt;
+	protected long 	thisDelta;
 	
 	/**
 	 * Creates a new Entity at x and y with animation as it's
@@ -39,13 +39,17 @@ public class Entity {
 	 * @param y y position
 	 * @param animation Entity visual representation
 	 */
-	public Entity(int x, int y, Animation animation) {
+	public Entity(int x, int y) {
 		this.xPos = (float) x;
 		this.yPos = (float) y;
 		this.dx = 0;
 		this.dy = 0;
 		this.thisDelta = 1;
-		this.sprt = animation;
+		this.sprt = new NullAnimation(1000);
+	}
+	
+	public void addAnimation(String s, Animation anim) {
+		this.sprt = anim;
 	}
 	
 	/**

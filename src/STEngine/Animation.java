@@ -40,7 +40,7 @@ public class Animation {
 	//number of milliseconds since animation start
 	private int stepCount;
 	//list of sprites used in the animation, in order of playing
-	private ArrayList<Sprite> spriteList;
+	protected ArrayList<Sprite> spriteList;
 	
 	public Animation(int interval) {
 		this.interval = interval;

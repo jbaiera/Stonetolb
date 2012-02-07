@@ -17,41 +17,15 @@
 
 package STEngine;
 
-public class WorldModule extends Module {
-	private Animation 		test;
-	private Entity			test2;
-	private int				testx;
-	private int 			testy;
+public class NullAnimation extends Animation {
 	
-	@Override
-	public void init() {
-		test = new Animation(600);
-		test.addFrame(new Sprite("test.gif"));
-		test.addFrame(new Sprite("test2.gif"));
-		test.addFrame(new Sprite("test.gif"));
-		test.addFrame(new Sprite("test3.gif"));
-		
-		test2 = new Entity(70, 190);
-		test2.addAnimation("wiggle",test);
-		test2.setHorizontalMovement(75);
-		
-		testx = 200;
-		testy = 200;
+	public NullAnimation(int interval) {
+		super(interval);
+		this.spriteList.add(new Sprite("null.gif"));
 	}
-
-	@Override
-	public void step() {
-		if (test2.getX() < 100) {
-			test2.setHorizontalMovement(75);
-		} else if (test2.getX() > 300) {
-			test2.setHorizontalMovement(-75);
-		}
-	}
-
-	@Override
-	public void render(long delta) {
-		test.draw(testx, testy, delta);
-		test2.move(delta);
-		test2.draw();
+	
+	public void addFrame(Sprite newSprite) {
+		//nothing
+		return;
 	}
 }
