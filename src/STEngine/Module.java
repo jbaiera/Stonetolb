@@ -24,6 +24,13 @@ public abstract class Module {
 	 */
 	public abstract void init();
 	
+	/**
+	 * One step of game logic
+	 */
+	public abstract void step();
 	
-	
+	/**
+	 * Render all entities
+	 */
+	public abstract void render();
 }

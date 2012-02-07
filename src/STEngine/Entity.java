@@ -26,7 +26,6 @@ package STEngine;
 public class Entity {
 	private float 	xPos;
 	private float 	yPos;
-	private float 	zPos;
 	private int 	dx;
 	private int		dy;
 	private Animation	sprt;

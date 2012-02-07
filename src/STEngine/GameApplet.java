@@ -31,6 +31,7 @@ import org.lwjgl.opengl.Display;
  *
  */
 public class GameApplet extends Applet{
+	private static final long serialVersionUID = 1L;
 	Canvas displayParent;
 	Thread gameThread;
 	Game game;

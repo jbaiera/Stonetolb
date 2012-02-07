@@ -17,7 +17,6 @@
 
 package STEngine;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -241,11 +240,11 @@ public class TextureLoader {
         if (bufferedImage.getColorModel().hasAlpha()) {
         	System.out.println("Convert : Has Alpha!");
             raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,4,null);
-            texImage = new BufferedImage(glAlphaColorModel,raster,true,new Hashtable());
+            texImage = new BufferedImage(glAlphaColorModel,raster,true,new Hashtable<String,Object>());
         } else {
         	System.out.println("Convert : No Alpha!");
             raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,3,null);
-            texImage = new BufferedImage(glColorModel,raster,true,new Hashtable());
+            texImage = new BufferedImage(glColorModel,raster,true,new Hashtable<String, Object>());
         }
 
         // copy the source image into the produced image
