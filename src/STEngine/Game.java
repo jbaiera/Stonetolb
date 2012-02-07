@@ -123,6 +123,8 @@ public class Game {
 
 			// enable textures since we're going to use these for our sprites
 			glEnable(GL_TEXTURE_2D);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			// disable the OpenGL depth test since we're rendering 2D graphics
 			glDisable(GL_DEPTH_TEST);
@@ -134,6 +136,7 @@ public class Game {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			glViewport(0, 0, width, height);
+			
 		} catch (LWJGLException le) {
 			System.out.println("Game exiting - exception in initialization:");
 			le.printStackTrace();
@@ -193,7 +196,7 @@ public class Game {
 		test.addFrame(new Sprite("test2.gif"));
 		test.addFrame(new Sprite("test.gif"));
 		test.addFrame(new Sprite("test3.gif"));
-		test2 = new Entity(50,50,test);
+		test2 = new Entity(50,190,test);
 		testx = 200;
 		testy = 200;
 		test2.setHorizontalMovement(1);
@@ -258,7 +261,7 @@ public class Game {
 		test2.move(delta);
 		test2.draw();
 		
-		System.out.println("(" + test2.getX() + "," + test2.getY() + ") + [" + test2.getHorizontalMovement() + "," + test2.getVerticalMovement() + "]");
+		//System.out.println("(" + test2.getX() + "," + test2.getY() + ") + [" + test2.getHorizontalMovement() + "," + test2.getVerticalMovement() + "]");
 		
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {

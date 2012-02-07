@@ -17,8 +17,10 @@
 
 package STEngine;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -164,8 +166,10 @@ public class TextureLoader {
         texture.setHeight(bufferedImage.getHeight());
 
         if (bufferedImage.getColorModel().hasAlpha()) {
+        	System.out.println("Get : Has Alpha!");
             srcPixelFormat = GL_RGBA;
         } else {
+        	System.out.println("Get : No Alpha!");
             srcPixelFormat = GL_RGB;
         }
 
@@ -235,15 +239,17 @@ public class TextureLoader {
         // create a raster that can be used by OpenGL as a source
         // for a texture
         if (bufferedImage.getColorModel().hasAlpha()) {
+        	System.out.println("Convert : Has Alpha!");
             raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,4,null);
-            texImage = new BufferedImage(glAlphaColorModel,raster,false,new Hashtable());
+            texImage = new BufferedImage(glAlphaColorModel,raster,true,new Hashtable());
         } else {
+        	System.out.println("Convert : No Alpha!");
             raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,3,null);
-            texImage = new BufferedImage(glColorModel,raster,false,new Hashtable());
+            texImage = new BufferedImage(glColorModel,raster,true,new Hashtable());
         }
 
         // copy the source image into the produced image
-        Graphics g = texImage.getGraphics();
+        Graphics2D g = (Graphics2D) texImage.getGraphics();
         g.setColor(new Color(0f,0f,0f,0f));
         g.fillRect(0,0,texWidth,texHeight);
         g.drawImage(bufferedImage,0,0,null);
@@ -278,7 +284,7 @@ public class TextureLoader {
         // we are now using good oldfashioned ImageIcon to load
         // images and the paint it on top of a new BufferedImage
         Image img = new ImageIcon(url).getImage();
-        BufferedImage bufferedImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        BufferedImage bufferedImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics g = bufferedImage.getGraphics();
         g.drawImage(img, 0, 0, null);
         g.dispose();
