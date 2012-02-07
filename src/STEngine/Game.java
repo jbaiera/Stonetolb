@@ -37,7 +37,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game {
 
 	/** The normal title of the window */
-	private String				WINDOW_TITLE		= "Stonetolb 0.1.3";
+	private String				WINDOW_TITLE		= "Stonetolb 0.0.4";
 
 	/** The width of the game display area */
 	private int					width				= 800;
@@ -64,11 +64,8 @@ public class Game {
 	/** Is this an application or applet */
 	private static boolean 		isApplication;
 
-	//Sprite tests
-	Animation  	test;
-	Entity 		test2;
-	int 		testx;
-	int 		testy;
+	/** Game Module that handles the game play */
+	Module world = new WorldModule();
 	
 	/**
 	 * Construct our game and set it running.
@@ -181,25 +178,8 @@ public class Game {
 	 * create a new set.
 	 */
 	private void startGame() {
-		// clear out any existing entities and intialise a new set
-		initEntities();
-	}
-
-	/**
-	 * Initialize the starting state of the entities. Each
-	 * Entitiy will be added to the overall list of entities in the game.
-	 */
-	private void initEntities() {
-		// create the player ship and place it roughly in the center of the screen
-		test = new Animation(600);
-		test.addFrame(new Sprite("test.gif"));
-		test.addFrame(new Sprite("test2.gif"));
-		test.addFrame(new Sprite("test.gif"));
-		test.addFrame(new Sprite("test3.gif"));
-		test2 = new Entity(50,190,test);
-		testx = 200;
-		testy = 200;
-		test2.setHorizontalMovement(1);
+		// Create the first game module and init
+		world.init();
 	}
 
 	/**
@@ -213,6 +193,9 @@ public class Game {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 
+			// Allow Game Logic
+			world.step();
+		
 			// let subsystem paint
 			frameRendering();
 
@@ -247,21 +230,8 @@ public class Game {
 			fps = 0;
 		}
 
-		//draw the sprites
-		test.draw(testx, testy, delta);
-		
-		if (test2.getX() < 100) {
-			test2.setHorizontalMovement(75);
-			test2.setVerticalMovement(30);
-		} else if (test2.getX() > 300) {
-			test2.setHorizontalMovement(-75);
-			test2.setVerticalMovement(-30);
-		}
-		
-		test2.move(delta);
-		test2.draw();
-		
-		//System.out.println("(" + test2.getX() + "," + test2.getY() + ") + [" + test2.getHorizontalMovement() + "," + test2.getVerticalMovement() + "]");
+		// render the game frame
+		world.render(delta);
 		
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {

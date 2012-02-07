@@ -31,6 +31,8 @@ public abstract class Module {
 	
 	/**
 	 * Render all entities
+	 * 
+	 * @param amount of time passed since last render
 	 */
-	public abstract void render();
+	public abstract void render(long delta);
 }
