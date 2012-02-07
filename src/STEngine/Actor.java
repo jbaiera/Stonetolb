@@ -32,7 +32,7 @@ public class Actor extends Entity {
 	public Actor(int x, int y) {
 		super(x,y);
 		this.actionbank.put("NULL_ACTION", new NullAnimation(1000));
-		this.sprt = actionbank.get("NULL_ANIMATION");
+		this.sprt = actionbank.get("NULL_ACTION");
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class Actor extends Entity {
 	public void setAnimation(String s){
 		this.sprt = actionbank.get(s);
 		if (this.sprt == null) {
-			this.sprt = new NullAnimation(1000);
+			this.setAnimation("NULL_ACTION");
 		}
 	}
 }
