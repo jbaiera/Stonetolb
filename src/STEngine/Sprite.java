@@ -39,20 +39,30 @@ public class Sprite {
 	private int			height;
 
 	/**
-	 * Create a new sprite from a specified image.
+	 * Create a new sprite from a specified image file path.
 	 *
-	 * @param loader the texture loader to use
 	 * @param ref A reference to the image on which this sprite should be based
 	 */
 	public Sprite(String ref) {
-    try {
-			texture = TextureLoader.getInstance().getTexture("sprites/" + ref);
-      width = texture.getImageWidth();
-      height = texture.getImageHeight();
-    } catch (IOException ioe) {
-    	ioe.printStackTrace();
-      System.exit(-1);
-    }
+		try {
+			this.texture = TextureLoader.getInstance().getTexture("sprites/" + ref);
+			this.width = texture.getImageWidth();
+			this.height = texture.getImageHeight();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			System.exit(-1);
+		}
+	}
+	
+	/**
+	 * Create a new sprite from a given texture
+	 * 
+	 * @param tex A texture object which becomes the sprite 
+	 */
+	public Sprite(Texture tex) {
+		this.texture = tex;
+		this.height = tex.getImageHeight();
+		this.width = tex.getImageWidth();
 	}
 
 	/**

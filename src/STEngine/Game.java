@@ -146,8 +146,8 @@ public class Game {
 	}
 
 	/**
-   * Sets the display mode for fullscreen mode
-	 */
+	* Sets the display mode for fullscreen mode
+	*/
 	private boolean setDisplayMode() {
     try {
 		// get modes
@@ -160,8 +160,8 @@ public class Game {
 												"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()});
 		*/
     	
-    	width = 400;
-    	height = 400;
+    	//width = 400;
+    	//height = 400;
     	DisplayMode dm = new DisplayMode(width,height);
     	Display.setDisplayMode(dm);
 		return true;

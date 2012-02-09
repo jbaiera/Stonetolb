@@ -19,38 +19,33 @@ package STEngine;
 
 public class WorldModule extends Module {
 	private Animation 		test;
-	private Entity			test2;
-	private int				testx;
-	private int 			testy;
+	private Actor			test2;
 	
 	@Override
 	public void init() {
-		test = new Animation(600);
-		test.addFrame(new Sprite("test.gif"));
-		test.addFrame(new Sprite("test2.gif"));
-		test.addFrame(new Sprite("test.gif"));
-		test.addFrame(new Sprite("test3.gif"));
+		test = new Animation(800);
+		test.addFrame(new Sprite("Vaughn/world/Vaughn1.png"));
+		test.addFrame(new Sprite("Vaughn/world/Vaughn2.png"));
+		test.addFrame(new Sprite("Vaughn/world/Vaughn1.png"));
+		test.addFrame(new Sprite("Vaughn/world/Vaughn3.png"));
 		
-		test2 = new Entity(70, 190);
-		test2.addAnimation("wiggle",test);
-		test2.setHorizontalMovement(75);
-		
-		testx = 200;
-		testy = 200;
+		test2 = new Actor(200,100);
+		test2.addAnimation("walk",test);
+		test2.setAnimation("walk");
+		test2.setVerticalMovement(65);
 	}
 
 	@Override
 	public void step() {
-		if (test2.getX() < 100) {
-			test2.setHorizontalMovement(75);
-		} else if (test2.getX() > 300) {
-			test2.setHorizontalMovement(-75);
+		if (test2.getY() < 100) {
+			test2.setVerticalMovement(65);
+		} else if (test2.getY() > 300) {
+			test2.setVerticalMovement(-65);
 		}
 	}
 
 	@Override
 	public void render(long delta) {
-		test.draw(testx, testy, delta);
 		test2.move(delta);
 		test2.draw();
 	}
