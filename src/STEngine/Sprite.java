@@ -90,6 +90,7 @@ public class Sprite {
 	 * @param y The y location at which to draw this sprite
 	 */
 	public void draw(int x, int y) {
+		System.out.println("(" + texture.getXOrigin() + "," + texture.getYOrigin() + ") : (" + texture.getWidth() + "," + texture.getHeight() + ")");
 		// store the current model matrix
 		glPushMatrix();
 
@@ -102,16 +103,16 @@ public class Sprite {
 		// draw a quad textured to match the sprite
 		glBegin(GL_QUADS);
 		{
-			glTexCoord2f(0, 0);
+			glTexCoord2f(texture.getXOrigin(), texture.getYOrigin());
 			glVertex2f(0, 0);
 
-			glTexCoord2f(0, texture.getHeight());
+			glTexCoord2f(texture.getXOrigin(), texture.getHeight());
 			glVertex2f(0, height);
 
 			glTexCoord2f(texture.getWidth(), texture.getHeight());
 			glVertex2f(width, height);
 
-			glTexCoord2f(texture.getWidth(), 0);
+			glTexCoord2f(texture.getWidth(), texture.getYOrigin());
 			glVertex2f(width, 0);
 		}
 		glEnd();

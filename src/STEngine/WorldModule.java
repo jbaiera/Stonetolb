@@ -23,6 +23,15 @@ public class WorldModule extends Module {
 	
 	@Override
 	public void init() {
+		/*
+		Texture sheet = null;
+		try {
+			sheet = TextureLoader.getInstance().getTexture("Vaughn/world/Vaughn.png");
+		} catch (Exception e) {/*empty catch for the LOSS}
+		
+		sheet.setXSections(4);
+		sheet.setYSections(4);
+		*/
 		test = new Animation(800);
 		test.addFrame(new Sprite("Vaughn/world/Vaughn1.png"));
 		test.addFrame(new Sprite("Vaughn/world/Vaughn2.png"));

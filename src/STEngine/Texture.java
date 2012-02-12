@@ -39,23 +39,42 @@ public class Texture {
 	/** The GL texture ID */
 	private int		textureID;
 
-	/** The height of the image */
-	private int		height;
-
 	/** The width of the image */
-	private int		width;
+	private int		imgWidth;
 
+	/** The height of the image */
+	private int		imgHeight;
+	
 	/** The width of the texture */
 	private int		texWidth;
 
 	/** The height of the texture */
 	private int		texHeight;
+	
+	/** The number of x sections */
+	private int 	xSection;
+	
+	/** The number of y sections */
+	private int 	ySection;
 
+	/** The offset x position */
+	private int 	xOffset;
+	
+	/** The offset y position */
+	private int 	yOffset;
+	
 	/** The ratio of the width of the image to the texture */
-	private float	widthRatio;
+	private float	imgWidthRatio;
 
 	/** The ratio of the height of the image to the texture */
-	private float	heightRatio;
+	private float	imgHeightRatio;
+	
+	/** The ratio of the x offset to the texture size */
+	private float 	imgXOrigin;
+	
+	/** The ratio of the y offset to the texture size */
+	private float 	imgYOrigin;
+	
 
 	/**
 	 * Create a new texture
@@ -66,6 +85,22 @@ public class Texture {
 	public Texture(int target, int textureID) {
 		this.target = target;
 		this.textureID = textureID;
+		
+		// only one sub texture which is itself
+		this.xSection = 1;
+		this.ySection = 1;
+		
+		// No offset
+		this.xOffset = 0;
+		this.yOffset = 0;
+		
+		// init origins just in case
+		this.imgXOrigin = 0;
+		this.imgYOrigin = 0;
+		
+		// update origin points
+		this.updateXOrigin();
+		this.updateYOrigin();
 	}
 
 	/**
@@ -74,6 +109,23 @@ public class Texture {
 	public void bind() {
 		glBindTexture(target, textureID);
 	}
+	
+	public Texture getSubTexture(int a, int b) {
+		if((a < xSection) && (b < ySection)) {
+			Texture subtex = new Texture(target, textureID);
+			subtex.setHeight(imgHeight/ySection);
+			subtex.setWidth(imgWidth/xSection);
+			subtex.setTextureHeight(texHeight);
+			subtex.setTextureWidth(texWidth);
+			subtex.xOffset = a;
+			subtex.yOffset = b;
+			subtex.updateXOrigin();
+			subtex.updateYOrigin();
+			return subtex;
+		} else {
+			return this;
+		}
+	}
 
 	/**
 	 * Set the height of the image
@@ -81,7 +133,7 @@ public class Texture {
 	 * @param height The height of the image
 	 */
 	public void setHeight(int height) {
-		this.height = height;
+		this.imgHeight = height;
 		setHeight();
 	}
 
@@ -91,7 +143,7 @@ public class Texture {
 	 * @param width The width of the image
 	 */
 	public void setWidth(int width) {
-		this.width = width;
+		this.imgWidth = width;
 		setWidth();
 	}
 
@@ -101,7 +153,7 @@ public class Texture {
 	 * @return The height of the original image
 	 */
 	public int getImageHeight() {
-		return height;
+		return imgHeight;
 	}
 
 	/**
@@ -110,29 +162,63 @@ public class Texture {
 	 * @return The width of the original image
 	 */
 	public int getImageWidth() {
-		return width;
+		return imgWidth;
 	}
-
+	
 	/**
-	 * Get the height of the physical texture
+	 * Get the height of the effective image texture
 	 *
 	 * @return The height of physical texture
 	 */
 	public float getHeight() {
-		return heightRatio;
+		if(imgXOrigin == 0) {
+			return imgHeightRatio;
+		} else {
+			return (imgYOrigin + imgHeightRatio);
+		}
 	}
 
 	/**
-	 * Get the width of the physical texture
+	 * Get the width of the effective image texture
 	 *
 	 * @return The width of physical texture
 	 */
 	public float getWidth() {
-		return widthRatio;
+		if(imgXOrigin == 0) {
+			return imgWidthRatio;
+		} else {
+			return (imgXOrigin + imgWidthRatio);
+		}
 	}
 
+	public float getXOrigin() {
+		return imgXOrigin;
+	}
+	
+	public float getYOrigin() {
+		return imgYOrigin;
+	}
+	
 	/**
-	 * Set the height of this texture
+	 * Sets how many subtextures span the x axis
+	 * 
+	 * @param Sx number of subtextures nested in the x axis
+	 */
+	public void setXSections(int Sx) {
+		this.xSection = Sx;
+	}
+	
+	/**
+	 * Sets how many subtextures span the y axis
+	 * 
+	 * @param Sy number of subtextures nested in the y axis
+	 */
+	public void setYSections(int Sy) {
+		this.ySection = Sy;
+	}
+	
+	/**
+	 * Set the height of the texture
 	 *
 	 * @param texHeight The height of the texture
 	 */
@@ -157,7 +243,7 @@ public class Texture {
 	 */
 	private void setHeight() {
 		if (texHeight != 0) {
-			heightRatio = ((float) height) / texHeight;
+			imgHeightRatio = ((float) imgHeight) / texHeight;
 		}
 	}
 
@@ -167,7 +253,29 @@ public class Texture {
 	 */
 	private void setWidth() {
 		if (texWidth != 0) {
-			widthRatio = ((float) width) / texWidth;
+			imgWidthRatio = ((float) imgWidth) / texWidth;
+		}
+	}
+	
+	private void updateXOrigin() {
+		if (xOffset < xSection) {
+			int rawOffset = xOffset * imgWidth;
+			if(rawOffset == 0) {
+				imgXOrigin = 0;
+			} else {
+				imgXOrigin = ((float) rawOffset) / texWidth;
+			}
+		}
+	}
+	
+	private void updateYOrigin() {
+		if (yOffset < ySection) {
+			int rawOffset = xOffset * imgWidth;
+			if(rawOffset == 0) {
+				imgXOrigin = 0;
+			} else {
+				imgYOrigin = ((float) (yOffset * imgHeight)) / texHeight;
+			}
 		}
 	}
 }
