@@ -171,11 +171,7 @@ public class Texture {
 	 * @return The height of physical texture
 	 */
 	public float getHeight() {
-		if(imgXOrigin == 0) {
-			return imgHeightRatio;
-		} else {
-			return (imgYOrigin + imgHeightRatio);
-		}
+		return (imgYOrigin + imgHeightRatio);
 	}
 
 	/**
@@ -184,11 +180,7 @@ public class Texture {
 	 * @return The width of physical texture
 	 */
 	public float getWidth() {
-		if(imgXOrigin == 0) {
-			return imgWidthRatio;
-		} else {
-			return (imgXOrigin + imgWidthRatio);
-		}
+		return (imgXOrigin + imgWidthRatio);
 	}
 
 	public float getXOrigin() {
@@ -258,24 +250,16 @@ public class Texture {
 	}
 	
 	private void updateXOrigin() {
-		if (xOffset < xSection) {
+		if((xOffset < xSection) && (texWidth != 0)) {
 			int rawOffset = xOffset * imgWidth;
-			if(rawOffset == 0) {
-				imgXOrigin = 0;
-			} else {
-				imgXOrigin = ((float) rawOffset) / texWidth;
-			}
+			imgXOrigin = ((float) rawOffset) / texWidth;
 		}
 	}
 	
 	private void updateYOrigin() {
-		if (yOffset < ySection) {
-			int rawOffset = xOffset * imgWidth;
-			if(rawOffset == 0) {
-				imgXOrigin = 0;
-			} else {
-				imgYOrigin = ((float) (yOffset * imgHeight)) / texHeight;
-			}
+		if ((yOffset < ySection) && (texHeight != 0)) {
+			int rawOffset = yOffset * imgHeight;
+			imgYOrigin = ((float) rawOffset) / texHeight;
 		}
 	}
 }

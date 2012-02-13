@@ -114,9 +114,9 @@ public class Game {
 			Display.create();
 
 			// grab the mouse, dont want that hideous cursor when we're playing!
-			if (isApplication) {
-				Mouse.setGrabbed(true);
-			}
+			//if (isApplication) {
+			//	Mouse.setGrabbed(true);
+			//}
 
 			// enable textures since we're going to use these for our sprites
 			glEnable(GL_TEXTURE_2D);
