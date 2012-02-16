@@ -20,19 +20,32 @@ package STEngine;
 public class WorldModule extends Module {
 	private Animation 		test;
 	private Actor			test2;
+	private Entity			test3;
+	private Texture 		sheet;
 	
 	@Override
 	public void init() {
-		/*
-		Texture sheet = null;
 		try {
-			sheet = TextureLoader.getInstance().getTexture("Vaughn/world/Vaughn.png");
-		} catch (Exception e) {/*empty catch for the LOSS}
+			this.sheet = TextureLoader.getInstance().getTexture("sprites/Vaughn/world/Vaughn.png");
+		} catch(Exception e) {
+			System.out.println("BAD THINGS HAPPENED");
+			e.printStackTrace();
+			System.exit(1);
+		}
 		
 		sheet.setXSections(4);
 		sheet.setYSections(4);
-		*/
+
+		Texture oneone = sheet.getSubTexture(1, 1);
+		test3 = new Entity(200,100);
+		
 		test = new Animation(800);
+		test.addFrame(new Sprite(oneone));
+		
+		test3.addAnimation("herp", test);
+		
+		
+		/*test = new Animation(800);
 		test.addFrame(new Sprite("Vaughn/world/Vaughn1.png"));
 		test.addFrame(new Sprite("Vaughn/world/Vaughn2.png"));
 		test.addFrame(new Sprite("Vaughn/world/Vaughn1.png"));
@@ -41,21 +54,23 @@ public class WorldModule extends Module {
 		test2 = new Actor(200,100);
 		test2.addAnimation("walk",test);
 		test2.setAnimation("walk");
-		test2.setVerticalMovement(65);
+		test2.setVerticalMovement(65);*/
 	}
 
 	@Override
 	public void step() {
+		/*
 		if (test2.getY() < 100) {
 			test2.setVerticalMovement(65);
 		} else if (test2.getY() > 300) {
 			test2.setVerticalMovement(-65);
 		}
+		*/
 	}
 
 	@Override
 	public void render(long delta) {
-		test2.move(delta);
-		test2.draw();
+		test3.move(delta);
+		test3.draw();
 	}
 }

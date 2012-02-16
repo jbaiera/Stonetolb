@@ -113,14 +113,12 @@ public class Texture {
 	public Texture getSubTexture(int a, int b) {
 		if((a < xSection) && (b < ySection)) {
 			Texture subtex = new Texture(target, textureID);
+			subtex.xOffset = a;
+			subtex.yOffset = b;
 			subtex.setHeight(imgHeight/ySection);
 			subtex.setWidth(imgWidth/xSection);
 			subtex.setTextureHeight(texHeight);
 			subtex.setTextureWidth(texWidth);
-			subtex.xOffset = a;
-			subtex.yOffset = b;
-			subtex.updateXOrigin();
-			subtex.updateYOrigin();
 			return subtex;
 		} else {
 			return this;
@@ -217,6 +215,7 @@ public class Texture {
 	public void setTextureHeight(int texHeight) {
 		this.texHeight = texHeight;
 		setHeight();
+		updateYOrigin();
 	}
 
 	/**
@@ -227,6 +226,7 @@ public class Texture {
 	public void setTextureWidth(int texWidth) {
 		this.texWidth = texWidth;
 		setWidth();
+		updateXOrigin();
 	}
 
 	/**
@@ -250,14 +250,14 @@ public class Texture {
 	}
 	
 	private void updateXOrigin() {
-		if((xOffset < xSection) && (texWidth != 0)) {
+		if(texWidth != 0) {
 			int rawOffset = xOffset * imgWidth;
 			imgXOrigin = ((float) rawOffset) / texWidth;
 		}
 	}
 	
 	private void updateYOrigin() {
-		if ((yOffset < ySection) && (texHeight != 0)) {
+		if(texHeight != 0) {
 			int rawOffset = yOffset * imgHeight;
 			imgYOrigin = ((float) rawOffset) / texHeight;
 		}
