@@ -18,9 +18,8 @@
 package STEngine;
 
 public class WorldModule extends Module {
-	private Animation 		test;
-	private Actor			test2;
-	private Entity			test3;
+	private Animation 		animation;
+	private Actor			vaughn;
 	private Texture 		sheet;
 	
 	@Override
@@ -35,42 +34,39 @@ public class WorldModule extends Module {
 		
 		sheet.setXSections(4);
 		sheet.setYSections(4);
-
-		Texture oneone = sheet.getSubTexture(1, 1);
-		test3 = new Entity(200,100);
+		vaughn = new Actor(200,100);
+		int walkInterval = 800;
 		
-		test = new Animation(800);
-		test.addFrame(new Sprite(oneone));
+		animation = new Animation(walkInterval);
+		for(int i = 0; i < 4; i++) {
+			animation.addFrame(new Sprite(sheet.getSubTexture(i, 0)));
+		}
+		vaughn.addAnimation("toward",animation);
 		
-		test3.addAnimation("herp", test);
+		animation = new Animation(walkInterval);
+		for(int i = 0; i < 4; i++) {
+			animation.addFrame(new Sprite(sheet.getSubTexture(i, 3)));
+		}
+		vaughn.addAnimation("away", animation);
 		
-		
-		/*test = new Animation(800);
-		test.addFrame(new Sprite("Vaughn/world/Vaughn1.png"));
-		test.addFrame(new Sprite("Vaughn/world/Vaughn2.png"));
-		test.addFrame(new Sprite("Vaughn/world/Vaughn1.png"));
-		test.addFrame(new Sprite("Vaughn/world/Vaughn3.png"));
-		
-		test2 = new Actor(200,100);
-		test2.addAnimation("walk",test);
-		test2.setAnimation("walk");
-		test2.setVerticalMovement(65);*/
+		vaughn.setAnimation("toward");
+		vaughn.setVerticalMovement(65);
 	}
 
 	@Override
 	public void step() {
-		/*
-		if (test2.getY() < 100) {
-			test2.setVerticalMovement(65);
-		} else if (test2.getY() > 300) {
-			test2.setVerticalMovement(-65);
+		if (vaughn.getY() < 100) {
+			vaughn.setVerticalMovement(65);
+			vaughn.setAnimation("toward");
+		} else if (vaughn.getY() > 300) {
+			vaughn.setVerticalMovement(-65);
+			vaughn.setAnimation("away");
 		}
-		*/
 	}
 
 	@Override
 	public void render(long delta) {
-		test3.move(delta);
-		test3.draw();
+		vaughn.move(delta);
+		vaughn.draw();
 	}
 }
