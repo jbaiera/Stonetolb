@@ -30,6 +30,7 @@ public class Entity {
 	protected int		dy;
 	protected Animation	sprt;
 	protected long 	thisDelta;
+	protected String 	sprtstr;
 	
 	/**
 	 * Creates a new Entity at x and y with animation as it's
@@ -46,10 +47,12 @@ public class Entity {
 		this.dy = 0;
 		this.thisDelta = 1;
 		this.sprt = new NullAnimation(1000);
+		this.sprtstr = "NULL_ACTION";
 	}
 	
 	public void addAnimation(String s, Animation anim) {
 		this.sprt = anim;
+		this.sprtstr = s;
 	}
 	
 	/**
@@ -93,6 +96,15 @@ public class Entity {
 	}
 	
 	//Getters
+	
+	/**
+	 * Returns the animation of an Entity
+	 * 
+	 * @return the name of the current Animation
+	 */
+	public String getAnimation() {
+		return sprtstr;
+	}
 	
 	/**
 	 * Gets the X position

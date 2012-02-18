@@ -17,6 +17,8 @@
 
 package STEngine;
 
+import org.lwjgl.input.Keyboard;
+
 public class WorldModule extends Module {
 	private Animation 		animation;
 	private Actor			vaughn;
@@ -37,30 +39,87 @@ public class WorldModule extends Module {
 		vaughn = new Actor(200,100);
 		int walkInterval = 800;
 		
+		// Gotta make a way to procedurally generate this from a file input...
+		
 		animation = new Animation(walkInterval);
-		for(int i = 0; i < 4; i++) {
+		for(int i = 1; i < 4; i++) {
 			animation.addFrame(new Sprite(sheet.getSubTexture(i, 0)));
 		}
+		animation.addFrame(new Sprite(sheet.getSubTexture(0, 0)));
 		vaughn.addAnimation("toward",animation);
 		
 		animation = new Animation(walkInterval);
-		for(int i = 0; i < 4; i++) {
+		for(int i = 1; i < 4; i++) {
 			animation.addFrame(new Sprite(sheet.getSubTexture(i, 3)));
 		}
+		animation.addFrame(new Sprite(sheet.getSubTexture(0, 3)));
 		vaughn.addAnimation("away", animation);
 		
-		vaughn.setAnimation("toward");
-		vaughn.setVerticalMovement(65);
+		animation = new Animation(walkInterval);
+		for(int i = 1; i < 4; i++) {
+			animation.addFrame(new Sprite(sheet.getSubTexture(i, 1)));
+		}
+		animation.addFrame(new Sprite(sheet.getSubTexture(0, 1)));
+		vaughn.addAnimation("left",animation);
+		
+		animation = new Animation(walkInterval);
+		for(int i = 1; i < 4; i++) {
+			animation.addFrame(new Sprite(sheet.getSubTexture(i, 2)));
+		}
+		animation.addFrame(new Sprite(sheet.getSubTexture(0, 2)));
+		vaughn.addAnimation("right",animation);
+		
+		animation = new Animation(walkInterval);
+		animation.addFrame(new Sprite(sheet.getSubTexture(0, 0)));
+		vaughn.addAnimation("standingtoward", animation);
+		
+		animation = new Animation(walkInterval);
+		animation.addFrame(new Sprite(sheet.getSubTexture(0, 3)));
+		vaughn.addAnimation("standingaway", animation);
+		
+		animation = new Animation(walkInterval);
+		animation.addFrame(new Sprite(sheet.getSubTexture(0, 1)));
+		vaughn.addAnimation("standingleft", animation);
+		
+		animation = new Animation(walkInterval);
+		animation.addFrame(new Sprite(sheet.getSubTexture(0, 2)));
+		vaughn.addAnimation("standingright", animation);
+		
+		vaughn.setAnimation("standingtoward");
+		vaughn.setVerticalMovement(0);
+		vaughn.setHorizontalMovement(0);
 	}
 
 	@Override
 	public void step() {
-		if (vaughn.getY() < 100) {
-			vaughn.setVerticalMovement(65);
-			vaughn.setAnimation("toward");
-		} else if (vaughn.getY() > 300) {
-			vaughn.setVerticalMovement(-65);
+		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+			vaughn.setVerticalMovement(-75);
+			vaughn.setHorizontalMovement(0);
 			vaughn.setAnimation("away");
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			vaughn.setVerticalMovement(75);
+			vaughn.setHorizontalMovement(0);
+			vaughn.setAnimation("toward");
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			vaughn.setVerticalMovement(0);
+			vaughn.setHorizontalMovement(-75);
+			vaughn.setAnimation("left");
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+			vaughn.setVerticalMovement(0);
+			vaughn.setHorizontalMovement(75);
+			vaughn.setAnimation("right");
+		} else {
+			vaughn.setVerticalMovement(0);
+			vaughn.setHorizontalMovement(0);
+			if(vaughn.getAnimation() == "toward") {
+				vaughn.setAnimation("standingtoward");
+			} else if (vaughn.getAnimation() == "away") {
+				vaughn.setAnimation("standingaway");
+			} else if (vaughn.getAnimation() == "left") {
+				vaughn.setAnimation("standingleft");
+			} else if (vaughn.getAnimation() == "right") {
+				vaughn.setAnimation("standingright");
+			}
 		}
 	}
 

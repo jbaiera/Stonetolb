@@ -90,7 +90,8 @@ public class Sprite {
 	 * @param y The y location at which to draw this sprite
 	 */
 	public void draw(int x, int y) {
-		System.out.println("(" + texture.getXOrigin() + "," + texture.getYOrigin() + ") : (" + texture.getWidth() + "," + texture.getHeight() + ")");
+		// DEBUG: System.out.println("(" + texture.getXOrigin() + "," + texture.getYOrigin() + ") : (" + texture.getWidth() + "," + texture.getHeight() + ")");
+		
 		// store the current model matrix
 		glPushMatrix();
 

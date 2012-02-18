@@ -33,6 +33,7 @@ public class Actor extends Entity {
 		super(x,y);
 		this.actionbank.put("NULL_ACTION", new NullAnimation(1000));
 		this.sprt = actionbank.get("NULL_ACTION");
+		this.sprtstr = "NULL_ACTION";
 	}
 	
 	/**
@@ -43,9 +44,28 @@ public class Actor extends Entity {
 	}
 	
 	public void setAnimation(String s){
-		this.sprt = actionbank.get(s);
-		if (this.sprt == null) {
-			this.setAnimation("NULL_ACTION");
+		//Only set the Animation if it's something different
+		//   than what's already set.
+		if (s != sprtstr) {
+			//stop the current Animation
+			this.sprt.stop();
+			//Try to get the new one
+			this.sprt = actionbank.get(s);
+			//Set the name of the current Animation
+			this.sprtstr = s;
+			//Check to see if the animation was in there.
+			//If not, make it a null sprite
+			if (this.sprt == null) {
+				//This should never recursively loop because it sets
+				//  sprt to be a Null Animation Object
+				this.setAnimation("NULL_ACTION");
+				//Let's let people know though...
+				System.err.println("ERROR: In Actor.setAnimation(\"" + s + "\") : \n" +
+					"Could not find Animation mapped to \"" + s + "\" /n" +
+					"Switching to NullAnimation...");
+			}
+			// Aaaaaaand let's make sure to start the sprite
+			this.sprt.start();
 		}
 	}
 }

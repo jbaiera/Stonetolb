@@ -165,10 +165,10 @@ public class TextureLoader {
         texture.setHeight(bufferedImage.getHeight());
 
         if (bufferedImage.getColorModel().hasAlpha()) {
-        	System.out.println("Get : Has Alpha!");
+        	// DEBUG: System.out.println("Get : Has Alpha!");
             srcPixelFormat = GL_RGBA;
         } else {
-        	System.out.println("Get : No Alpha!");
+        	// DEBUG: System.out.println("Get : No Alpha!");
             srcPixelFormat = GL_RGB;
         }
 
@@ -238,11 +238,11 @@ public class TextureLoader {
         // create a raster that can be used by OpenGL as a source
         // for a texture
         if (bufferedImage.getColorModel().hasAlpha()) {
-        	System.out.println("Convert : Has Alpha!");
+        	// DEBUG: System.out.println("Convert : Has Alpha!");
             raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,4,null);
             texImage = new BufferedImage(glAlphaColorModel,raster,true,new Hashtable<String,Object>());
         } else {
-        	System.out.println("Convert : No Alpha!");
+        	// DEBUG: System.out.println("Convert : No Alpha!");
             raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,3,null);
             texImage = new BufferedImage(glColorModel,raster,true,new Hashtable<String, Object>());
         }

@@ -39,6 +39,8 @@ public class Animation {
 	private int actualInterval;
 	//number of milliseconds since animation start
 	private int stepCount;
+	//keep track of whether or not the animation is running
+	private boolean running;
 	//list of sprites used in the animation, in order of playing
 	protected ArrayList<Sprite> spriteList;
 	
@@ -46,6 +48,7 @@ public class Animation {
 		this.interval = interval;
 		this.actualInterval = interval;
 		this.stepCount = 0;
+		this.running = false;
 		this.spriteList = new ArrayList<Sprite>();
 	}
 	
@@ -61,6 +64,27 @@ public class Animation {
 	}
 	
 	/**
+	 * Set's the Animation back to the starting frame.
+	 * This keeps the Animation from starting in the middle
+	 * of it's frames because of how long ago it might have 
+	 * last been drawn.
+	 */
+	public void start() {
+		if(!running) {
+			stepCount = 0;
+			running = true;
+		}
+	}
+	
+	/**
+	 * Stops the Animation playback so that it can be restarted
+	 * at a later time from the beginning
+	 */
+	public void stop() {
+		running = false;
+	}
+	
+	/**
 	 * Draw the animation at the x and y coordinate, displaying
 	 * the sprite from the frame in the animation based on the 
 	 * given time elapsed since the start of the tween.
@@ -71,14 +95,16 @@ public class Animation {
 	 * drawing
 	 */
 	public void draw(int x, int y, long delta) {
-		// add to step count, but keep it below actualInterval
-		stepCount = ((int)((long)stepCount + delta)) % actualInterval;
-		// create an increment amount
-		int inc = (int) (actualInterval / spriteList.size());
-		// figure out which index to display
-		int idx = (int) (stepCount / inc);
-		// draw the needed sprite at the area specified
-		spriteList.get(idx).draw(x, y);
+		if(running) {
+			// add to step count, but keep it below actualInterval
+			stepCount = ((int)((long)stepCount + delta)) % actualInterval;
+			// create an increment amount
+			int inc = (int) (actualInterval / spriteList.size());
+			// figure out which index to display
+			int idx = (int) (stepCount / inc);
+			// draw the needed sprite at the area specified
+			spriteList.get(idx).draw(x, y);
+		}
 	}
 	
 	/**
