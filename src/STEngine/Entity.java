@@ -51,8 +51,10 @@ public class Entity {
 	}
 	
 	public void addAnimation(String s, Animation anim) {
+		this.sprt.stop();
 		this.sprt = anim;
 		this.sprtstr = s;
+		this.sprt.start();
 	}
 	
 	/**
