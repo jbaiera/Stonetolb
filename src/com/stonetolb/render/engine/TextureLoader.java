@@ -73,11 +73,17 @@ public class TextureLoader {
     private IntBuffer textureIDBuffer = BufferUtils.createIntBuffer(1);
 
     // Instance Variable
-    private static TextureLoader instance;
+    private static volatile TextureLoader instance;
     
-    public static synchronized TextureLoader getInstance() {
+    public static TextureLoader getInstance() {
     	if (instance == null) {
-    		instance = new TextureLoader();
+    		synchronized(TextureLoader.class)
+    		{
+    			if(instance == null)
+    			{
+    				instance = new TextureLoader();
+    			}
+    		}
     	}
     	return instance;
     }
@@ -85,7 +91,7 @@ public class TextureLoader {
     /**
      * Create a new texture loader based on the game panel
      */
-    public TextureLoader() {
+    private TextureLoader() {
         glAlphaColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
                                             new int[] {8,8,8,8},
                                             true,
