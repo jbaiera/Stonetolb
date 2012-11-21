@@ -110,19 +110,52 @@ public class Texture {
 		glBindTexture(target, textureID);
 	}
 	
-	public Texture getSubTexture(int a, int b) {
-		if((a < xSection) && (b < ySection)) {
-			Texture subtex = new Texture(target, textureID);
-			subtex.xOffset = a;
-			subtex.yOffset = b;
-			subtex.setHeight(imgHeight/ySection);
-			subtex.setWidth(imgWidth/xSection);
-			subtex.setTextureHeight(texHeight);
-			subtex.setTextureWidth(texWidth);
-			return subtex;
-		} else {
-			return this;
+	public Texture getSubTexture(int x, int y, int w, int h)
+	{
+		Texture subtex = new Texture(target, textureID);
+		
+		if ((0 <= x && x <= imgWidth) && (0 <= y && y <= imgHeight))
+		{
+			if((0 <= w && x+w <= imgWidth) && (0 <= h && y+h <= imgHeight))
+			{
+				subtex.xOffset = x;
+				subtex.yOffset = y;
+				subtex.setWidth(w);
+				subtex.setHeight(h);
+				subtex.setTextureWidth(texWidth);
+				subtex.setTextureHeight(texHeight);
+				System.out.println(subtex.toString());
+			}
+			else
+			{
+				String msg = "Height or Width is out of image bounds";
+				throw new IllegalStateException(msg);
+			}
 		}
+		else 
+		{
+			String msg = "X or Y coordinate is out of image bounds";
+			throw new IllegalStateException(msg);
+		}
+		
+		return subtex;
+	}
+	
+	public Texture getSubTexture(int a, int b) {
+//		if((a < xSection) && (b < ySection)) {
+//			Texture subtex = new Texture(target, textureID);
+//			subtex.xOffset = a;
+//			subtex.yOffset = b;
+//			subtex.setHeight(imgHeight/ySection);
+//			subtex.setWidth(imgWidth/xSection);
+//			subtex.setTextureHeight(texHeight);
+//			subtex.setTextureWidth(texWidth);
+//			System.out.println(subtex.toString());
+//			return subtex;
+//		} else {
+//			return this;
+//		}
+		return getSubTexture(a * 32, b * 48, 32, 48);
 	}
 
 	/**
@@ -249,17 +282,29 @@ public class Texture {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return "Texture [target=" + target + ", textureID=" + textureID
+				+ ", imgWidth=" + imgWidth + ", imgHeight=" + imgHeight
+				+ ", texWidth=" + texWidth + ", texHeight=" + texHeight
+				+ ", xSection=" + xSection + ", ySection=" + ySection
+				+ ", xOffset=" + xOffset + ", yOffset=" + yOffset
+				+ ", imgWidthRatio=" + imgWidthRatio + ", imgHeightRatio="
+				+ imgHeightRatio + ", imgXOrigin=" + imgXOrigin
+				+ ", imgYOrigin=" + imgYOrigin + "]";
+	}
+
 	private void updateXOrigin() {
 		if(texWidth != 0) {
-			int rawOffset = xOffset * imgWidth;
-			imgXOrigin = ((float) rawOffset) / texWidth;
+//			int rawOffset = xOffset + imgWidth;
+			imgXOrigin = ((float) xOffset) / texWidth;
 		}
 	}
 	
 	private void updateYOrigin() {
 		if(texHeight != 0) {
-			int rawOffset = yOffset * imgHeight;
-			imgYOrigin = ((float) rawOffset) / texHeight;
+//			int rawOffset = yOffset + imgHeight;
+			imgYOrigin = ((float) yOffset) / texHeight;
 		}
 	}
 }
