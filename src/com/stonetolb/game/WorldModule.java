@@ -30,6 +30,8 @@ public class WorldModule extends Module {
 	private Animation 		animation;
 	private Actor			vaughn;
 	private Texture 		sheet;
+	private static int 		WIDTH = 32;
+	private static int 		HEIGHT = 48;
 	
 	@Override
 	public void init() {
@@ -41,8 +43,6 @@ public class WorldModule extends Module {
 			System.exit(1);
 		}
 		
-		sheet.setXSections(4);
-		sheet.setYSections(4);
 		vaughn = new Actor(200,100);
 		int walkInterval = 800;
 		
@@ -50,46 +50,46 @@ public class WorldModule extends Module {
 		
 		animation = new Animation(walkInterval);
 		for(int i = 1; i < 4; i++) {
-			animation.addFrame(new Sprite(sheet.getSubTexture(i, 0)));
+			animation.addFrame(new Sprite(sheet.getSubTexture(i*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)));
 		}
-		animation.addFrame(new Sprite(sheet.getSubTexture(0, 0)));
+		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)));
 		vaughn.addAnimation("toward",animation);
 		
 		animation = new Animation(walkInterval);
 		for(int i = 1; i < 4; i++) {
-			animation.addFrame(new Sprite(sheet.getSubTexture(i, 3)));
+			animation.addFrame(new Sprite(sheet.getSubTexture(i*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)));
 		}
-		animation.addFrame(new Sprite(sheet.getSubTexture(0, 3)));
+		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)));
 		vaughn.addAnimation("away", animation);
 		
 		animation = new Animation(walkInterval);
 		for(int i = 1; i < 4; i++) {
-			animation.addFrame(new Sprite(sheet.getSubTexture(i, 1)));
+			animation.addFrame(new Sprite(sheet.getSubTexture(i*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)));
 		}
-		animation.addFrame(new Sprite(sheet.getSubTexture(0, 1)));
+		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)));
 		vaughn.addAnimation("left",animation);
 		
 		animation = new Animation(walkInterval);
 		for(int i = 1; i < 4; i++) {
-			animation.addFrame(new Sprite(sheet.getSubTexture(i, 2)));
+			animation.addFrame(new Sprite(sheet.getSubTexture(i*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)));
 		}
-		animation.addFrame(new Sprite(sheet.getSubTexture(0, 2)));
+		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)));
 		vaughn.addAnimation("right",animation);
 		
 		animation = new Animation(walkInterval);
-		animation.addFrame(new Sprite(sheet.getSubTexture(0, 0)));
+		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)));
 		vaughn.addAnimation("standingtoward", animation);
 		
 		animation = new Animation(walkInterval);
-		animation.addFrame(new Sprite(sheet.getSubTexture(0, 3)));
+		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)));
 		vaughn.addAnimation("standingaway", animation);
 		
 		animation = new Animation(walkInterval);
-		animation.addFrame(new Sprite(sheet.getSubTexture(0, 1)));
+		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)));
 		vaughn.addAnimation("standingleft", animation);
 		
 		animation = new Animation(walkInterval);
-		animation.addFrame(new Sprite(sheet.getSubTexture(0, 2)));
+		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)));
 		vaughn.addAnimation("standingright", animation);
 		
 		vaughn.setAnimation("standingtoward");

@@ -51,12 +51,6 @@ public class Texture {
 	/** The height of the texture */
 	private int		texHeight;
 	
-	/** The number of x sections */
-	private int 	xSection;
-	
-	/** The number of y sections */
-	private int 	ySection;
-
 	/** The offset x position */
 	private int 	xOffset;
 	
@@ -85,10 +79,6 @@ public class Texture {
 	public Texture(int target, int textureID) {
 		this.target = target;
 		this.textureID = textureID;
-		
-		// only one sub texture which is itself
-		this.xSection = 1;
-		this.ySection = 1;
 		
 		// No offset
 		this.xOffset = 0;
@@ -141,23 +131,6 @@ public class Texture {
 		return subtex;
 	}
 	
-	public Texture getSubTexture(int a, int b) {
-//		if((a < xSection) && (b < ySection)) {
-//			Texture subtex = new Texture(target, textureID);
-//			subtex.xOffset = a;
-//			subtex.yOffset = b;
-//			subtex.setHeight(imgHeight/ySection);
-//			subtex.setWidth(imgWidth/xSection);
-//			subtex.setTextureHeight(texHeight);
-//			subtex.setTextureWidth(texWidth);
-//			System.out.println(subtex.toString());
-//			return subtex;
-//		} else {
-//			return this;
-//		}
-		return getSubTexture(a * 32, b * 48, 32, 48);
-	}
-
 	/**
 	 * Set the height of the image
 	 *
@@ -223,24 +196,6 @@ public class Texture {
 	}
 	
 	/**
-	 * Sets how many subtextures span the x axis
-	 * 
-	 * @param Sx number of subtextures nested in the x axis
-	 */
-	public void setXSections(int Sx) {
-		this.xSection = Sx;
-	}
-	
-	/**
-	 * Sets how many subtextures span the y axis
-	 * 
-	 * @param Sy number of subtextures nested in the y axis
-	 */
-	public void setYSections(int Sy) {
-		this.ySection = Sy;
-	}
-	
-	/**
 	 * Set the height of the texture
 	 *
 	 * @param texHeight The height of the texture
@@ -287,7 +242,6 @@ public class Texture {
 		return "Texture [target=" + target + ", textureID=" + textureID
 				+ ", imgWidth=" + imgWidth + ", imgHeight=" + imgHeight
 				+ ", texWidth=" + texWidth + ", texHeight=" + texHeight
-				+ ", xSection=" + xSection + ", ySection=" + ySection
 				+ ", xOffset=" + xOffset + ", yOffset=" + yOffset
 				+ ", imgWidthRatio=" + imgWidthRatio + ", imgHeightRatio="
 				+ imgHeightRatio + ", imgXOrigin=" + imgXOrigin
