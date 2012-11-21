@@ -19,6 +19,7 @@ package com.stonetolb.render.graphics;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -34,6 +35,69 @@ import java.util.ArrayList;
  * @author comet
  */
 public class Animation implements Drawable{
+	
+	/**
+	 * Helper class used to construct animations from multiple procedure calls.
+	 * Builder reset's state after each build, meaning that subsequent calls to building
+	 * methods will not affect previously built objects.
+	 * 
+	 * @author james.baiera
+	 *
+	 */
+	public class AnimationBuilder {
+		private List<Sprite> sprites;
+		private int interval;
+		
+		private AnimationBuilder() {
+			initBuilder();
+		}
+		
+		private void initBuilder() {
+			sprites = new ArrayList<Sprite>();
+			interval = Animation.BASE_MILLISECONDS_PER_FRAME;
+		}
+		
+		/**
+		 * Sets Animation play time in Milliseconds.
+		 * 
+		 * @param pInterval
+		 * @return this AnimationBuilder
+		 */
+		public AnimationBuilder setInterval(int pInterval) {
+			interval = pInterval;
+			return this;
+		}
+		
+		/**
+		 * Adds a single frame to the animation. All frames are equally spaced.
+		 * 
+		 * @param pFrame
+		 * @return this AnimationBuilder 
+		 */
+		public AnimationBuilder addFrame(Sprite pFrame) {
+			sprites.add(pFrame);
+			return this;
+		}
+		
+		/**
+		 * Returns a new Animation object based off of values previously entered into builder.
+		 * 
+		 * @return New Animation Object
+		 */
+		public Animation build() {
+			//Build result
+			Animation returnValue = new Animation(interval);
+			returnValue.spriteList = sprites;
+			returnValue.updateActual();
+			
+			//reset builder
+			initBuilder();
+			
+			//return
+			return returnValue;
+		}
+	}
+	
 	//approximate milliseconds until animation loops
 	private int interval;
 	//actual milliseconds until animation loops
@@ -44,7 +108,10 @@ public class Animation implements Drawable{
 	//keep track of whether or not the animation is running
 	private boolean running;
 	//list of sprites used in the animation, in order of playing
-	protected ArrayList<Sprite> spriteList;
+	protected List<Sprite> spriteList;
+	
+	private static int BASE_MILLISECONDS_PER_FRAME = 500; //Animation would last half a second
+	
 	
 	public Animation(int interval) {
 		this.interval = interval;
