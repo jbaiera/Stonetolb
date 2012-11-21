@@ -63,10 +63,10 @@ public class TextureLoader {
     /** The table of textures that have been loaded in this loader */
     private HashMap<String, Texture> table = new HashMap<String, Texture>();
 
-    /** The colour model including alpha for the GL image */
+    /** The color model including alpha for the GL image */
     private ColorModel glAlphaColorModel;
 
-    /** The colour model for the GL image */
+    /** The color model for the GL image */
     private ColorModel glColorModel;
 
     /** Scratch buffer for texture ID's */
