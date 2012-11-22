@@ -34,7 +34,7 @@ import java.util.List;
  * 
  * @author comet
  */
-public class Animation implements Drawable{
+public class Animation implements StatefulDrawable{
 	
 	/**
 	 * Helper class used to construct animations from multiple procedure calls.
@@ -44,8 +44,8 @@ public class Animation implements Drawable{
 	 * @author james.baiera
 	 *
 	 */
-	public class AnimationBuilder {
-		private List<Sprite> sprites;
+	public static class AnimationBuilder {
+		private List<Drawable> sprites;
 		private int interval;
 		
 		private AnimationBuilder() {
@@ -53,7 +53,7 @@ public class Animation implements Drawable{
 		}
 		
 		private void initBuilder() {
-			sprites = new ArrayList<Sprite>();
+			sprites = new ArrayList<Drawable>();
 			interval = Animation.BASE_MILLISECONDS_PER_FRAME;
 		}
 		
@@ -74,7 +74,7 @@ public class Animation implements Drawable{
 		 * @param pFrame
 		 * @return this AnimationBuilder 
 		 */
-		public AnimationBuilder addFrame(Sprite pFrame) {
+		public AnimationBuilder addFrame(Drawable pFrame) {
 			sprites.add(pFrame);
 			return this;
 		}
@@ -98,59 +98,58 @@ public class Animation implements Drawable{
 		}
 	}
 	
-	//approximate milliseconds until animation loops
+	// interval is an approxamation right now, since frames are equidistant in time from each other
+	// This should be fixed later.
+	
 	private int interval;
-	//actual milliseconds until animation loops
-	//based on number of sprites and interval amt
 	private int actualInterval;
-	//number of milliseconds since animation start
 	private int stepCount;
-	//keep track of whether or not the animation is running
 	private boolean running;
-	//list of sprites used in the animation, in order of playing
-	protected List<Sprite> spriteList;
+	protected List<Drawable> spriteList;
 	
 	private static int BASE_MILLISECONDS_PER_FRAME = 500; //Animation would last half a second
 	
-	
-	public Animation(int interval) {
-		this.interval = interval;
-		this.actualInterval = interval;
-		this.stepCount = 0;
-		this.running = false;
-		this.spriteList = new ArrayList<Sprite>();
+	public static AnimationBuilder builder() {
+		return new AnimationBuilder();
 	}
 	
-	/**
-	 * Add a new Sprite to the end of the sprite list. This
-	 * updates the actual interval.
-	 * 
-	 * @param newSprite A sprite to add to the frame set
-	 */
-	public void addFrame(Sprite newSprite) {
-		spriteList.add(newSprite);
-		updateActual();
+	private Animation(int pInterval) {
+		interval = pInterval;
+		actualInterval = pInterval;
+		stepCount = 0;
+		running = false;
 	}
 	
-	/**
-	 * Set's the Animation back to the starting frame.
-	 * This keeps the Animation from starting in the middle
-	 * of it's frames because of how long ago it might have 
-	 * last been drawn.
-	 */
-	public void start() {
+//	/**
+//	 * Add a new Sprite to the end of the sprite list. This
+//	 * updates the actual interval.
+//	 * 
+//	 * @param newSprite A sprite to add to the frame set
+//	 */
+//	private void addFrame(Sprite newSprite) {
+//		spriteList.add(newSprite);
+//		updateActual();
+//	}
+	
+	private void start() {
 		if(!running) {
 			stepCount = 0;
 			running = true;
 		}
 	}
 	
-	/**
-	 * Stops the Animation playback so that it can be restarted
-	 * at a later time from the beginning
-	 */
-	public void stop() {
+	private void stop() {
 		running = false;
+	}
+
+	@Override
+	public void ready() {
+		start();
+	}
+	
+	@Override
+	public void dispose() {
+		stop();
 	}
 	
 	/**
@@ -181,6 +180,10 @@ public class Animation implements Drawable{
 	 * Finds the greatest common factor between the interval
 	 * and the number of items in the animation list. Sets the
 	 * actual interval of the Animation
+	 * 
+	 * TODO : Get away from using equal spaced keyframes by default.
+	 * There should be a set of keyframe items which are frames associated
+	 * with how long they should be displayed to the screen.
 	 */
 	private void updateActual() {
 		int lstSize = spriteList.size();

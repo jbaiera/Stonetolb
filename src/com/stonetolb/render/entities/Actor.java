@@ -20,12 +20,20 @@ package com.stonetolb.render.entities;
 import java.util.HashMap;
 
 import com.stonetolb.render.graphics.Animation;
-import com.stonetolb.render.graphics.NullAnimation;
+import com.stonetolb.render.graphics.Drawable;
+import com.stonetolb.render.graphics.NullDrawable;
 
-
+/**
+ * Actor is an extension of the BaseEntity object that is capable of storing 
+ * a map of String to Drawable Objects. This can be used to change the image being drawn
+ * on the screen by calling the setAction method.
+ * 
+ * @author james.baiera
+ *
+ */
 public class Actor extends BaseEntity {
-
-	private HashMap<String, Animation> actionbank = new HashMap<String,Animation>();
+	public static String EMPTY = "NULL_ACTION";
+	private HashMap<String, Drawable> actionbank = new HashMap<String,Drawable>();
 	
 	/**
 	 * Create an Actor with null animation at point x, y
@@ -35,41 +43,48 @@ public class Actor extends BaseEntity {
 	 */
 	public Actor(int x, int y) {
 		super(x,y);
-		this.actionbank.put("NULL_ACTION", new NullAnimation(1000));
-		this.sprt = actionbank.get("NULL_ACTION");
-		this.sprtstr = "NULL_ACTION";
+		actionbank.put(EMPTY, new NullDrawable());
+		setDrawable(actionbank.get(EMPTY), EMPTY);
 	}
 	
 	/**
-	 * Adds an Animation to the list of Animations the Actor has
+	 * Adds a new Drawable to the list of actions the Actor has
 	 */
-	public void addAnimation(String s, Animation a){
+	public void addAction(String s, Drawable a){
 		this.actionbank.put(s, a);
 	}
 	
-	public void setAnimation(String s){
+	public void setAction(String actionName){
 		//Only set the Animation if it's something different
 		//   than what's already set.
-		if (s != sprtstr) {
-			//stop the current Animation
-			this.sprt.stop();
-			//Try to get the new one
-			this.sprt = actionbank.get(s);
-			//Set the name of the current Animation
-			this.sprtstr = s;
-			//Check to see if the animation was in there.
-			//If not, make it a null sprite
-			if (this.sprt == null) {
-				//This should never recursively loop because it sets
-				//  sprt to be a Null Animation Object
-				this.setAnimation("NULL_ACTION");
-				//Let's let people know though...
-				System.err.println("ERROR: In Actor.setAnimation(\"" + s + "\") : \n" +
-					"Could not find Animation mapped to \"" + s + "\" /n" +
-					"Switching to NullAnimation...");
+		if (actionName != imageName) {
+			Drawable newAction = actionbank.get(actionName);
+
+			if (newAction == null) {
+				this.setEmptyAnimation(actionName);
+
+				System.err.println("ERROR: In Actor.setAction(\"" + actionName + "\") : \n" +
+					"Could not find Drawable mapped to \"" + actionName + "\" \n" +
+					"Switching to NullDrawable...");
 			}
-			// Aaaaaaand let's make sure to start the sprite
-			this.sprt.start();
+			else 
+			{
+				setDrawable(newAction, actionName);
+			}
+		}
+	}
+	
+	private void setEmptyAnimation(String attemptedName)
+	{
+		Drawable nullImage = actionbank.get(EMPTY);
+		if (nullImage == null)
+		{
+			String msg = "Attempted to set action to non existant \""+attemptedName+"\". Fallback image is also non existant.";
+			throw new IllegalStateException(msg);
+		}
+		else
+		{
+			setDrawable(nullImage, EMPTY);
 		}
 	}
 }

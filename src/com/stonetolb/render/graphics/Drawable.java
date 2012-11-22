@@ -31,6 +31,13 @@ package com.stonetolb.render.graphics;
  */
 public interface Drawable {
 	
+	/**
+	 * Normal call that draws item in a frame.
+	 * 
+	 * @param x coordinate to draw at
+	 * @param y coordinate to draw at
+	 * @param z coordinate to draw at
+	 * @param delta amount of time that has past since last drawing
+	 */
 	public void draw(int x, int y, int z, long delta);
-	
 }

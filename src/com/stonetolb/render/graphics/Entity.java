@@ -1,5 +1,5 @@
 package com.stonetolb.render.graphics;
 
-public interface Entity extends Drawable {
+public interface Entity {
 	public void render(long delta);
 }

@@ -17,7 +17,7 @@
 
 package com.stonetolb.game;
 
-public abstract class Module {
+public interface Module {
 	
 	/**
 	 * Runs this method at the start of execution

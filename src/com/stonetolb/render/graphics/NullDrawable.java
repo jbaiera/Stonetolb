@@ -18,15 +18,16 @@
 package com.stonetolb.render.graphics;
 
 
-public class NullAnimation extends Animation {
+public class NullDrawable implements Drawable {
 	
-	public NullAnimation(int interval) {
-		super(interval);
-		this.spriteList.add(new Sprite("null.gif"));
+	private Drawable img;
+	
+	public NullDrawable() {
+		img = new Sprite("null.gif");
 	}
-	
-	public void addFrame(Sprite newSprite) {
-		//nothing
-		return;
+
+	@Override
+	public void draw(int x, int y, int z, long delta) {
+		img.draw(x, y, z, delta);
 	}
 }

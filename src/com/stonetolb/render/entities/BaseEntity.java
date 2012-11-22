@@ -19,139 +19,111 @@ package com.stonetolb.render.entities;
 
 
 import com.stonetolb.render.graphics.Animation;
+import com.stonetolb.render.graphics.Drawable;
 import com.stonetolb.render.graphics.Entity;
-import com.stonetolb.render.graphics.NullAnimation;
+import com.stonetolb.render.graphics.NullDrawable;
+import com.stonetolb.render.graphics.StatefulDrawable;
 
 /**
- * Entity holds an animation or sprite and keeps track 
- * of movement, as well as most entity related game logic. 
+ * The BaseEntity is a simple object that stores a single Drawable object, as well as 
+ * the location and movement states. 
  *  
  * @author comet
  */
 public class BaseEntity implements Entity{
-	protected float 	xPos;
-	protected float 	yPos;
-	protected int 	dx;
-	protected int		dy;
-	protected Animation	sprt;
-	protected long 	thisDelta;
-	protected String 	sprtstr;
+	protected float 	xPosition;
+	protected float 	yPosition;
+	protected int 	changeInX;
+	protected int		changeInY;
+	protected Drawable	image;
+	protected long 	movementDelta;
+	protected String 	imageName;
 	
 	/**
-	 * Creates a new Entity at x and y with animation as it's
-	 * visual.
+	 * Creates a new BaseEntity at Location x and y, at rest, with an empty drawable
+	 * as it's visual.
 	 * 
 	 * @param x x position
 	 * @param y y position
 	 * @param animation Entity visual representation
 	 */
-	public BaseEntity(int x, int y) {
-		this.xPos = (float) x;
-		this.yPos = (float) y;
-		this.dx = 0;
-		this.dy = 0;
-		this.thisDelta = 1;
-		this.sprt = new NullAnimation(1000);
-		this.sprtstr = "NULL_ACTION";
-	}
-	
-	public void addAnimation(String s, Animation anim) {
-		this.sprt.stop();
-		this.sprt = anim;
-		this.sprtstr = s;
-		this.sprt.start();
+	public BaseEntity(int pX, int pY) {
+		this.xPosition = (float) pX;
+		this.yPosition = (float) pY;
+		this.changeInX = 0;
+		this.changeInY = 0;
+		this.movementDelta = 1;
+		this.image = new NullDrawable();
+		this.imageName = "NULL_ACTION";
 	}
 	
 	/**
-	 * Updates the Entity's position based on how much time has
-	 * passed, and the Entity's velocity
+	 * Updates the entity's position based on how much time has
+	 * passed, and the entity's velocity
 	 * 
 	 * @param delta number of milliseconds passed since last move
 	 */
 	public void move(long delta) {
-		this.thisDelta = delta;
-		this.xPos += ((delta * dx) / 1000);
-		this.yPos += (float)((delta * dy) / 1000);
+		movementDelta = delta;
+		xPosition += ((delta * changeInX) / 1000);
+		yPosition += (float)((delta * changeInY) / 1000);
 	}
 	
 	/**
-	 * Draws the animation based on when the last time the move method
-	 * was called. 
+	 * Orders the object to draw it's Drawable image where ever it's location is.
 	 */
 	@Override
-	public void draw(int x, int y, int z, long delta) {
-		render(delta);
-	}
-	
-	@Override
 	public void render(long delta) {
-		sprt.draw((int)xPos, (int)yPos, 0, delta);
+		image.draw((int)xPosition, (int)yPosition, 0, delta);
 	}
 	
 	//Setters
 	
-	/**
-	 * Sets the horizontal movement 
-	 * 
-	 * @param toTheRight (pixels/second) to the right
-	 */
 	public void setHorizontalMovement (int toTheRight) {
-		this.dx = toTheRight;
+		this.changeInX = toTheRight;
 	}
 	
-	/** 
-	 * Sets the vertical movement
-	 * 
-	 * @param toTheBottom (pixels/second) to the bottom
-	 */
 	public void setVerticalMovement(int toTheBottom) {
-		this.dy = toTheBottom;
+		this.changeInY = toTheBottom;
+	}
+
+	public void setDrawable(Drawable pDrawing, String pName) {
+		if (image != null && image instanceof StatefulDrawable) 
+		{
+			((StatefulDrawable)image).dispose();
+		}
+		image = pDrawing;
+		imageName = pName;
+		if (image instanceof StatefulDrawable)
+		{
+			((StatefulDrawable)image).ready();
+		}
 	}
 	
 	//Getters
 	
-	/**
-	 * Returns the animation of an Entity
-	 * 
-	 * @return the name of the current Animation
-	 */
-	public String getAnimation() {
-		return sprtstr;
-	}
-	
-	/**
-	 * Gets the X position
-	 * 
-	 * @return Entity X position
-	 */
 	public int getX() {
-		return (int) xPos;
+		return (int) xPosition;
 	}
 	
-	/**
-	 * Gets the Y position
-	 * 
-	 * @return Entity Y position
-	 */
 	public int getY() {
-		return (int) yPos;
+		return (int) yPosition;
 	}
 	
-	/**
-	 * Gets the rate of change of x
-	 * 
-	 * @return the rate of change of x
-	 */
 	public int getHorizontalMovement() {
-		return dx;
+		return changeInX;
 	}
 	
-	/**
-	 * Gets the rate of change of y
-	 * 
-	 * @return the rate of change of y
-	 */
 	public int getVerticalMovement() {
-		return dy;
+		return changeInY;
+	}
+	
+	public Drawable getDrawable() {
+		return image;
+	}
+	
+	public String getDrawingName()
+	{
+		return imageName;
 	}
 }

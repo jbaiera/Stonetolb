@@ -25,9 +25,9 @@ import com.stonetolb.render.entities.Actor;
 import com.stonetolb.render.graphics.Animation;
 import com.stonetolb.render.graphics.Sprite;
 import com.stonetolb.render.graphics.Texture;
+import com.stonetolb.render.graphics.Animation.AnimationBuilder;
 
-public class WorldModule extends Module {
-	private Animation 		animation;
+public class WorldModule implements Module {
 	private Actor			vaughn;
 	private Texture 		sheet;
 	private static int 		WIDTH = 32;
@@ -35,6 +35,8 @@ public class WorldModule extends Module {
 	
 	@Override
 	public void init() {
+		// This is awful....
+		
 		try {
 			this.sheet = TextureLoader.getInstance().getTexture("sprites/Vaughn/world/Vaughn.png");
 		} catch(Exception e) {
@@ -47,52 +49,50 @@ public class WorldModule extends Module {
 		int walkInterval = 800;
 		
 		// Gotta make a way to procedurally generate this from a file input...
+		AnimationBuilder builder = Animation.builder();
 		
-		animation = new Animation(walkInterval);
-		for(int i = 1; i < 4; i++) {
-			animation.addFrame(new Sprite(sheet.getSubTexture(i*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)));
-		}
-		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)));
-		vaughn.addAnimation("toward",animation);
+		vaughn.addAction("toward"
+				, builder.setInterval(walkInterval)
+					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)))
+					.build()
+				);
 		
-		animation = new Animation(walkInterval);
-		for(int i = 1; i < 4; i++) {
-			animation.addFrame(new Sprite(sheet.getSubTexture(i*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)));
-		}
-		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)));
-		vaughn.addAnimation("away", animation);
+		vaughn.addAction("left"
+				, builder.setInterval(walkInterval)
+					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)))
+					.build()
+				);
 		
-		animation = new Animation(walkInterval);
-		for(int i = 1; i < 4; i++) {
-			animation.addFrame(new Sprite(sheet.getSubTexture(i*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)));
-		}
-		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)));
-		vaughn.addAnimation("left",animation);
+		vaughn.addAction("right"
+				, builder.setInterval(walkInterval)
+					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)))
+					.build()
+				);
 		
-		animation = new Animation(walkInterval);
-		for(int i = 1; i < 4; i++) {
-			animation.addFrame(new Sprite(sheet.getSubTexture(i*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)));
-		}
-		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)));
-		vaughn.addAnimation("right",animation);
+		vaughn.addAction("away"
+				, builder.setInterval(walkInterval)
+					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)))
+					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)))
+					.build()
+				);
 		
-		animation = new Animation(walkInterval);
-		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)));
-		vaughn.addAnimation("standingtoward", animation);
+		vaughn.addAction("standingtoward", new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT)));
+		vaughn.addAction("standingleft", new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)));
+		vaughn.addAction("standingright", new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)));
+		vaughn.addAction("standingaway", new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)));
 		
-		animation = new Animation(walkInterval);
-		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT)));
-		vaughn.addAnimation("standingaway", animation);
-		
-		animation = new Animation(walkInterval);
-		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT)));
-		vaughn.addAnimation("standingleft", animation);
-		
-		animation = new Animation(walkInterval);
-		animation.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT)));
-		vaughn.addAnimation("standingright", animation);
-		
-		vaughn.setAnimation("standingtoward");
+		vaughn.setAction("standingtoward");
 		vaughn.setVerticalMovement(0);
 		vaughn.setHorizontalMovement(0);
 	}
@@ -102,30 +102,34 @@ public class WorldModule extends Module {
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			vaughn.setVerticalMovement(-75);
 			vaughn.setHorizontalMovement(0);
-			vaughn.setAnimation("away");
+			vaughn.setAction("away");
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			vaughn.setVerticalMovement(75);
 			vaughn.setHorizontalMovement(0);
-			vaughn.setAnimation("toward");
+			vaughn.setAction("toward");
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			vaughn.setVerticalMovement(0);
 			vaughn.setHorizontalMovement(-75);
-			vaughn.setAnimation("left");
+			vaughn.setAction("left");
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			vaughn.setVerticalMovement(0);
 			vaughn.setHorizontalMovement(75);
-			vaughn.setAnimation("right");
+			vaughn.setAction("right");
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
+			vaughn.setVerticalMovement(0);
+			vaughn.setHorizontalMovement(0);
+			vaughn.setAction(Actor.EMPTY);
 		} else {
 			vaughn.setVerticalMovement(0);
 			vaughn.setHorizontalMovement(0);
-			if(vaughn.getAnimation() == "toward") {
-				vaughn.setAnimation("standingtoward");
-			} else if (vaughn.getAnimation() == "away") {
-				vaughn.setAnimation("standingaway");
-			} else if (vaughn.getAnimation() == "left") {
-				vaughn.setAnimation("standingleft");
-			} else if (vaughn.getAnimation() == "right") {
-				vaughn.setAnimation("standingright");
+			if(vaughn.getDrawingName() == "toward") {
+				vaughn.setAction("standingtoward");
+			} else if (vaughn.getDrawingName() == "away") {
+				vaughn.setAction("standingaway");
+			} else if (vaughn.getDrawingName() == "left") {
+				vaughn.setAction("standingleft");
+			} else if (vaughn.getDrawingName() == "right") {
+				vaughn.setAction("standingright");
 			}
 		}
 	}
@@ -133,6 +137,6 @@ public class WorldModule extends Module {
 	@Override
 	public void render(long delta) {
 		vaughn.move(delta);
-		vaughn.draw(0,0,0,delta);
+		vaughn.render(delta);
 	}
 }
