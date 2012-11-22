@@ -149,7 +149,7 @@ public class TextureLoader {
      * @param resourceName The location of the resource to load
      * @param target The GL target to load the texture against
      * @param dstPixelFormat The pixel format of the screen
-     * @param minFilter The minimising filter
+     * @param minFilter The minimizing filter
      * @param magFilter The magnification filter
      * @return The loaded texture
      * @throws IOException Indicates a failure to access the resource

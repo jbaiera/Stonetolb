@@ -23,7 +23,7 @@ import static org.lwjgl.opengl.GL11.*;
  * A texture to be bound within OpenGL. This object is responsible for
  * keeping track of a given OpenGL texture and for calculating the
  * texturing mapping coordinates of the full image.
- * 
+ * <p>
  * Since textures need to be powers of 2, the actual texture may be
  * considerably enlarged than the source image and hence the texture
  * mapping coordinates need to be adjusted to match up the drawing the
@@ -236,17 +236,6 @@ public class Texture {
 			imgWidthRatio = ((float) imgWidth) / texWidth;
 		}
 	}
-	
-	@Override
-	public String toString() {
-		return "Texture [target=" + target + ", textureID=" + textureID
-				+ ", imgWidth=" + imgWidth + ", imgHeight=" + imgHeight
-				+ ", texWidth=" + texWidth + ", texHeight=" + texHeight
-				+ ", xOffset=" + xOffset + ", yOffset=" + yOffset
-				+ ", imgWidthRatio=" + imgWidthRatio + ", imgHeightRatio="
-				+ imgHeightRatio + ", imgXOrigin=" + imgXOrigin
-				+ ", imgYOrigin=" + imgYOrigin + "]";
-	}
 
 	private void updateXOrigin() {
 		if(texWidth != 0) {
@@ -261,4 +250,77 @@ public class Texture {
 			imgYOrigin = ((float) yOffset) / texHeight;
 		}
 	}
+	
+	@Override
+	public int hashCode() {
+		int prime = 31;
+		int result = 17;
+		result = prime * result + target;
+		result = prime * result + textureID;
+		result = prime * result + imgWidth;
+		result = prime * result + imgHeight;
+		result = prime * result + texWidth;
+		result = prime * result + texHeight;
+		result = prime * result + xOffset;
+		result = prime * result + yOffset;
+		result = prime * result + Float.floatToIntBits(imgWidthRatio);
+		result = prime * result + Float.floatToIntBits(imgHeightRatio);
+		result = prime * result + Float.floatToIntBits(imgXOrigin);
+		result = prime * result + Float.floatToIntBits(imgYOrigin);
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Texture other = (Texture) obj;
+		if (imgHeight != other.imgHeight)
+			return false;
+		if (Float.floatToIntBits(imgHeightRatio) != Float
+				.floatToIntBits(other.imgHeightRatio))
+			return false;
+		if (imgWidth != other.imgWidth)
+			return false;
+		if (Float.floatToIntBits(imgWidthRatio) != Float
+				.floatToIntBits(other.imgWidthRatio))
+			return false;
+		if (Float.floatToIntBits(imgXOrigin) != Float
+				.floatToIntBits(other.imgXOrigin))
+			return false;
+		if (Float.floatToIntBits(imgYOrigin) != Float
+				.floatToIntBits(other.imgYOrigin))
+			return false;
+		if (target != other.target)
+			return false;
+		if (texHeight != other.texHeight)
+			return false;
+		if (texWidth != other.texWidth)
+			return false;
+		if (textureID != other.textureID)
+			return false;
+		if (xOffset != other.xOffset)
+			return false;
+		if (yOffset != other.yOffset)
+			return false;
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return new StringBuilder().append("Texture [target=" + target + ", textureID=" + textureID)
+				.append(", imgWidth=" + imgWidth + ", imgHeight=" + imgHeight)
+				.append(", texWidth=" + texWidth + ", texHeight=" + texHeight)
+				.append(", xOffset=" + xOffset + ", yOffset=" + yOffset)
+				.append(", imgWidthRatio=" + imgWidthRatio + ", imgHeightRatio=")
+				.append(imgHeightRatio + ", imgXOrigin=" + imgXOrigin)
+				.append(", imgYOrigin=" + imgYOrigin + "]")
+				.toString();
+	}
+	
+	
 }
