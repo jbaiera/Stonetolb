@@ -100,6 +100,16 @@ public class BaseEntity implements Entity{
 		}
 	}
 	
+	public void setDrawable(StatefulDrawable pAnimation, String pName) {
+		if (image != null && StatefulDrawable.class.isInstance(image)) 
+		{
+			((StatefulDrawable)image).dispose();
+		}
+		image = pAnimation;
+		imageName = pName;
+		((StatefulDrawable) image).ready();
+	}
+	
 	//Getters
 	
 	public int getX() {
