@@ -17,7 +17,12 @@
 
 package com.stonetolb.render.graphics;
 
-
+/**
+ * Null object that implements the {@link Drawable} interface.
+ * Used to represent non existant resources.
+ * @author james.baiera
+ *
+ */
 public class NullDrawable implements Drawable {
 	
 	private Drawable img;

@@ -26,7 +26,9 @@ import org.lwjgl.opengl.Display;
 
 /**
  * This is a game applet object that houses the game display and 
- * launches the game object in its own thread
+ * launches the game object in its own thread.
+ * <p>
+ * Used for browser based applets. 
  * 
  * @author comet
  *

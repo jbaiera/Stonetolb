@@ -27,6 +27,12 @@ import com.stonetolb.render.graphics.Sprite;
 import com.stonetolb.render.graphics.Texture;
 import com.stonetolb.render.graphics.Animation.AnimationBuilder;
 
+/**
+ * Implementation of an overworld movement game state
+ * 
+ * @author james.baiera
+ *
+ */
 public class WorldModule implements Module {
 	private Actor			vaughn;
 	private Texture 		sheet;

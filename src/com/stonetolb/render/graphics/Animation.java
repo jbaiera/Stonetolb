@@ -25,10 +25,14 @@ import java.util.List;
 /**
  * Animation is a glorified list of Sprite objects, which,
  * based on a predetermined interval, changes which Sprite
- * is currently active. <br><br>The interval the user specifies is
+ * is currently active. 
+ * <p>
+ * The interval the user specifies is
  * more or less just a suggestion, and the actual interval 
  * is the closest multiple of the list size to the stated 
- * interval. <br><br>This object is handled just like a Sprite
+ * interval. 
+ * <p>
+ * This object is handled just like a Sprite
  * in terms of drawing commands except you pass in the time since
  * the last frame.
  * 

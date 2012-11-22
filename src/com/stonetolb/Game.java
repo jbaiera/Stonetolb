@@ -40,32 +40,32 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game {
 
 	/** The normal title of the window */
-	private String				WINDOW_TITLE		= "Stonetolb 0.0.4";
+	private String WINDOW_TITLE	= "Stonetolb 0.0.4";
 
 	/** The width of the game display area */
-	private int					width				= 800;
+	private int	width = 800;
 
 	/** The height of the game display area */
-	private int					height				= 600;
+	private int	height = 600;
 
-	/** The time at which the last rendering looped started from the point of view of the game logic */
-	private long				lastLoopTime		= getTime();
+	/** The time at which the last rendering loop started from the point of view of the game logic */
+	private long lastLoopTime = getTime();
 
 	/** The time since the last record of fps */
-	private long				lastFpsTime;
+	private long lastFpsTime;
 
 	/** The recorded fps */
-	private int					fps;
-	private static long			timerTicksPerSecond	= Sys.getTimerResolution();
+	private int	fps;
+	private static long	timerTicksPerSecond	= Sys.getTimerResolution();
 
 	/** True if the game is currently "running", i.e. the game loop is looping */
-	public static boolean		gameRunning			= true;
+	public static boolean gameRunning = true;
 
 	/** Whether we're running in fullscreen mode */
-	private boolean				fullscreen;
+	private boolean	fullscreen;
 
 	/** Is this an application or applet */
-	private static boolean 		isApplication;
+	private static boolean isApplication;
 
 	/** Game Module that handles the game play */
 	Module world = new WorldModule();
@@ -191,14 +191,14 @@ public class Game {
 	 */
 	private void gameLoop() {
 		while (Game.gameRunning) {
+			// Allow Game Logic
+			world.step();
+		
 			// clear screen
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
-
-			// Allow Game Logic
-			world.step();
-		
+			
 			// let subsystem paint
 			frameRendering();
 

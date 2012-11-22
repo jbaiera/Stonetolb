@@ -17,6 +17,12 @@
 
 package com.stonetolb.game;
 
+/**
+ * Interface that defines how the game state objects should act during the game loop
+ * 
+ * @author james.baiera
+ *
+ */
 public interface Module {
 	
 	/**
