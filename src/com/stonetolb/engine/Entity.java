@@ -17,13 +17,17 @@
 
 package com.stonetolb.engine;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.stonetolb.engine.component.EntityComponent;
 import com.stonetolb.engine.component.render.RenderComponent;
 
 /**
  * Main object of the Entity Engine. Entities are objects that 
  * contain a physical state in the game engine. 
  * <p>
- * They are composed of different concrete {@link EntityComponents} 
+ * They are composed of different concrete {@link EntityComponent} 
  * that change it's behavior. They characteristically have only one 
  * {@link RenderComponent} which defines how they are rendered.
  * 
@@ -39,5 +43,19 @@ public class Entity {
 	protected float direction;
 	
 	protected RenderComponent renderComponent;
-	protected String renderComponentId;
+	
+	protected List<EntityComponent> components;
+	
+	public Entity(String pId) {
+		id = pId;
+		
+		xPosition = 0;
+		yPosition = 0;
+		speed = 0;
+		direction = 0;
+		
+		components = new ArrayList<EntityComponent>();
+	}
+	
+	
 }
