@@ -17,6 +17,25 @@
 
 package com.stonetolb.engine;
 
+/**
+ * Main object of the Entity Engine. Entities are objects that 
+ * contain a physical state in the game engine. 
+ * <p>
+ * They are composed of different concrete {@link EntityComponents} 
+ * that change it's behavior. They characteristically have only one 
+ * {@link RenderComponent} which defines how they are rendered.
+ * 
+ * @author comet
+ *
+ */
 public class Entity {
-
+	private String id;
+	
+	protected float xPosition;
+	protected float yPosition;
+	protected int speed;
+	protected float direction;
+	
+	protected RenderComponent renderComponent;
+	protected String renderComponentId;
 }
