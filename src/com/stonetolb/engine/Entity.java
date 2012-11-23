@@ -17,6 +17,8 @@
 
 package com.stonetolb.engine;
 
+import com.stonetolb.engine.component.render.RenderComponent;
+
 /**
  * Main object of the Entity Engine. Entities are objects that 
  * contain a physical state in the game engine. 
