@@ -17,14 +17,39 @@
 
 package com.stonetolb.engine.component.render;
 
-import com.stonetolb.engine.component.EntityComponent;
+import com.stonetolb.engine.Entity;
+import com.stonetolb.render.graphics.Drawable;
 
-public class ImageRenderComponent extends EntityComponent {
+/**
+ * Rendering component that uses a {@link Drawable} item as it's
+ * image to represent the {@link Entity} on screen.
+ * <p>
+ * This rendering component is for basic image rendering of any
+ * {@link Drawable} object.
+ *  
+ * @author comet
+ *
+ */
+public class ImageRenderComponent extends RenderComponent {
+	Drawable image;
+	
+	public ImageRenderComponent(String pId, Drawable pImage) {
+		super(pId);
+		image = pImage;
+	}
 
 	@Override
 	public void update(long delta) {
-		// TODO Auto-generated method stub
-		
+		//Nothing. Image only.
 	}
 
+	@Override
+	public void render(long delta) {
+		image.draw(
+				(int)parent.getPosition().x.floatValue()
+			  , (int)parent.getPosition().y.floatValue()
+			  , 0
+			  , delta
+			  );
+	}
 }

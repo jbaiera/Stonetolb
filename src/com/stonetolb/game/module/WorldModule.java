@@ -20,12 +20,17 @@ package com.stonetolb.game;
 
 import org.lwjgl.input.Keyboard;
 
+import com.stonetolb.engine.Entity;
+import com.stonetolb.engine.component.movement.KeyboardMovementComponent;
+import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.render.engine.TextureLoader;
 import com.stonetolb.render.entities.Actor;
 import com.stonetolb.render.graphics.Animation;
+import com.stonetolb.render.graphics.Animation.AnimationBuilder;
+import com.stonetolb.render.graphics.NullDrawable;
 import com.stonetolb.render.graphics.Sprite;
 import com.stonetolb.render.graphics.Texture;
-import com.stonetolb.render.graphics.Animation.AnimationBuilder;
+import com.stonetolb.util.Pair;
 
 /**
  * Implementation of an overworld movement game state
@@ -39,9 +44,11 @@ public class WorldModule implements Module {
 	private static int 		WIDTH = 32;
 	private static int 		HEIGHT = 48;
 	
+	private Entity nada;
+	
 	@Override
 	public void init() {
-		// This is awful....
+		// Create an old style actor:
 		
 		try {
 			this.sheet = TextureLoader.getInstance().getTexture("sprites/Vaughn/world/Vaughn.png");
@@ -101,6 +108,18 @@ public class WorldModule implements Module {
 		vaughn.setAction("standingtoward");
 		vaughn.setVerticalMovement(0);
 		vaughn.setHorizontalMovement(0);
+		
+		//Create an entity with new Entity Engine
+		nada = new Entity("nada");
+		nada.addComponent(
+				new ImageRenderComponent(
+						  "NullImage"
+						, new NullDrawable()
+						)
+				);
+		nada.addComponent(new KeyboardMovementComponent("Arrows"));
+		nada.setPosition(new Pair<Float,Float>(300F,300F));
+		
 	}
 
 	@Override
@@ -144,5 +163,7 @@ public class WorldModule implements Module {
 	public void render(long delta) {
 		vaughn.move(delta);
 		vaughn.render(delta);
+		nada.update(delta);
+		nada.render(delta);
 	}
 }

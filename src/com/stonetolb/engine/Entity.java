@@ -115,6 +115,11 @@ public class Entity {
 		}
 	}
 	
+	/**
+	 * Renders the Entity based off of the environment data
+	 * 
+	 * @param delta
+	 */
 	public void render(long delta) {
 		if (renderComponent != null) {
 			renderComponent.render(delta);
