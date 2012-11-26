@@ -21,6 +21,7 @@ package com.stonetolb.game;
 import org.lwjgl.input.Keyboard;
 
 import com.stonetolb.engine.Entity;
+import com.stonetolb.engine.component.movement.KeyboardMovementComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.render.engine.TextureLoader;
 import com.stonetolb.render.entities.Actor;
@@ -116,6 +117,7 @@ public class WorldModule implements Module {
 						, new NullDrawable()
 						)
 				);
+		nada.addComponent(new KeyboardMovementComponent("Arrows"));
 		nada.setPosition(new Pair<Float,Float>(300F,300F));
 		
 	}
@@ -161,6 +163,7 @@ public class WorldModule implements Module {
 	public void render(long delta) {
 		vaughn.move(delta);
 		vaughn.render(delta);
+		nada.update(delta);
 		nada.render(delta);
 	}
 }

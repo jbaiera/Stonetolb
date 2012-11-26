@@ -114,7 +114,6 @@ public class Texture {
 				subtex.setHeight(h);
 				subtex.setTextureWidth(texWidth);
 				subtex.setTextureHeight(texHeight);
-				System.out.println(subtex.toString());
 			}
 			else
 			{

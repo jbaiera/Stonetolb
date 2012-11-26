@@ -17,14 +17,42 @@
 
 package com.stonetolb.engine.component.movement;
 
+import org.lwjgl.input.Keyboard;
+
 import com.stonetolb.engine.component.EntityComponent;
 
 public class KeyboardMovementComponent extends EntityComponent {
 
+	public KeyboardMovementComponent(String pId) {
+		id = pId;
+	}
+	
 	@Override
 	public void update(long delta) {
-		// TODO Auto-generated method stub
+		float newXPosition = parent.getPosition().x.floatValue();
+		float newYPosition = parent.getPosition().y.floatValue();
 		
+		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+			parent.setDirection(0);
+			parent.setSpeed(75);
+			newYPosition += (float)((delta * (-75)) / 1000);
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+			parent.setDirection(2);
+			parent.setSpeed(75);
+			newYPosition += (float)((delta * (75)) / 1000);
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+			parent.setDirection(3);
+			parent.setSpeed(75);
+			newXPosition += (float)((delta * (-75)) / 1000);
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+			parent.setDirection(1);
+			parent.setSpeed(75);
+			newXPosition += (float)((delta * (75)) / 1000);
+		} else {
+			parent.setSpeed(0);
+		}
+		
+		parent.getPosition().x = newXPosition;
+		parent.getPosition().y = newYPosition;
 	}
-
 }
