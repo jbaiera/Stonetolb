@@ -19,7 +19,7 @@ package com.stonetolb.engine.component.movement;
 
 import com.stonetolb.engine.component.EntityComponent;
 
-public class TopDownSmoothMovement extends EntityComponent {
+public class KeyboardMovementComponent extends EntityComponent {
 
 	@Override
 	public void update(long delta) {
