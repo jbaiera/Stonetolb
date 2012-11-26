@@ -41,7 +41,6 @@ public class Entity {
 //	protected float xPosition;
 //	protected float yPosition;
 	protected Pair<Float, Float> position;
-	protected int speed;
 	protected float direction;
 	
 	protected RenderComponent renderComponent;
@@ -52,7 +51,6 @@ public class Entity {
 		id = pId;
 		
 		position = new Pair<Float, Float>(0.0f, 0.0f);
-		speed = 0;
 		direction = 0;
 		
 		components = new HashMap<String,EntityComponent>();
@@ -79,20 +77,12 @@ public class Entity {
 		return position;
 	}
 	
-	public int getSpeed() {
-		return speed;
-	}
-	
 	public float getDirection() {
 		return direction;
 	}
 	
 	public void setPosition(Pair<Float, Float> pPosition) {
 		position = pPosition;
-	}
-	
-	public void setSpeed(int pSpeed) {
-		speed = pSpeed;
 	}
 	
 	public void setDirection(float pDirection) {
