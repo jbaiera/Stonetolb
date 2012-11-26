@@ -23,7 +23,7 @@ package com.stonetolb.render.graphics;
  * that implement this interface should keep track of where to draw themselves
  * 
  * @author james.baiera
- *
+ * @deprecated
  */
 public interface Entity {
 	

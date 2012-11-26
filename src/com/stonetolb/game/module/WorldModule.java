@@ -23,13 +23,13 @@ import org.lwjgl.input.Keyboard;
 import com.stonetolb.engine.Entity;
 import com.stonetolb.engine.component.movement.KeyboardMovementComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
-import com.stonetolb.render.engine.TextureLoader;
+import com.stonetolb.graphics.Animation;
+import com.stonetolb.graphics.Animation.AnimationBuilder;
+import com.stonetolb.graphics.NullDrawable;
+import com.stonetolb.graphics.Sprite;
+import com.stonetolb.graphics.Texture;
+import com.stonetolb.graphics.engine.TextureLoader;
 import com.stonetolb.render.entities.Actor;
-import com.stonetolb.render.graphics.Animation;
-import com.stonetolb.render.graphics.Animation.AnimationBuilder;
-import com.stonetolb.render.graphics.NullDrawable;
-import com.stonetolb.render.graphics.Sprite;
-import com.stonetolb.render.graphics.Texture;
 import com.stonetolb.util.Pair;
 
 /**

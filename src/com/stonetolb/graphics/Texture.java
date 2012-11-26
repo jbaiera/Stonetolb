@@ -15,7 +15,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.render.graphics;
+package com.stonetolb.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
 

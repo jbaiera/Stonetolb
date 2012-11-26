@@ -15,14 +15,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.render.graphics;
+package com.stonetolb.graphics;
+
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.io.IOException;
 
-import com.stonetolb.render.engine.TextureLoader;
-
-
-import static org.lwjgl.opengl.GL11.*;
+import com.stonetolb.graphics.engine.TextureLoader;
 
 /**
  * Implementation of sprite that uses an OpenGL quad and a Texture

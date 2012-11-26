@@ -15,7 +15,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.render.graphics;
+package com.stonetolb.graphics;
 
 /**
  * All objects that are capable of being displayed to the screen

@@ -18,17 +18,17 @@
 package com.stonetolb.render.entities;
 
 
-import com.stonetolb.render.graphics.Animation;
-import com.stonetolb.render.graphics.Drawable;
+import com.stonetolb.graphics.Drawable;
+import com.stonetolb.graphics.NullDrawable;
+import com.stonetolb.graphics.StatefulDrawable;
 import com.stonetolb.render.graphics.Entity;
-import com.stonetolb.render.graphics.NullDrawable;
-import com.stonetolb.render.graphics.StatefulDrawable;
 
 /**
  * The BaseEntity is a simple object that stores a single Drawable object, as well as 
  * the location and movement states. 
  *  
  * @author comet
+ * @deprecated
  */
 public class BaseEntity implements Entity{
 	protected float 	xPosition;

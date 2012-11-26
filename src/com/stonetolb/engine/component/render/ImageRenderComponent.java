@@ -18,7 +18,7 @@
 package com.stonetolb.engine.component.render;
 
 import com.stonetolb.engine.Entity;
-import com.stonetolb.render.graphics.Drawable;
+import com.stonetolb.graphics.Drawable;
 
 /**
  * Rendering component that uses a {@link Drawable} item as it's

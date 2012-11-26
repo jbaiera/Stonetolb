@@ -19,9 +19,8 @@ package com.stonetolb.render.entities;
 
 import java.util.HashMap;
 
-import com.stonetolb.render.graphics.Animation;
-import com.stonetolb.render.graphics.Drawable;
-import com.stonetolb.render.graphics.NullDrawable;
+import com.stonetolb.graphics.Drawable;
+import com.stonetolb.graphics.NullDrawable;
 
 /**
  * Actor is an extension of the BaseEntity object that is capable of storing 
@@ -29,7 +28,7 @@ import com.stonetolb.render.graphics.NullDrawable;
  * on the screen by calling the setAction method.
  * 
  * @author james.baiera
- *
+ * @deprecated
  */
 public class Actor extends BaseEntity {
 	public static String EMPTY = "NULL_ACTION";
