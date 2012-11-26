@@ -15,7 +15,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.game;
+package com.stonetolb.game.module;
 
 
 import org.lwjgl.input.Keyboard;
