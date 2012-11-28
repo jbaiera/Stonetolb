@@ -153,7 +153,7 @@ public class Game {
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 
-			glOrtho(0, width, height, 0, 50, -50);
+			glOrtho(0, width, height, 0, height, -height);
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			glViewport(0, 0, width, height);

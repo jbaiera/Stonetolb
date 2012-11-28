@@ -42,31 +42,18 @@ public class Sprite implements Drawable{
 	private Texture	texture;
 
 	/** The width in pixels of this sprite */
-	private int			width;
+	private int	width;
 
 	/** The height in pixels of this sprite */
-	private int			height;
+	private int	height;
 	
 	/** The rendering mode for this drawable */
 	private ImageRenderMode renderMode;
 	
-	/**
-	 * Create a new sprite from a specified image file path.
-	 *
-	 * @param pRef A reference to the image on which this sprite should be based
-	 * @param pRenderMode mode to draw the image on the screen
-	 */
-	public Sprite(String pRef, ImageRenderMode pRenderMode) {
-		try {
-			this.texture = TextureLoader.getInstance().getTexture("sprites/" + pRef);
-			this.width = texture.getImageWidth();
-			this.height = texture.getImageHeight();
-			renderMode = pRenderMode;
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-			System.exit(-1);
-		}
-	}
+	private float zDistance;
+		
+	private static double ANGLE = 20.0;
+	private static double TANGENT = Math.tan(ANGLE);
 	
 	/**
 	 * Create a new sprite from a specified image file path.
@@ -76,6 +63,30 @@ public class Sprite implements Drawable{
 	public Sprite(String pRef) {
 		this(pRef, ImageRenderMode.FLAT);
 	}
+
+	/**
+	 * Create a new sprite from a given texture
+	 * 
+	 * @param pTexture A texture object which becomes the sprite 
+	 */
+	public Sprite(Texture pTexture) {
+		this(pTexture, ImageRenderMode.FLAT);
+	}
+	
+	/**
+	 * Create a new sprite from a specified image file path.
+	 *
+	 * @param pRef A reference to the image on which this sprite should be based
+	 * @param pRenderMode mode to draw the image on the screen
+	 */
+	public Sprite(String pRef, ImageRenderMode pRenderMode) {
+		try {
+			initFields(TextureLoader.getInstance().getTexture("sprites/" + pRef), pRenderMode);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			System.exit(-1);
+		}
+	}
 	
 	/**
 	 * Create a new sprite from a given texture
@@ -84,19 +95,16 @@ public class Sprite implements Drawable{
 	 * @param pRenderMode Mode to draw the image on the screen in 
 	 */
 	public Sprite(Texture pTexture, ImageRenderMode pRenderMode) {
-		this.texture = pTexture;
-		this.height = pTexture.getImageHeight();
-		this.width = pTexture.getImageWidth();
-		renderMode = pRenderMode;
+		initFields(pTexture, pRenderMode);
 	}
 	
-	/**
-	 * Create a new sprite from a given texture
-	 * 
-	 * @param pTexture A texture object which becomes the sprite 
-	 */
-	public Sprite(Texture pTexture) {
-		this(pTexture, ImageRenderMode.FLAT);
+	private void initFields(Texture pTexture, ImageRenderMode pRenderMode) {
+		texture = pTexture;
+		height = pTexture.getImageHeight();
+		width = pTexture.getImageWidth();
+		renderMode = pRenderMode;
+		zDistance = (float)( ( (double)height ) * -TANGENT * renderMode.getModeMultiplier());
+		System.out.println(Double.toString(height * TANGENT));
 	}
 
 	/**
@@ -141,7 +149,7 @@ public class Sprite implements Drawable{
 		glBegin(GL_QUADS);
 		{
 			glTexCoord2f(texture.getXOrigin(), texture.getYOrigin());
-			glVertex3f(0, 0, -2);
+			glVertex3f(0, 0, zDistance);
 
 			glTexCoord2f(texture.getXOrigin(), texture.getHeight());
 			glVertex3f(0, height, 0);
@@ -150,7 +158,7 @@ public class Sprite implements Drawable{
 			glVertex3f(width, height, 0);
 
 			glTexCoord2f(texture.getWidth(), texture.getYOrigin());
-			glVertex3f(width, 0, -2);
+			glVertex3f(width, 0, zDistance);
 		}
 		glEnd();
 

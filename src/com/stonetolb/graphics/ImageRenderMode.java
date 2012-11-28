@@ -24,7 +24,7 @@ package com.stonetolb.graphics;
  */
 public enum ImageRenderMode {
 	FLAT(0),
-	PROPPED(1);
+	STANDING(1);
 	
 	private int multiplier;
 	
