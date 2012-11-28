@@ -17,6 +17,8 @@
 
 package com.stonetolb.graphics;
 
+import java.io.IOException;
+
 /**
  * Null object that implements the {@link Drawable} interface.
  * Used to represent non existant resources.
@@ -28,7 +30,14 @@ public class NullDrawable implements Drawable {
 	private Drawable img;
 	
 	public NullDrawable() {
-		img = new Sprite("null.gif");
+		try
+		{
+			img = new Sprite("null.gif");
+		}
+		catch (IOException ioe) {
+			ioe.printStackTrace();
+			System.exit(-1);
+		}
 	}
 
 	@Override

@@ -60,7 +60,7 @@ public class Sprite implements Drawable{
 	 *
 	 * @param pRef A reference to the image on which this sprite should be based
 	 */
-	public Sprite(String pRef) {
+	public Sprite(String pRef) throws IOException{
 		this(pRef, ImageRenderMode.FLAT);
 	}
 
@@ -79,13 +79,8 @@ public class Sprite implements Drawable{
 	 * @param pRef A reference to the image on which this sprite should be based
 	 * @param pRenderMode mode to draw the image on the screen
 	 */
-	public Sprite(String pRef, ImageRenderMode pRenderMode) {
-		try {
-			initFields(TextureLoader.getInstance().getTexture("sprites/" + pRef), pRenderMode);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-			System.exit(-1);
-		}
+	public Sprite(String pRef, ImageRenderMode pRenderMode) throws IOException{
+		this(TextureLoader.getInstance().getTexture("sprites/" + pRef), pRenderMode);
 	}
 	
 	/**
@@ -95,18 +90,13 @@ public class Sprite implements Drawable{
 	 * @param pRenderMode Mode to draw the image on the screen in 
 	 */
 	public Sprite(Texture pTexture, ImageRenderMode pRenderMode) {
-		initFields(pTexture, pRenderMode);
-	}
-	
-	private void initFields(Texture pTexture, ImageRenderMode pRenderMode) {
 		texture = pTexture;
 		height = pTexture.getImageHeight();
 		width = pTexture.getImageWidth();
 		renderMode = pRenderMode;
 		zDistance = (float)( ( (double)height ) * -TANGENT * renderMode.getModeMultiplier());
-		System.out.println(Double.toString(height * TANGENT));
 	}
-
+	
 	/**
 	 * Get the width of this sprite in pixels
 	 *
