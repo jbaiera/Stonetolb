@@ -24,7 +24,6 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import java.io.IOException;
@@ -38,7 +37,7 @@ import com.stonetolb.graphics.engine.TextureLoader;
  * @author comet
  */
 public class Sprite implements Drawable{
-
+	
 	/** The texture that stores the image for this sprite */
 	private Texture	texture;
 
@@ -47,17 +46,22 @@ public class Sprite implements Drawable{
 
 	/** The height in pixels of this sprite */
 	private int			height;
-
+	
+	/** The rendering mode for this drawable */
+	private ImageRenderMode renderMode;
+	
 	/**
 	 * Create a new sprite from a specified image file path.
 	 *
-	 * @param ref A reference to the image on which this sprite should be based
+	 * @param pRef A reference to the image on which this sprite should be based
+	 * @param pRenderMode mode to draw the image on the screen
 	 */
-	public Sprite(String ref) {
+	public Sprite(String pRef, ImageRenderMode pRenderMode) {
 		try {
-			this.texture = TextureLoader.getInstance().getTexture("sprites/" + ref);
+			this.texture = TextureLoader.getInstance().getTexture("sprites/" + pRef);
 			this.width = texture.getImageWidth();
 			this.height = texture.getImageHeight();
+			renderMode = pRenderMode;
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 			System.exit(-1);
@@ -65,14 +69,34 @@ public class Sprite implements Drawable{
 	}
 	
 	/**
+	 * Create a new sprite from a specified image file path.
+	 *
+	 * @param pRef A reference to the image on which this sprite should be based
+	 */
+	public Sprite(String pRef) {
+		this(pRef, ImageRenderMode.FLAT);
+	}
+	
+	/**
 	 * Create a new sprite from a given texture
 	 * 
-	 * @param tex A texture object which becomes the sprite 
+	 * @param pTexture A texture object which becomes the sprite
+	 * @param pRenderMode Mode to draw the image on the screen in 
 	 */
-	public Sprite(Texture tex) {
-		this.texture = tex;
-		this.height = tex.getImageHeight();
-		this.width = tex.getImageWidth();
+	public Sprite(Texture pTexture, ImageRenderMode pRenderMode) {
+		this.texture = pTexture;
+		this.height = pTexture.getImageHeight();
+		this.width = pTexture.getImageWidth();
+		renderMode = pRenderMode;
+	}
+	
+	/**
+	 * Create a new sprite from a given texture
+	 * 
+	 * @param pTexture A texture object which becomes the sprite 
+	 */
+	public Sprite(Texture pTexture) {
+		this(pTexture, ImageRenderMode.FLAT);
 	}
 
 	/**
