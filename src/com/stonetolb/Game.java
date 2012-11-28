@@ -40,6 +40,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 import com.stonetolb.game.module.Module;
 import com.stonetolb.game.module.WorldModule;
@@ -140,14 +141,19 @@ public class Game {
 			glEnable(GL_TEXTURE_2D);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-			// disable the OpenGL depth test since we're rendering 2D graphics
-			glDisable(GL_DEPTH_TEST);
-
+			glEnable(GL_DEPTH_TEST);
+			
+			//Testing some states
+			GL11.glClearDepth(1.0);
+			GL11.glDepthFunc(GL11.GL_LEQUAL);
+			GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
+			glEnable(GL11.GL_ALPHA_TEST);
+			glEnable(GL11.GL_CULL_FACE);
+			
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 
-			glOrtho(0, width, height, 0, 1, -1);
+			glOrtho(0, width, height, 0, 50, -50);
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			glViewport(0, 0, width, height);

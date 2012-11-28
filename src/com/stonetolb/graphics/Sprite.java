@@ -25,6 +25,7 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import java.io.IOException;
 
@@ -116,16 +117,16 @@ public class Sprite implements Drawable{
 		glBegin(GL_QUADS);
 		{
 			glTexCoord2f(texture.getXOrigin(), texture.getYOrigin());
-			glVertex2f(0, 0);
+			glVertex3f(0, 0, -2);
 
 			glTexCoord2f(texture.getXOrigin(), texture.getHeight());
-			glVertex2f(0, height);
+			glVertex3f(0, height, 0);
 
 			glTexCoord2f(texture.getWidth(), texture.getHeight());
-			glVertex2f(width, height);
+			glVertex3f(width, height, 0);
 
 			glTexCoord2f(texture.getWidth(), texture.getYOrigin());
-			glVertex2f(width, 0);
+			glVertex3f(width, 0, -2);
 		}
 		glEnd();
 
