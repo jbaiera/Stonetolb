@@ -42,6 +42,7 @@ public class Entity {
 //	protected float yPosition;
 	protected Pair<Float, Float> position;
 	protected float direction;
+	protected int speed;
 	
 	protected RenderComponent renderComponent;
 	
@@ -81,12 +82,20 @@ public class Entity {
 		return direction;
 	}
 	
+	public int getSpeed() {
+		return speed;
+	}
+	
 	public void setPosition(Pair<Float, Float> pPosition) {
 		position = pPosition;
 	}
 	
 	public void setDirection(float pDirection) {
 		direction = pDirection;
+	}
+	
+	public void setSpeed(int pSpeed) {
+		speed = pSpeed;
 	}
 	
 	/**

@@ -15,38 +15,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.engine.component.movement;
+package com.stonetolb.engine.component.control;
 
 import org.lwjgl.input.Keyboard;
 
 import com.stonetolb.engine.component.EntityComponent;
 
-public class KeyboardMovementComponent extends EntityComponent {
+public class KeyboardControlComponent extends EntityComponent {
 
-	public KeyboardMovementComponent(String pId) {
+	private static int SPEED = 75;
+	private static int STOP = 0;
+	
+	public KeyboardControlComponent(String pId) {
 		id = pId;
 	}
 	
 	@Override
 	public void update(long delta) {
-		float newXPosition = parent.getPosition().x.floatValue();
-		float newYPosition = parent.getPosition().y.floatValue();
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			parent.setDirection(0);
-			newYPosition += (float)((delta * (-75)) / 1000);
+			parent.setSpeed(SPEED);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 			parent.setDirection(2);
-			newYPosition += (float)((delta * (75)) / 1000);
+			parent.setSpeed(SPEED);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 			parent.setDirection(3);
-			newXPosition += (float)((delta * (-75)) / 1000);
+			parent.setSpeed(SPEED);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 			parent.setDirection(1);
-			newXPosition += (float)((delta * (75)) / 1000);
+			parent.setSpeed(SPEED);
+		} else {
+			parent.setSpeed(STOP);
 		}
-		
-		parent.getPosition().x = newXPosition;
-		parent.getPosition().y = newYPosition;
 	}
 }

@@ -21,12 +21,12 @@ package com.stonetolb.game.module;
 import org.lwjgl.input.Keyboard;
 
 import com.stonetolb.engine.Entity;
-import com.stonetolb.engine.component.movement.KeyboardMovementComponent;
+import com.stonetolb.engine.component.control.KeyboardControlComponent;
+import com.stonetolb.engine.component.movement.OverworldMovementComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
 import com.stonetolb.graphics.ImageRenderMode;
-import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.Sprite;
 import com.stonetolb.graphics.Texture;
 import com.stonetolb.graphics.engine.TextureLoader;
@@ -118,7 +118,8 @@ public class WorldModule implements Module {
 						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 						)
 				);
-		nada.addComponent(new KeyboardMovementComponent("Arrows"));
+		nada.addComponent(new KeyboardControlComponent("Arrows"));
+		nada.addComponent(new OverworldMovementComponent("Basic"));
 		nada.setPosition(new Pair<Float,Float>(300F,300F));
 		
 	}
