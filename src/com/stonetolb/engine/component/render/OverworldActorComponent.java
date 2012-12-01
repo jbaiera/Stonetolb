@@ -33,7 +33,7 @@ public class OverworldActorComponent extends RenderComponent {
 
 	public OverworldActorComponent(String pId){
 		super(pId);
-		actionMapping = new HashMap<MovementContext, RenderComponent>();
+		actionMapping = new HashMap<MovementContext, ImageRenderComponent>();
 		noOpAction = new ImageRenderComponent("Drawing Missing", new NullDrawable());
 		currentAction = noOpAction;
 	}
@@ -87,11 +87,11 @@ public class OverworldActorComponent extends RenderComponent {
 		}
 	}
 	
-	private Map<MovementContext,RenderComponent> actionMapping;
-	private RenderComponent currentAction;
-	private RenderComponent noOpAction;
+	private Map<MovementContext,ImageRenderComponent> actionMapping;
+	private ImageRenderComponent currentAction;
+	private ImageRenderComponent noOpAction;
 	
-	public void addAction(MovementContext pMovement, RenderComponent pComponent)
+	public void addAction(MovementContext pMovement, ImageRenderComponent pComponent)
 	{
 		actionMapping.put(pMovement, pComponent);
 	}
@@ -104,12 +104,20 @@ public class OverworldActorComponent extends RenderComponent {
 	@Override
 	public void update(long delta) {
 		MovementContext context = new MovementContext(parent.getDirection(), (parent.getSpeed() != 0 ? true : false));
-		currentAction = actionMapping.get(context);
-		if(currentAction == null)
+		ImageRenderComponent newAction;
+		
+		newAction = actionMapping.get(context);
+		if(newAction == null)
 		{
-			currentAction = noOpAction;
+			newAction = noOpAction;
 		}
-		currentAction.setOwner(parent);
+		
+		if(newAction != currentAction) {
+			currentAction.dispose();
+			newAction.ready();
+			currentAction = newAction;
+			currentAction.setOwner(parent);
+		}
 	}
 
 }
