@@ -21,7 +21,7 @@ import com.stonetolb.engine.component.EntityComponent;
 
 public class OverworldMovementComponent extends EntityComponent {
 	
-	private enum WorldDirection {
+	public enum WorldDirection {
 		UP(0,0,-1),
 		RIGHT(1,1,0),
 		DOWN(2,0,1),

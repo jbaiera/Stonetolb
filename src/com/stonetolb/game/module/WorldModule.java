@@ -24,6 +24,7 @@ import com.stonetolb.engine.Entity;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
+import com.stonetolb.engine.component.render.OverworldActorComponent;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
 import com.stonetolb.graphics.ImageRenderMode;
@@ -62,6 +63,8 @@ public class WorldModule implements Module {
 		vaughn = new Actor(200,100);
 		int walkInterval = 800;
 		
+		OverworldActorComponent nadaRender = new OverworldActorComponent("TestComponent");
+		
 		// Gotta make a way to procedurally generate this from a file input...
 		AnimationBuilder builder = Animation.builder();
 		
@@ -74,6 +77,22 @@ public class WorldModule implements Module {
 					.build()
 				);
 		
+		nadaRender.addAction(
+				new OverworldActorComponent.MovementContext(
+						OverworldMovementComponent.WorldDirection.DOWN.getDirection()
+						, true
+					)
+				, new ImageRenderComponent(
+						"toward"
+						, builder.setInterval(walkInterval)
+							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.build()
+					)
+			);
+		
 		vaughn.addAction("left"
 				, builder.setInterval(walkInterval)
 					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
@@ -82,6 +101,21 @@ public class WorldModule implements Module {
 					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
 					.build()
 				);
+		nadaRender.addAction(
+				new OverworldActorComponent.MovementContext(
+						OverworldMovementComponent.WorldDirection.LEFT.getDirection()
+						, true
+					)
+				, new ImageRenderComponent(
+						"left"
+						, builder.setInterval(walkInterval)
+							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.build()
+					)
+			);
 		
 		vaughn.addAction("right"
 				, builder.setInterval(walkInterval)
@@ -91,6 +125,21 @@ public class WorldModule implements Module {
 					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
 					.build()
 				);
+		nadaRender.addAction(
+				new OverworldActorComponent.MovementContext(
+						OverworldMovementComponent.WorldDirection.RIGHT.getDirection()
+						, true
+					)
+				, new ImageRenderComponent(
+						"left"
+						, builder.setInterval(walkInterval)
+							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.build()
+					)
+			);
 		
 		vaughn.addAction("away"
 				, builder.setInterval(walkInterval)
@@ -100,11 +149,67 @@ public class WorldModule implements Module {
 					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
 					.build()
 				);
+		nadaRender.addAction(
+				new OverworldActorComponent.MovementContext(
+						OverworldMovementComponent.WorldDirection.UP.getDirection()
+						, true
+					)
+				, new ImageRenderComponent(
+						"away"
+						, builder.setInterval(walkInterval)
+							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
+							.build()
+					)
+			);
 		
 		vaughn.addAction("standingtoward", new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
 		vaughn.addAction("standingleft", new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
 		vaughn.addAction("standingright", new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
 		vaughn.addAction("standingaway", new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
+		
+		nadaRender.addAction(
+				new OverworldActorComponent.MovementContext(
+						OverworldMovementComponent.WorldDirection.DOWN.getDirection()
+						, false
+					)
+				, new ImageRenderComponent(
+						"standingtoward"
+						, new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
+					)
+			);
+		nadaRender.addAction(
+				new OverworldActorComponent.MovementContext(
+						OverworldMovementComponent.WorldDirection.LEFT.getDirection()
+						, false
+					)
+				, new ImageRenderComponent(
+						"standingleft"
+						, new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
+					)
+			);
+		nadaRender.addAction(
+				new OverworldActorComponent.MovementContext(
+						OverworldMovementComponent.WorldDirection.RIGHT.getDirection()
+						, false
+					)
+				, new ImageRenderComponent(
+						"standingright"
+						, new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
+					)
+			);
+		nadaRender.addAction(
+				new OverworldActorComponent.MovementContext(
+						OverworldMovementComponent.WorldDirection.UP.getDirection()
+						, false
+					)
+				, new ImageRenderComponent(
+						"standingaway"
+						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
+					)
+			);
 		
 		vaughn.setAction("standingtoward");
 		vaughn.setVerticalMovement(0);
@@ -112,14 +217,15 @@ public class WorldModule implements Module {
 		
 		//Create an entity with new Entity Engine
 		nada = new Entity("nada");
-		nada.addComponent(
-				new ImageRenderComponent(
-						  "NullImage"
-						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
-						)
-				);
+//		nada.addComponent(
+//				new ImageRenderComponent(
+//						  "NullImage"
+//						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
+//						)
+//				);
 		nada.addComponent(new KeyboardControlComponent("Arrows"));
 		nada.addComponent(new OverworldMovementComponent("Basic"));
+		nada.addComponent(nadaRender);
 		nada.setPosition(new Pair<Float,Float>(300F,300F));
 		
 	}

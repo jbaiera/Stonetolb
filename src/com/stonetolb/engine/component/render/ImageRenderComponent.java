@@ -19,6 +19,7 @@ package com.stonetolb.engine.component.render;
 
 import com.stonetolb.engine.Entity;
 import com.stonetolb.graphics.Drawable;
+import com.stonetolb.graphics.StatefulDrawable;
 
 /**
  * Rendering component that uses a {@link Drawable} item as it's
@@ -36,6 +37,9 @@ public class ImageRenderComponent extends RenderComponent {
 	public ImageRenderComponent(String pId, Drawable pImage) {
 		super(pId);
 		image = pImage;
+		if (image instanceof StatefulDrawable) {
+			((StatefulDrawable) image).ready();
+		}
 	}
 
 	@Override
