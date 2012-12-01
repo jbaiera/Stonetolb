@@ -19,6 +19,12 @@ package com.stonetolb.engine.component;
 
 import com.stonetolb.engine.Entity;
 
+/**
+ * Base class for all entity component objects.
+ * 
+ * @author james.baiera
+ *
+ */
 public abstract class EntityComponent {
 
 	protected String id;

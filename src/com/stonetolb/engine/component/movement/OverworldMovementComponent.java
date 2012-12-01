@@ -19,6 +19,13 @@ package com.stonetolb.engine.component.movement;
 
 import com.stonetolb.engine.component.EntityComponent;
 
+/**
+ * OverworldMovementComponent takes the Entity's state and uses it to
+ * extrapolate where to set the entity's new position in the world
+ * 
+ * @author james.baiera
+ *
+ */
 public class OverworldMovementComponent extends EntityComponent {
 	
 	public enum WorldDirection {

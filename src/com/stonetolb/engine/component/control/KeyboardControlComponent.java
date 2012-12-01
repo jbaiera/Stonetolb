@@ -21,6 +21,13 @@ import org.lwjgl.input.Keyboard;
 
 import com.stonetolb.engine.component.EntityComponent;
 
+/**
+ * Component that reads Keyboard data and updates the Entity's 
+ * state accordingly. 
+ * 
+ * @author james.baiera
+ *
+ */
 public class KeyboardControlComponent extends EntityComponent {
 
 	private static int SPEED = 75;
