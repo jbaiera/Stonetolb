@@ -25,6 +25,8 @@ import com.stonetolb.engine.component.control.KeyboardControlComponent;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.engine.component.render.OverworldActorComponent;
+import com.stonetolb.engine.profiles.WorldProfile;
+import com.stonetolb.engine.profiles.WorldProfile.MovementContext;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
 import com.stonetolb.graphics.ImageRenderMode;
@@ -78,9 +80,9 @@ public class WorldModule implements Module {
 				);
 		
 		nadaRender.addAction(
-				new OverworldActorComponent.MovementContext(
-						  OverworldMovementComponent.WorldDirection.DOWN.getDirection()
-						, KeyboardControlComponent.WALK
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.DOWN.getDirection()
+						, WorldProfile.WALK
 					)
 				, new ImageRenderComponent(
 						  "toward"
@@ -102,9 +104,9 @@ public class WorldModule implements Module {
 					.build()
 				);
 		nadaRender.addAction(
-				new OverworldActorComponent.MovementContext(
-						  OverworldMovementComponent.WorldDirection.LEFT.getDirection()
-						, KeyboardControlComponent.WALK
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.LEFT.getDirection()
+						, WorldProfile.WALK
 					)
 				, new ImageRenderComponent(
 						  "left"
@@ -126,9 +128,9 @@ public class WorldModule implements Module {
 					.build()
 				);
 		nadaRender.addAction(
-				new OverworldActorComponent.MovementContext(
-						  OverworldMovementComponent.WorldDirection.RIGHT.getDirection()
-						, KeyboardControlComponent.WALK
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.RIGHT.getDirection()
+						, WorldProfile.WALK
 					)
 				, new ImageRenderComponent(
 						  "left"
@@ -150,9 +152,9 @@ public class WorldModule implements Module {
 					.build()
 				);
 		nadaRender.addAction(
-				new OverworldActorComponent.MovementContext(
-						  OverworldMovementComponent.WorldDirection.UP.getDirection()
-						, KeyboardControlComponent.WALK
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.UP.getDirection()
+						, WorldProfile.WALK
 					)
 				, new ImageRenderComponent(
 						  "away"
@@ -171,9 +173,9 @@ public class WorldModule implements Module {
 		vaughn.addAction("standingaway", new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
 		
 		nadaRender.addAction(
-				new OverworldActorComponent.MovementContext(
-						  OverworldMovementComponent.WorldDirection.DOWN.getDirection()
-						, KeyboardControlComponent.STOP
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.DOWN.getDirection()
+						, WorldProfile.STOP
 					)
 				, new ImageRenderComponent(
 						  "standingtoward"
@@ -181,9 +183,9 @@ public class WorldModule implements Module {
 					)
 			);
 		nadaRender.addAction(
-				new OverworldActorComponent.MovementContext(
-						  OverworldMovementComponent.WorldDirection.LEFT.getDirection()
-						, KeyboardControlComponent.STOP
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.LEFT.getDirection()
+						, WorldProfile.STOP
 					)
 				, new ImageRenderComponent(
 						  "standingleft"
@@ -191,9 +193,9 @@ public class WorldModule implements Module {
 					)
 			);
 		nadaRender.addAction(
-				new OverworldActorComponent.MovementContext(
-						  OverworldMovementComponent.WorldDirection.RIGHT.getDirection()
-						, KeyboardControlComponent.STOP
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.RIGHT.getDirection()
+						, WorldProfile.STOP
 					)
 				, new ImageRenderComponent(
 						  "standingright"
@@ -201,9 +203,9 @@ public class WorldModule implements Module {
 					)
 			);
 		nadaRender.addAction(
-				new OverworldActorComponent.MovementContext(
-						  OverworldMovementComponent.WorldDirection.UP.getDirection()
-						, KeyboardControlComponent.STOP
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.UP.getDirection()
+						, WorldProfile.STOP
 					)
 				, new ImageRenderComponent(
 						  "standingaway"

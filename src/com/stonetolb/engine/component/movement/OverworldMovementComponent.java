@@ -18,6 +18,7 @@
 package com.stonetolb.engine.component.movement;
 
 import com.stonetolb.engine.component.EntityComponent;
+import com.stonetolb.engine.profiles.WorldProfile.WorldDirection;
 
 /**
  * OverworldMovementComponent takes the Entity's state and uses it to
@@ -27,36 +28,6 @@ import com.stonetolb.engine.component.EntityComponent;
  *
  */
 public class OverworldMovementComponent extends EntityComponent {
-	
-	public enum WorldDirection {
-		UP(0,0,-1),
-		RIGHT(1,1,0),
-		DOWN(2,0,1),
-		LEFT(3,-1,0),
-		STILL(-1, 0, 0);
-		
-		private WorldDirection(float pDirection, int pXFactor, int pYFactor) {
-			direction = pDirection;
-			xFactor = pXFactor;
-			yFactor = pYFactor;
-		}
-		
-		private int xFactor;
-		private int yFactor;
-		private float direction;
-		
-		public float getDirection() {
-			return direction;
-		}
-		
-		public int getXFactor() {
-			return xFactor;
-		}
-		
-		public int getYFactor() {
-			return yFactor;
-		}
-	}
 	
 	public OverworldMovementComponent(String pId) {
 		id = pId;

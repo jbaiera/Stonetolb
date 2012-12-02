@@ -20,6 +20,7 @@ package com.stonetolb.engine.component.render;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.stonetolb.engine.profiles.WorldProfile.MovementContext;
 import com.stonetolb.graphics.NullDrawable;
 
 /**
@@ -36,55 +37,6 @@ public class OverworldActorComponent extends RenderComponent {
 		actionMapping = new HashMap<MovementContext, ImageRenderComponent>();
 		noOpAction = new ImageRenderComponent("Drawing Missing", new NullDrawable());
 		currentAction = noOpAction;
-	}
-	
-	/**
-	 * Used to key animations for movements based on the entity's state
-	 * 
-	 * @author james.baiera
-	 *
-	 */
-	public static class MovementContext
-	{
-		private float direction;
-		private int speed;
-		
-		public MovementContext(float pDirection, int pSpeed)
-		{
-			direction = pDirection;
-			speed = pSpeed;
-		}
-		
-		@Override
-		public int hashCode()
-		{
-			int prime = 31;
-			int result = 17;
-			result = prime * result + Float.floatToIntBits(direction);
-			result = prime * result + speed;
-			return result;
-		}
-		
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			else if (obj == null) 
-			{
-				return false;
-			}
-			else if(this.getClass().isInstance(obj))
-			{
-				MovementContext other = (MovementContext) obj;
-				return direction == other.direction
-						&& speed == other.speed;
-			}
-			else 
-			{
-				return false;
-			}
-		}
 	}
 	
 	private Map<MovementContext,ImageRenderComponent> actionMapping;

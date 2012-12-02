@@ -20,6 +20,7 @@ package com.stonetolb.engine.component.control;
 import org.lwjgl.input.Keyboard;
 
 import com.stonetolb.engine.component.EntityComponent;
+import com.stonetolb.engine.profiles.WorldProfile;
 
 /**
  * Component that reads Keyboard data and updates the Entity's 
@@ -30,10 +31,7 @@ import com.stonetolb.engine.component.EntityComponent;
  */
 public class KeyboardControlComponent extends EntityComponent {
 
-	public static int RUN = 150;
-	public static int WALK = 75;
-	public static int STOP = 0;
-	
+
 	public KeyboardControlComponent(String pId) {
 		id = pId;
 	}
@@ -43,27 +41,27 @@ public class KeyboardControlComponent extends EntityComponent {
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			parent.setDirection(0);
-			parent.setSpeed(WALK);
+			parent.setSpeed(WorldProfile.WALK);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 			parent.setDirection(2);
-			parent.setSpeed(WALK);
+			parent.setSpeed(WorldProfile.WALK);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 			parent.setDirection(3);
-			parent.setSpeed(WALK);
+			parent.setSpeed(WorldProfile.WALK);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 			parent.setDirection(1);
-			parent.setSpeed(WALK);
+			parent.setSpeed(WorldProfile.WALK);
 		} else {
-			parent.setSpeed(STOP);
+			parent.setSpeed(WorldProfile.STOP);
 		}
 		
-		if(parent.getSpeed() != STOP)
+		if(parent.getSpeed() != WorldProfile.STOP)
 		{
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 			{
-				parent.setSpeed(RUN);
+				parent.setSpeed(WorldProfile.RUN);
 			} else {
-				parent.setSpeed(WALK);
+				parent.setSpeed(WorldProfile.WALK);
 			}
 		}
 	}
