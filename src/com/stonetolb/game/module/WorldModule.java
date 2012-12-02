@@ -23,10 +23,10 @@ import org.lwjgl.input.Keyboard;
 import com.stonetolb.engine.Entity;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
+import com.stonetolb.engine.component.render.AnimationRenderComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.engine.component.render.OverworldActorComponent;
 import com.stonetolb.engine.profiles.WorldProfile;
-import com.stonetolb.engine.profiles.WorldProfile.MovementContext;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
 import com.stonetolb.graphics.ImageRenderMode;
@@ -84,7 +84,7 @@ public class WorldModule implements Module {
 						  WorldProfile.WorldDirection.DOWN.getDirection()
 						, WorldProfile.Speed.WALK.getSpeed()
 					)
-				, new ImageRenderComponent(
+				, new AnimationRenderComponent(
 						  "toward"
 						, builder.setInterval(walkInterval)
 							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
@@ -108,7 +108,7 @@ public class WorldModule implements Module {
 						  WorldProfile.WorldDirection.LEFT.getDirection()
 						, WorldProfile.Speed.WALK.getSpeed()
 					)
-				, new ImageRenderComponent(
+				, new AnimationRenderComponent(
 						  "left"
 						, builder.setInterval(walkInterval)
 							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
@@ -132,7 +132,7 @@ public class WorldModule implements Module {
 						  WorldProfile.WorldDirection.RIGHT.getDirection()
 						, WorldProfile.Speed.WALK.getSpeed()
 					)
-				, new ImageRenderComponent(
+				, new AnimationRenderComponent(
 						  "left"
 						, builder.setInterval(walkInterval)
 							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
@@ -156,7 +156,7 @@ public class WorldModule implements Module {
 						  WorldProfile.WorldDirection.UP.getDirection()
 						, WorldProfile.Speed.WALK.getSpeed()
 					)
-				, new ImageRenderComponent(
+				, new AnimationRenderComponent(
 						  "away"
 						, builder.setInterval(walkInterval)
 							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))

@@ -34,16 +34,16 @@ public class OverworldActorComponent extends RenderComponent {
 
 	public OverworldActorComponent(String pId){
 		super(pId);
-		actionMapping = new HashMap<MovementContext, ImageRenderComponent>();
+		actionMapping = new HashMap<MovementContext, RenderComponent>();
 		noOpAction = new ImageRenderComponent("Drawing Missing", new NullDrawable());
 		currentAction = noOpAction;
 	}
 	
-	private Map<MovementContext,ImageRenderComponent> actionMapping;
-	private ImageRenderComponent currentAction;
-	private ImageRenderComponent noOpAction;
+	private Map<MovementContext,RenderComponent> actionMapping;
+	private RenderComponent currentAction;
+	private RenderComponent noOpAction;
 	
-	public void addAction(MovementContext pMovement, ImageRenderComponent pComponent)
+	public void addAction(MovementContext pMovement, RenderComponent pComponent)
 	{
 		actionMapping.put(pMovement, pComponent);
 	}
@@ -56,17 +56,15 @@ public class OverworldActorComponent extends RenderComponent {
 	@Override
 	public void update(long delta) {
 		MovementContext context = new MovementContext(parent.getDirection(), parent.getSpeed());
-		ImageRenderComponent newAction;
+		RenderComponent newAction = actionMapping.get(context);
 		
-		newAction = actionMapping.get(context);
 		if(newAction == null)
 		{
 			newAction = noOpAction;
 		}
 		
-		if(newAction != currentAction) {
-			currentAction.dispose();
-			newAction.ready();
+		if (currentAction != newAction)
+		{
 			currentAction = newAction;
 			currentAction.setOwner(parent);
 		}
