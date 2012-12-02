@@ -82,7 +82,7 @@ public class WorldModule implements Module {
 		nadaRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.DOWN.getDirection()
-						, WorldProfile.WALK
+						, WorldProfile.Speed.WALK.getSpeed()
 					)
 				, new ImageRenderComponent(
 						  "toward"
@@ -106,7 +106,7 @@ public class WorldModule implements Module {
 		nadaRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.LEFT.getDirection()
-						, WorldProfile.WALK
+						, WorldProfile.Speed.WALK.getSpeed()
 					)
 				, new ImageRenderComponent(
 						  "left"
@@ -130,7 +130,7 @@ public class WorldModule implements Module {
 		nadaRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.RIGHT.getDirection()
-						, WorldProfile.WALK
+						, WorldProfile.Speed.WALK.getSpeed()
 					)
 				, new ImageRenderComponent(
 						  "left"
@@ -154,7 +154,7 @@ public class WorldModule implements Module {
 		nadaRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.UP.getDirection()
-						, WorldProfile.WALK
+						, WorldProfile.Speed.WALK.getSpeed()
 					)
 				, new ImageRenderComponent(
 						  "away"
@@ -175,7 +175,7 @@ public class WorldModule implements Module {
 		nadaRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.DOWN.getDirection()
-						, WorldProfile.STOP
+						, WorldProfile.Speed.STOP.getSpeed()
 					)
 				, new ImageRenderComponent(
 						  "standingtoward"
@@ -185,7 +185,7 @@ public class WorldModule implements Module {
 		nadaRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.LEFT.getDirection()
-						, WorldProfile.STOP
+						, WorldProfile.Speed.STOP.getSpeed()
 					)
 				, new ImageRenderComponent(
 						  "standingleft"
@@ -195,7 +195,7 @@ public class WorldModule implements Module {
 		nadaRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.RIGHT.getDirection()
-						, WorldProfile.STOP
+						, WorldProfile.Speed.STOP.getSpeed()
 					)
 				, new ImageRenderComponent(
 						  "standingright"
@@ -205,7 +205,7 @@ public class WorldModule implements Module {
 		nadaRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.UP.getDirection()
-						, WorldProfile.STOP
+						, WorldProfile.Speed.STOP.getSpeed()
 					)
 				, new ImageRenderComponent(
 						  "standingaway"

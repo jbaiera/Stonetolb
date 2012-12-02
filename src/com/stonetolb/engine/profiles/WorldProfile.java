@@ -2,10 +2,22 @@ package com.stonetolb.engine.profiles;
 
 
 public class WorldProfile {
-
-	public static int RUN = 150;
-	public static int WALK = 75;
-	public static int STOP = 0;
+	
+	public enum Speed {
+		STOP(0),
+		WALK(75),
+		RUN(150);
+		
+		private int speed;
+		
+		private Speed(int pSpeed) {
+			speed = pSpeed;
+		}
+		
+		public int getSpeed() {
+			return speed;
+		}
+	}
 	
 	/**
 	 * Used to key animations for movements based on the entity's state
