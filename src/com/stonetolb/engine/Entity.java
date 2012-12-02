@@ -38,8 +38,6 @@ import com.stonetolb.util.Pair;
 public class Entity {
 	private String id;
 	
-//	protected float xPosition;
-//	protected float yPosition;
 	protected Pair<Float, Float> position;
 	protected float direction;
 	protected int speed;

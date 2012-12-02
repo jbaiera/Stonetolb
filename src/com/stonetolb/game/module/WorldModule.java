@@ -79,11 +79,11 @@ public class WorldModule implements Module {
 		
 		nadaRender.addAction(
 				new OverworldActorComponent.MovementContext(
-						OverworldMovementComponent.WorldDirection.DOWN.getDirection()
-						, true
+						  OverworldMovementComponent.WorldDirection.DOWN.getDirection()
+						, KeyboardControlComponent.WALK
 					)
 				, new ImageRenderComponent(
-						"toward"
+						  "toward"
 						, builder.setInterval(walkInterval)
 							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
 							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
@@ -103,11 +103,11 @@ public class WorldModule implements Module {
 				);
 		nadaRender.addAction(
 				new OverworldActorComponent.MovementContext(
-						OverworldMovementComponent.WorldDirection.LEFT.getDirection()
-						, true
+						  OverworldMovementComponent.WorldDirection.LEFT.getDirection()
+						, KeyboardControlComponent.WALK
 					)
 				, new ImageRenderComponent(
-						"left"
+						  "left"
 						, builder.setInterval(walkInterval)
 							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
 							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
@@ -127,11 +127,11 @@ public class WorldModule implements Module {
 				);
 		nadaRender.addAction(
 				new OverworldActorComponent.MovementContext(
-						OverworldMovementComponent.WorldDirection.RIGHT.getDirection()
-						, true
+						  OverworldMovementComponent.WorldDirection.RIGHT.getDirection()
+						, KeyboardControlComponent.WALK
 					)
 				, new ImageRenderComponent(
-						"left"
+						  "left"
 						, builder.setInterval(walkInterval)
 							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
 							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
@@ -151,11 +151,11 @@ public class WorldModule implements Module {
 				);
 		nadaRender.addAction(
 				new OverworldActorComponent.MovementContext(
-						OverworldMovementComponent.WorldDirection.UP.getDirection()
-						, true
+						  OverworldMovementComponent.WorldDirection.UP.getDirection()
+						, KeyboardControlComponent.WALK
 					)
 				, new ImageRenderComponent(
-						"away"
+						  "away"
 						, builder.setInterval(walkInterval)
 							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
 							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING))
@@ -172,41 +172,41 @@ public class WorldModule implements Module {
 		
 		nadaRender.addAction(
 				new OverworldActorComponent.MovementContext(
-						OverworldMovementComponent.WorldDirection.DOWN.getDirection()
-						, false
+						  OverworldMovementComponent.WorldDirection.DOWN.getDirection()
+						, KeyboardControlComponent.STOP
 					)
 				, new ImageRenderComponent(
-						"standingtoward"
+						  "standingtoward"
 						, new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 					)
 			);
 		nadaRender.addAction(
 				new OverworldActorComponent.MovementContext(
-						OverworldMovementComponent.WorldDirection.LEFT.getDirection()
-						, false
+						  OverworldMovementComponent.WorldDirection.LEFT.getDirection()
+						, KeyboardControlComponent.STOP
 					)
 				, new ImageRenderComponent(
-						"standingleft"
+						  "standingleft"
 						, new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 					)
 			);
 		nadaRender.addAction(
 				new OverworldActorComponent.MovementContext(
-						OverworldMovementComponent.WorldDirection.RIGHT.getDirection()
-						, false
+						  OverworldMovementComponent.WorldDirection.RIGHT.getDirection()
+						, KeyboardControlComponent.STOP
 					)
 				, new ImageRenderComponent(
-						"standingright"
+						  "standingright"
 						, new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 					)
 			);
 		nadaRender.addAction(
 				new OverworldActorComponent.MovementContext(
-						OverworldMovementComponent.WorldDirection.UP.getDirection()
-						, false
+						  OverworldMovementComponent.WorldDirection.UP.getDirection()
+						, KeyboardControlComponent.STOP
 					)
 				, new ImageRenderComponent(
-						"standingaway"
+						  "standingaway"
 						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 					)
 			);

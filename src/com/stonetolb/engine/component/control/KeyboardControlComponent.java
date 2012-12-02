@@ -30,8 +30,9 @@ import com.stonetolb.engine.component.EntityComponent;
  */
 public class KeyboardControlComponent extends EntityComponent {
 
-	private static int SPEED = 75;
-	private static int STOP = 0;
+	public static int RUN = 150;
+	public static int WALK = 75;
+	public static int STOP = 0;
 	
 	public KeyboardControlComponent(String pId) {
 		id = pId;
@@ -42,18 +43,28 @@ public class KeyboardControlComponent extends EntityComponent {
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			parent.setDirection(0);
-			parent.setSpeed(SPEED);
+			parent.setSpeed(WALK);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 			parent.setDirection(2);
-			parent.setSpeed(SPEED);
+			parent.setSpeed(WALK);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 			parent.setDirection(3);
-			parent.setSpeed(SPEED);
+			parent.setSpeed(WALK);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 			parent.setDirection(1);
-			parent.setSpeed(SPEED);
+			parent.setSpeed(WALK);
 		} else {
 			parent.setSpeed(STOP);
+		}
+		
+		if(parent.getSpeed() != STOP)
+		{
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+			{
+				parent.setSpeed(RUN);
+			} else {
+				parent.setSpeed(WALK);
+			}
 		}
 	}
 }

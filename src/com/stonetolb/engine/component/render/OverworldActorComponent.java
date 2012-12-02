@@ -47,12 +47,12 @@ public class OverworldActorComponent extends RenderComponent {
 	public static class MovementContext
 	{
 		private float direction;
-		private boolean inMotion;
+		private int speed;
 		
-		public MovementContext(float pDirection, boolean pInMotion)
+		public MovementContext(float pDirection, int pSpeed)
 		{
 			direction = pDirection;
-			inMotion = pInMotion;
+			speed = pSpeed;
 		}
 		
 		@Override
@@ -61,7 +61,7 @@ public class OverworldActorComponent extends RenderComponent {
 			int prime = 31;
 			int result = 17;
 			result = prime * result + Float.floatToIntBits(direction);
-			result = prime * result + (inMotion ? 1 : 0);
+			result = prime * result + speed;
 			return result;
 		}
 		
@@ -78,7 +78,7 @@ public class OverworldActorComponent extends RenderComponent {
 			{
 				MovementContext other = (MovementContext) obj;
 				return direction == other.direction
-						&& inMotion == other.inMotion;
+						&& speed == other.speed;
 			}
 			else 
 			{
@@ -103,7 +103,7 @@ public class OverworldActorComponent extends RenderComponent {
 
 	@Override
 	public void update(long delta) {
-		MovementContext context = new MovementContext(parent.getDirection(), (parent.getSpeed() != 0 ? true : false));
+		MovementContext context = new MovementContext(parent.getDirection(), parent.getSpeed());
 		ImageRenderComponent newAction;
 		
 		newAction = actionMapping.get(context);
