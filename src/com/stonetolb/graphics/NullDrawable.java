@@ -27,9 +27,11 @@ import java.io.IOException;
  */
 public class NullDrawable implements Drawable {
 	
+	public static NullDrawable INSTANCE = new NullDrawable();
+	
 	private Drawable img;
 	
-	public NullDrawable() {
+	private NullDrawable() {
 		try
 		{
 			img = new Sprite("null.gif");

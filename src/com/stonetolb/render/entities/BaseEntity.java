@@ -53,7 +53,7 @@ public class BaseEntity implements Entity{
 		this.changeInX = 0;
 		this.changeInY = 0;
 		this.movementDelta = 1;
-		this.image = new NullDrawable();
+		this.image = NullDrawable.INSTANCE;
 		this.imageName = "NULL_ACTION";
 	}
 	

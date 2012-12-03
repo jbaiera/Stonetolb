@@ -219,7 +219,7 @@ public class Animation implements StatefulDrawable{
 			// Find the drawable that will be at this point in time
 			// and draw it
 			Drawable toBeDrawn = frameList.getDataAt(stepCount);
-			toBeDrawn = toBeDrawn == null ? new NullDrawable() : toBeDrawn; //null check
+			toBeDrawn = toBeDrawn == null ? NullDrawable.INSTANCE : toBeDrawn; //null check
 			
 			toBeDrawn.draw(x, y, z, delta);
 			

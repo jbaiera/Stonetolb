@@ -35,7 +35,7 @@ public class OverworldActorComponent extends RenderComponent {
 	public OverworldActorComponent(String pId){
 		super(pId);
 		actionMapping = new HashMap<MovementContext, RenderComponent>();
-		noOpAction = new ImageRenderComponent("Drawing Missing", new NullDrawable());
+		noOpAction = new ImageRenderComponent("Drawing Missing", NullDrawable.INSTANCE);
 		currentAction = noOpAction;
 	}
 	
