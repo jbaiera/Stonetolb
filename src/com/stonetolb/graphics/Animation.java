@@ -21,6 +21,8 @@ package com.stonetolb.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.stonetolb.util.IntervalQueue;
+
 
 /**
  * Animation is a glorified list of Sprite objects, which,
@@ -49,7 +51,7 @@ public class Animation implements StatefulDrawable{
 	 *
 	 */
 	public static class AnimationBuilder {
-		private List<Drawable> sprites;
+		private List<Keyframe> frames;
 		private int interval;
 		
 		private AnimationBuilder() {
@@ -57,7 +59,7 @@ public class Animation implements StatefulDrawable{
 		}
 		
 		private void initBuilder() {
-			sprites = new ArrayList<Drawable>();
+			frames = new ArrayList<Keyframe>();
 			interval = Animation.BASE_MILLISECONDS_PER_FRAME;
 		}
 		
@@ -76,11 +78,15 @@ public class Animation implements StatefulDrawable{
 		/**
 		 * Adds a single frame to the animation. All frames are equally spaced.
 		 * 
-		 * @param pFrame
+		 * @param pImage
 		 * @return this AnimationBuilder 
 		 */
-		public AnimationBuilder addFrame(Drawable pFrame) {
-			sprites.add(pFrame);
+		public AnimationBuilder addFrame(Drawable pImage, int pDuration) {
+			return addFrame(new Keyframe(pImage, pDuration));
+		}
+		
+		public AnimationBuilder addFrame(Keyframe pFrame) {
+			frames.add(pFrame);
 			return this;
 		}
 		
@@ -92,7 +98,8 @@ public class Animation implements StatefulDrawable{
 		public Animation build() {
 			//Build result
 			Animation returnValue = new Animation(interval);
-			returnValue.spriteList = sprites;
+//			returnValue.spriteList = frames;
+			returnValue.addAllFrames(frames);
 			returnValue.updateActual();
 			
 			//reset builder
@@ -141,11 +148,12 @@ public class Animation implements StatefulDrawable{
 	// interval is an approxamation right now, since frames are equidistant in time from each other
 	// This should be fixed later.
 	
-	private int interval;
+//	private int interval;
 	private int actualInterval;
 	private int stepCount;
 	private boolean running;
-	protected List<Drawable> spriteList;
+//	protected List<Drawable> spriteList;
+	protected IntervalQueue<Drawable> frameList;
 	
 	private static int BASE_MILLISECONDS_PER_FRAME = 500; //Animation would last half a second
 	
@@ -154,31 +162,42 @@ public class Animation implements StatefulDrawable{
 	}
 	
 	private Animation(int pInterval) {
-		interval = pInterval;
+//		interval = pInterval;
 		actualInterval = pInterval;
 		stepCount = 0;
+		frameList = new IntervalQueue<Drawable>();
 		running = false;
 	}
 	
-	private void start() {
+	private void addAllFrames(List<Keyframe> pKeyframes) {
+		for(Keyframe keyframe : pKeyframes) {
+			frameList.add(keyframe.getImage(), keyframe.duration);
+		}
+		actualInterval = frameList.getQueueLength();
+	}
+//	
+//	private void start() {
+//		if(!running) {
+//			stepCount = 0;
+//			running = true;
+//		}
+//	}
+//	
+//	private void stop() {
+//		running = false;
+//	}
+
+	@Override
+	public void ready() {
 		if(!running) {
 			stepCount = 0;
 			running = true;
 		}
 	}
 	
-	private void stop() {
-		running = false;
-	}
-
-	@Override
-	public void ready() {
-		start();
-	}
-	
 	@Override
 	public void dispose() {
-		stop();
+		running = false;
 	}
 	
 	/**
@@ -196,12 +215,20 @@ public class Animation implements StatefulDrawable{
 		if(running) {
 			// add to step count, but keep it below actualInterval
 			stepCount = ((int)((long)stepCount + delta)) % actualInterval;
-			// create an increment amount
-			int inc = (int) (actualInterval / spriteList.size());
-			// figure out which index to display
-			int idx = (int) (stepCount / inc);
-			// draw the needed sprite at the area specified
-			spriteList.get(idx).draw(x, y, z, delta);
+			
+			// Find the drawable that will be at this point in time
+			// and draw it
+			Drawable toBeDrawn = frameList.getDataAt(stepCount);
+			toBeDrawn = toBeDrawn == null ? new NullDrawable() : toBeDrawn; //null check
+			
+			toBeDrawn.draw(x, y, z, delta);
+			
+//			// create an increment amount
+//			int inc = (int) (actualInterval / spriteList.size());
+//			// figure out which index to display
+//			int idx = (int) (stepCount / inc);
+//			// draw the needed sprite at the area specified
+//			spriteList.get(idx).draw(x, y, z, delta);
 		}
 	}
 	
@@ -215,11 +242,11 @@ public class Animation implements StatefulDrawable{
 	 * with how long they should be displayed to the screen.
 	 */
 	private void updateActual() {
-		int lstSize = spriteList.size();
-		if (lstSize > 0) {
-			actualInterval = ((int) (interval / lstSize)) * lstSize;
-		} else {
-			actualInterval = interval;
-		}
+//		int lstSize = spriteList.size();
+//		if (lstSize > 0) {
+//			actualInterval = ((int) (interval / lstSize)) * lstSize;
+//		} else {
+//			actualInterval = interval;
+//		}
 	}
 }

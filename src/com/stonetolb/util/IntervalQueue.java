@@ -142,6 +142,13 @@ public class IntervalQueue<T>{
 		header = header + pDuration;
 	}
 	
+	/**
+	 * @return The sum of the durations of Interval objects in the queue
+	 */
+	public int getQueueLength() {
+		return header;
+	}
+	
 	public T getDataAt(int pTime) {
 		Interval<T> value = getIntervalAt(pTime);
 		if (value == null)
