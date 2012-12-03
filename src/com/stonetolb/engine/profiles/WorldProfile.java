@@ -1,7 +1,39 @@
 package com.stonetolb.engine.profiles;
 
+import org.lwjgl.input.Keyboard;
+
 
 public class WorldProfile {
+	public enum Control {
+		ARROWS(   Keyboard.KEY_UP
+				, Keyboard.KEY_DOWN
+				, Keyboard.KEY_LEFT
+				, Keyboard.KEY_RIGHT
+			),
+		WASD(	  Keyboard.KEY_W
+				, Keyboard.KEY_S
+				, Keyboard.KEY_A
+				, Keyboard.KEY_D
+			);
+		
+		private int up;
+		private int down;
+		private int left;
+		private int right;
+		
+		private Control(int pUp, int pDown, int pLeft, int pRight)
+		{
+			up = pUp;
+			down = pDown;
+			left = pLeft;
+			right = pRight;
+		}
+		
+		public int keyUp()    { return up;    }
+		public int keyDown()  { return down;  }
+		public int keyLeft()  { return left;  }
+		public int keyRight() { return right; }
+	}
 	
 	public enum Speed {
 		STOP(0),

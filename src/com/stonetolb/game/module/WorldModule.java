@@ -225,7 +225,7 @@ public class WorldModule implements Module {
 //						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 //						)
 //				);
-		nada.addComponent(new KeyboardControlComponent("Arrows"));
+		nada.addComponent(new KeyboardControlComponent("Arrows", WorldProfile.Control.ARROWS));
 		nada.addComponent(new OverworldMovementComponent("Basic"));
 		nada.addComponent(nadaRender);
 		nada.setPosition(new Pair<Float,Float>(300F,300F));

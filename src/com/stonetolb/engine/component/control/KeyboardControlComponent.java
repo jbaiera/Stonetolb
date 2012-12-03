@@ -21,34 +21,37 @@ import org.lwjgl.input.Keyboard;
 
 import com.stonetolb.engine.component.EntityComponent;
 import com.stonetolb.engine.profiles.WorldProfile;
+import com.stonetolb.engine.profiles.WorldProfile.Control;
 
 /**
  * Component that reads Keyboard data and updates the Entity's 
- * state accordingly. 
+ * state accordingly. Used for World Module.
  * 
  * @author james.baiera
  *
  */
 public class KeyboardControlComponent extends EntityComponent {
 
-
-	public KeyboardControlComponent(String pId) {
+	Control controls; 
+	
+	public KeyboardControlComponent(String pId, Control pControls) {
 		id = pId;
+		controls = pControls;
 	}
 	
 	@Override
 	public void update(long delta) {
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+		if(Keyboard.isKeyDown(controls.keyUp())) {
 			parent.setDirection(0);
 			parent.setSpeed(WorldProfile.Speed.WALK.getSpeed());
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+		} else if (Keyboard.isKeyDown(controls.keyDown())) {
 			parent.setDirection(2);
 			parent.setSpeed(WorldProfile.Speed.WALK.getSpeed());
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+		} else if (Keyboard.isKeyDown(controls.keyLeft())) {
 			parent.setDirection(3);
 			parent.setSpeed(WorldProfile.Speed.WALK.getSpeed());
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+		} else if (Keyboard.isKeyDown(controls.keyRight())) {
 			parent.setDirection(1);
 			parent.setSpeed(WorldProfile.Speed.WALK.getSpeed());
 		} else {
