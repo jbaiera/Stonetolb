@@ -118,6 +118,7 @@ public class Entity {
 	}
 	
 	public Pair<Float, Float> getAbsolute() {
+		updateAbsoluteLocation(); //Make sure it's there first
 		return absolute;
 	}
 	
@@ -179,8 +180,7 @@ public class Entity {
 		// Get the Parent's absolute location and add your own position to it
 		if (sceneParent != null) {
 			Pair<Float, Float> parentLocation = sceneParent.getAbsolute();
-			absolute.x = parentLocation.x + position.x;
-			absolute.y = parentLocation.y + position.y;
+			absolute = new Pair<Float, Float>(parentLocation.x + position.x, parentLocation.y + position.y);
 		}
 		else 
 		{

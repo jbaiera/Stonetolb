@@ -220,9 +220,12 @@ public class WorldModule implements Module {
 		
 		//Create an entity with new Entity Engine
 		nothing = new Entity("Anchor");
+		nothing.addComponent(new ImageRenderComponent("Nothing", null));
+		nothing.addComponent(new KeyboardControlComponent("WASD", WorldProfile.Control.WASD));
+		nothing.addComponent(new OverworldMovementComponent("Complex"));
+		nothing.setPosition(new Pair<Float,Float>(150F, 150F));
 		
-		
-		vaughnTwo = new Entity("Second Vaughn");
+		vaughnTwo = new Entity("Second Vaughn", nothing);
 //		nada.addComponent(
 //				new ImageRenderComponent(
 //						  "NullImage"
@@ -232,7 +235,7 @@ public class WorldModule implements Module {
 		vaughnTwo.addComponent(new KeyboardControlComponent("Arrows", WorldProfile.Control.ARROWS));
 		vaughnTwo.addComponent(new OverworldMovementComponent("Basic"));
 		vaughnTwo.addComponent(vaughnRender);
-		vaughnTwo.setPosition(new Pair<Float,Float>(300F,300F));
+		vaughnTwo.setPosition(new Pair<Float,Float>(150F,0F));
 		
 	}
 
@@ -277,6 +280,8 @@ public class WorldModule implements Module {
 	public void render(long delta) {
 		vaughn.move(delta);
 		vaughn.render(delta);
+		nothing.update(delta);
+		nothing.render(delta);
 		vaughnTwo.update(delta);
 		vaughnTwo.render(delta);
 	}

@@ -19,6 +19,7 @@ package com.stonetolb.engine.component.render;
 
 import com.stonetolb.engine.Entity;
 import com.stonetolb.graphics.Drawable;
+import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.StatefulDrawable;
 
 /**
@@ -36,7 +37,13 @@ public class ImageRenderComponent extends RenderComponent {
 
 	public ImageRenderComponent(String pId, Drawable pImage) {
 		super(pId);
-		image = pImage;
+		if(pImage != null) {
+			image = pImage;
+		}
+		else 
+		{
+			image = NullDrawable.INSTANCE;
+		}
 	}
 
 	@Override
