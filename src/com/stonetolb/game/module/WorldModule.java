@@ -48,7 +48,8 @@ public class WorldModule implements Module {
 	private static int 		WIDTH = 32;
 	private static int 		HEIGHT = 48;
 	
-	private Entity nada;
+	private Entity vaughnTwo;
+	private Entity nothing;
 	
 	@Override
 	public void init() {
@@ -65,7 +66,7 @@ public class WorldModule implements Module {
 		vaughn = new Actor(200,100);
 		int walkInterval = 800;
 		
-		OverworldActorComponent nadaRender = new OverworldActorComponent("TestComponent");
+		OverworldActorComponent vaughnRender = new OverworldActorComponent("TestComponent");
 		
 		// Gotta make a way to procedurally generate this from a file input...
 		AnimationBuilder builder = Animation.builder();
@@ -79,7 +80,7 @@ public class WorldModule implements Module {
 					.build()
 				);
 		
-		nadaRender.addAction(
+		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.DOWN.getDirection()
 						, WorldProfile.Speed.WALK.getSpeed()
@@ -103,7 +104,7 @@ public class WorldModule implements Module {
 					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
 					.build()
 				);
-		nadaRender.addAction(
+		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.LEFT.getDirection()
 						, WorldProfile.Speed.WALK.getSpeed()
@@ -127,7 +128,7 @@ public class WorldModule implements Module {
 					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
 					.build()
 				);
-		nadaRender.addAction(
+		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.RIGHT.getDirection()
 						, WorldProfile.Speed.WALK.getSpeed()
@@ -151,7 +152,7 @@ public class WorldModule implements Module {
 					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
 					.build()
 				);
-		nadaRender.addAction(
+		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.UP.getDirection()
 						, WorldProfile.Speed.WALK.getSpeed()
@@ -172,7 +173,7 @@ public class WorldModule implements Module {
 		vaughn.addAction("standingright", new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
 		vaughn.addAction("standingaway", new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
 		
-		nadaRender.addAction(
+		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.DOWN.getDirection()
 						, WorldProfile.Speed.STOP.getSpeed()
@@ -182,7 +183,7 @@ public class WorldModule implements Module {
 						, new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 					)
 			);
-		nadaRender.addAction(
+		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.LEFT.getDirection()
 						, WorldProfile.Speed.STOP.getSpeed()
@@ -192,7 +193,7 @@ public class WorldModule implements Module {
 						, new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 					)
 			);
-		nadaRender.addAction(
+		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.RIGHT.getDirection()
 						, WorldProfile.Speed.STOP.getSpeed()
@@ -202,7 +203,7 @@ public class WorldModule implements Module {
 						, new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 					)
 			);
-		nadaRender.addAction(
+		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.UP.getDirection()
 						, WorldProfile.Speed.STOP.getSpeed()
@@ -218,17 +219,20 @@ public class WorldModule implements Module {
 		vaughn.setHorizontalMovement(0);
 		
 		//Create an entity with new Entity Engine
-		nada = new Entity("nada");
+		nothing = new Entity("Anchor");
+		
+		
+		vaughnTwo = new Entity("Second Vaughn");
 //		nada.addComponent(
 //				new ImageRenderComponent(
 //						  "NullImage"
 //						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
 //						)
 //				);
-		nada.addComponent(new KeyboardControlComponent("Arrows", WorldProfile.Control.ARROWS));
-		nada.addComponent(new OverworldMovementComponent("Basic"));
-		nada.addComponent(nadaRender);
-		nada.setPosition(new Pair<Float,Float>(300F,300F));
+		vaughnTwo.addComponent(new KeyboardControlComponent("Arrows", WorldProfile.Control.ARROWS));
+		vaughnTwo.addComponent(new OverworldMovementComponent("Basic"));
+		vaughnTwo.addComponent(vaughnRender);
+		vaughnTwo.setPosition(new Pair<Float,Float>(300F,300F));
 		
 	}
 
@@ -273,7 +277,7 @@ public class WorldModule implements Module {
 	public void render(long delta) {
 		vaughn.move(delta);
 		vaughn.render(delta);
-		nada.update(delta);
-		nada.render(delta);
+		vaughnTwo.update(delta);
+		vaughnTwo.render(delta);
 	}
 }

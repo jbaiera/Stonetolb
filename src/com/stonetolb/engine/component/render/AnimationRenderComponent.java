@@ -15,8 +15,8 @@ public class AnimationRenderComponent extends RenderComponent {
 	@Override
 	public void render(long delta) {
 		animation.draw(
-				  (int)parent.getPosition().x.floatValue()
-				, (int)parent.getPosition().y.floatValue()
+				  (int)parent.getAbsolute().x.floatValue()
+				, (int)parent.getAbsolute().y.floatValue()
 				, 0
 				, delta
 			);

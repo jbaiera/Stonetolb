@@ -169,6 +169,7 @@ public class Entity {
 	 * @param delta
 	 */
 	public void render(long delta) {
+		updateAbsoluteLocation();
 		if (renderComponent != null) {
 			renderComponent.render(delta);
 		}
@@ -180,6 +181,10 @@ public class Entity {
 			Pair<Float, Float> parentLocation = sceneParent.getAbsolute();
 			absolute.x = parentLocation.x + position.x;
 			absolute.y = parentLocation.y + position.y;
+		}
+		else 
+		{
+			absolute = position;
 		}
 	}
 }

@@ -33,16 +33,10 @@ import com.stonetolb.graphics.StatefulDrawable;
  */
 public class ImageRenderComponent extends RenderComponent {
 	Drawable image;
-	StatefulDrawable animation;
-	boolean isStateful;
-	
+
 	public ImageRenderComponent(String pId, Drawable pImage) {
 		super(pId);
 		image = pImage;
-		if (StatefulDrawable.class.isInstance(image)) {
-			isStateful = true;
-			animation = (StatefulDrawable) image;
-		}
 	}
 
 	@Override
@@ -50,45 +44,13 @@ public class ImageRenderComponent extends RenderComponent {
 		// Nothing...
 	}
 	
-	/**
-	 * If the underlying drawable is a stateful drawable, this method
-	 * will allow setup of the drawing
-	 */
-	public void ready() {
-		if (isStateful)
-		{
-			animation.ready();
-		}
-	}
-	
-	/**
-	 * If the underlying drawable is a stateful drawable, this method
-	 * will allow setup of the drawing
-	 */
-	public void dispose() {
-		if (isStateful)
-		{
-			animation.dispose();
-		}
-	}
-	
 	@Override
 	public void render(long delta) {
-		if (isStateful)
-		{
-			animation.draw(
-					  (int)parent.getPosition().x.floatValue()
-					, (int)parent.getPosition().y.floatValue()
-					, 0
-					, delta
-				);
-		} else  {
-			image.draw(
-					  (int)parent.getPosition().x.floatValue()
-					, (int)parent.getPosition().y.floatValue()
-					, 0
-					, delta
-				);
-		}
+		image.draw(
+				  (int)parent.getAbsolute().x.floatValue()
+				, (int)parent.getAbsolute().y.floatValue()
+				, 0
+				, delta
+			);
 	}
 }
