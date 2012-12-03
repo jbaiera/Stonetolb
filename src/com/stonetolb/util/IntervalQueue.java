@@ -5,15 +5,27 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Container that stores Objects associated with an interval of time.
+ * Similar to a time line.
+ * <p>
+ * An example of the internal structure can be viewed as such<br>
+ * |--------1-------||---2---||3||-----------4-----------|
+ * <p>
+ * The usage case for this container is when objects must be stored in sequence but also
+ * contain data on how "long" they are in time. To retrieve an object from the list, you can
+ * specify any "point in time" along the time line and the {@link IntervalQueue} will return 
+ * the object in that point in time
+ * <p>
+ * NOTE: Not a full implementation of an Interval Tree. This container only supports
+ * storing non overlapping intervals. Should a need for storing intervals 
+ * that may overlap arise, please use the Interval Tree object
+ * 
+ */
 public class IntervalQueue<T>{
 	
 	/**
 	 * Object that stores start and stop information of a section of interval
-	 * <p>
-	 * NOTE: Not a full implementation of an Interval Tree. Should a need for storing intervals 
-	 * that may overlap arise, there are better packages out there for it.
-	 * <p>
-	 * This implementation is for sequential non overlapping interval listings.
 	 * 
 	 * @author james.baiera
 	 *
@@ -35,6 +47,11 @@ public class IntervalQueue<T>{
 			return data;
 		}
 		
+		/**
+		 * 
+		 * @param pOther
+		 * @return true if other interval overlaps, false if it does not
+		 */
 		public boolean overlaps(Interval<? extends T> pOther)
 		{
 			//Figure out when it would not be overlapped
@@ -100,6 +117,11 @@ public class IntervalQueue<T>{
 	 */
 	private static class IntervalOverlapComparator<T> implements Comparator<Interval<T>>{
 
+		/**
+		 * @return -1 if arg0 interval is before arg1 interval<br>
+		 * 0 if arg0 interval is overlapping with arg1 interval<br>
+		 * 1 if arg0 interval is after arg1 interval
+		 */
 		@Override
 		public int compare(Interval<T> arg0, Interval<T> arg1) {
 			if (arg0.stop < arg1.start) { //LESS THAN
@@ -129,6 +151,13 @@ public class IntervalQueue<T>{
 		header = 0;
 	}
 	
+	/**
+	 * Adds object to end of queue with an interval 
+	 * of (END OF QUEUE) to (END OF QUEUE PLUS DURATION)
+	 * 
+	 * @param pData Object to store
+	 * @param pDuration Length of interval to store for
+	 */
 	public void add(T pData, int pDuration) {
 		data.add(
 				new Interval<T>(
@@ -149,6 +178,12 @@ public class IntervalQueue<T>{
 		return header;
 	}
 	
+	/**
+	 * Returns value stored at given point in time on the time line.
+	 * 
+	 * @param pTime
+	 * @return null if value is not found in the time line
+	 */
 	public T getDataAt(int pTime) {
 		Interval<T> value = getIntervalAt(pTime);
 		if (value == null)
@@ -161,11 +196,24 @@ public class IntervalQueue<T>{
 		}
 	}
 	
+	/**
+	 * Returns Interval that overlaps the given point in the time line
+	 * 
+	 * @param pTime
+	 * @return null if value is not found in the time line
+	 */
 	public Interval<T> getIntervalAt(int pTime) {
 		Interval<T> index = new Interval<T>(pTime,pTime,null);
 		return getAt(index);
 	}
 	
+	/**
+	 * Returns Interval that overlaps the given Interval in the time line
+	 * 
+	 * @param pSearchInterval
+	 * @return null if value is not found in the time line<br>
+	 * first value found if multiple intervals overlap.
+	 */
 	public Interval<T> getAt(Interval<T> pSearchInterval) {
 		int location = Collections.binarySearch(data, pSearchInterval, new IntervalOverlapComparator<T>());
 		if (location < 0) {
