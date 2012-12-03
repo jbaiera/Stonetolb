@@ -66,6 +66,7 @@ public class Animation implements StatefulDrawable{
 		 * 
 		 * @param pInterval
 		 * @return this AnimationBuilder
+		 * @deprecated
 		 */
 		public AnimationBuilder setInterval(int pInterval) {
 			interval = pInterval;
@@ -102,6 +103,41 @@ public class Animation implements StatefulDrawable{
 		}
 	}
 	
+	/**
+	 * Internal class for {@link Animation}. Used to couple frames with their duration.
+	 * @author james.baiera
+	 *
+	 */
+	public static class Keyframe implements Drawable{
+		private Drawable image;
+		private int duration;
+		
+		/**
+		 * Default Keyframe Constructor
+		 * 
+		 * @param pImage Image to draw for the frame
+		 * @param pDuration Number of milliseconds to display image
+		 */
+		public Keyframe(Drawable pImage, int pDuration) {
+			image = pImage;
+			duration = pDuration;
+		}
+		
+		public Drawable getImage() {
+			return image;
+		}
+		
+		public int getDuration() {
+			return duration;
+		}
+
+		@Override
+		public void draw(int x, int y, int z, long delta) {
+			image.draw(x, y, z, delta);
+		}
+		
+	}
+	
 	// interval is an approxamation right now, since frames are equidistant in time from each other
 	// This should be fixed later.
 	
@@ -123,17 +159,6 @@ public class Animation implements StatefulDrawable{
 		stepCount = 0;
 		running = false;
 	}
-	
-//	/**
-//	 * Add a new Sprite to the end of the sprite list. This
-//	 * updates the actual interval.
-//	 * 
-//	 * @param newSprite A sprite to add to the frame set
-//	 */
-//	private void addFrame(Sprite newSprite) {
-//		spriteList.add(newSprite);
-//		updateActual();
-//	}
 	
 	private void start() {
 		if(!running) {
