@@ -44,6 +44,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.stonetolb.game.module.Module;
 import com.stonetolb.game.module.WorldModule;
+import com.stonetolb.render.Camera;
 
 /**
  * This is our hook for launching the game, and also the home
@@ -150,10 +151,14 @@ public class Game {
 			glEnable(GL11.GL_ALPHA_TEST);
 			glEnable(GL11.GL_CULL_FACE);
 			
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-
-			glOrtho(0, width, height, 0, height, -height);
+//			glMatrixMode(GL_PROJECTION);
+//			glLoadIdentity();
+//
+//			glOrtho(0, width, height, 0, height, -height);
+			
+			Camera.createCamera(width, height);
+			Camera.getCamera().moveCamera(); // Update Camera to move to position
+			
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			glViewport(0, 0, width, height);
@@ -256,6 +261,9 @@ public class Game {
 
 		// render the game frame
 		world.render(delta);
+		
+		// update the Camera
+		Camera.getCamera().moveCamera();
 		
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
