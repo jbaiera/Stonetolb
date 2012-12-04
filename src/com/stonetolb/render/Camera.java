@@ -72,8 +72,8 @@ public class Camera {
 	
 	private void updatePosition() {
 		if (parent != null) {
-			position.x = parent.getAbsolute().x - (screenWidth / 2.0F);
-			position.y = parent.getAbsolute().y - (screenHeight / 2.0F);
+			position.x = parent.getAbsolute().x - ((float)screenWidth / 2.0F);
+			position.y = parent.getAbsolute().y - ((float)screenHeight / 2.0F);
 		}
 		else {
 			position = ORIGIN;

@@ -33,6 +33,7 @@ import com.stonetolb.graphics.ImageRenderMode;
 import com.stonetolb.graphics.Sprite;
 import com.stonetolb.graphics.Texture;
 import com.stonetolb.graphics.engine.TextureLoader;
+import com.stonetolb.render.Camera;
 import com.stonetolb.render.entities.Actor;
 import com.stonetolb.util.Pair;
 
@@ -50,6 +51,7 @@ public class WorldModule implements Module {
 	
 	private Entity vaughnTwo;
 	private Entity nothing;
+	private Entity origin;
 	
 	@Override
 	public void init() {
@@ -225,7 +227,13 @@ public class WorldModule implements Module {
 		nothing.addComponent(new OverworldMovementComponent("Complex"));
 		nothing.setPosition(new Pair<Float,Float>(150F, 150F));
 		
-		vaughnTwo = new Entity("Second Vaughn", nothing);
+		Camera.getCamera().setParent(nothing);
+		
+		origin = new Entity("Origin");
+		origin.addComponent(new ImageRenderComponent("Nothing", null));
+		origin.setPosition(new Pair<Float, Float>(0F,0F));
+		
+		vaughnTwo = new Entity("Second Vaughn", origin);
 //		nada.addComponent(
 //				new ImageRenderComponent(
 //						  "NullImage"
@@ -280,6 +288,8 @@ public class WorldModule implements Module {
 	public void render(long delta) {
 		vaughn.move(delta);
 		vaughn.render(delta);
+		origin.update(delta);
+		origin.render(delta);
 		nothing.update(delta);
 		nothing.render(delta);
 		vaughnTwo.update(delta);
