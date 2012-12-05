@@ -32,13 +32,15 @@ public interface Module {
 	
 	/**
 	 * One step of game logic
+	 * 
+	 * @param delta amount of time passed since last step
 	 */
-	public abstract void step();
+	public abstract void step(long delta);
 	
 	/**
 	 * Render all entities
 	 * 
-	 * @param amount of time passed since last render
+	 * @param delta amount of time passed since last render
 	 */
 	public abstract void render(long delta);
 }

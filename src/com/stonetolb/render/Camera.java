@@ -17,11 +17,6 @@
 
 package com.stonetolb.render;
 
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glOrtho;
-
 import org.lwjgl.opengl.GL11;
 
 import com.stonetolb.engine.Entity;
@@ -78,12 +73,11 @@ public class Camera {
 		else {
 			position = ORIGIN;
 		}
-		
-//		System.out.println(position.toString());
 	}
 	
 	public void moveCamera() {
 		updatePosition();
+		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		GL11.glOrtho(
@@ -94,23 +88,6 @@ public class Camera {
 				, screenHeight
 				, screenHeight * -1
 			);
-		
-//		System.out.println(
-//				new StringBuilder()
-//				.append("X : ")
-//				.append(position.x.doubleValue())
-//				.append("Y : ")
-//				.append(position.y.doubleValue())
-//				.append("W : ")
-//				.append(position.x.doubleValue() + screenWidth)
-//				.append("H : ")
-//				.append(position.y.doubleValue() + screenHeight)
-//				.append("N : ")
-//				.append(position.y.doubleValue())
-//				.append("F : ")
-//				.append((position.y.doubleValue() * -1))
-//				.toString()
-//				);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}

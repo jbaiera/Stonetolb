@@ -248,7 +248,7 @@ public class WorldModule implements Module {
 	}
 
 	@Override
-	public void step() {
+	public void step(long delta) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			vaughn.setVerticalMovement(-75);
 			vaughn.setHorizontalMovement(0);
@@ -282,17 +282,18 @@ public class WorldModule implements Module {
 				vaughn.setAction("standingright");
 			}
 		}
+		
+		vaughn.move(delta);
+		origin.update(delta);
+		nothing.update(delta);
+		vaughnTwo.update(delta);
 	}
 
 	@Override
 	public void render(long delta) {
-		vaughn.move(delta);
 		vaughn.render(delta);
-		origin.update(delta);
 		origin.render(delta);
-		nothing.update(delta);
 		nothing.render(delta);
-		vaughnTwo.update(delta);
 		vaughnTwo.render(delta);
 	}
 }

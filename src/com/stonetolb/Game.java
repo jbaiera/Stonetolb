@@ -23,16 +23,13 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import org.lwjgl.LWJGLException;
@@ -144,18 +141,14 @@ public class Game {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_DEPTH_TEST);
 			
-			//Testing some states
+			// Testing some states
 			GL11.glClearDepth(1.0);
 			GL11.glDepthFunc(GL11.GL_LEQUAL);
 			GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
 			glEnable(GL11.GL_ALPHA_TEST);
 			glEnable(GL11.GL_CULL_FACE);
 			
-//			glMatrixMode(GL_PROJECTION);
-//			glLoadIdentity();
-//
-//			glOrtho(0, width, height, 0, height, -height);
-			
+			// Create the Camera and update it's position on the plane
 			Camera.createCamera(width, height);
 			Camera.getCamera().moveCamera(); // Update Camera to move to position
 			
@@ -203,8 +196,7 @@ public class Game {
 	}
 
 	/**
-	 * Start a fresh game, this should clear out any old data and
-	 * create a new set.
+	 * Initializes the game stack and readies it for the game loop
 	 */
 	private void startGame() {
 		// Create the first game module and init
@@ -213,12 +205,10 @@ public class Game {
 
 	/**
 	 * Run the main game loop. This method keeps rendering the scene
-	 * and requesting that the callback update its screen.
+	 * and requesting that the callback updates its screen.
 	 */
 	private void gameLoop() {
 		while (Game.gameRunning) {
-			// Allow Game Logic
-			world.step();
 		
 			// clear screen
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -259,10 +249,13 @@ public class Game {
 			fps = 0;
 		}
 
+		// Allow Game Logic
+		world.step(delta);
+					
 		// render the game frame
 		world.render(delta);
 		
-		// update the Camera
+		// Update Camera's position
 		Camera.getCamera().moveCamera();
 		
 		// if escape has been pressed, stop the game
@@ -286,7 +279,7 @@ public class Game {
 	}
 
 	/**
-	 *
+	 * Starts game loop, which runs until signaled to stop
 	 */
 	public void execute() {
 		gameLoop();
