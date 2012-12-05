@@ -171,27 +171,34 @@ public class Game {
 	* Sets the display mode for fullscreen mode
 	*/
 	private boolean setDisplayMode() {
-    try {
-		// get modes
-		//DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(width, height, -1, -1, -1, -1, 60, 60);
-
-		/*org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
-												"width=" + width,
-												"height=" + height,
-												"freq=" + 60,
-												"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()});
-		*/
-    	
-    	//width = 400;
-    	//height = 400;
-    	DisplayMode dm = new DisplayMode(width,height);
-    	Display.setDisplayMode(dm);
-		return true;
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		System.out.println("Unable to enter fullscreen, continuing in windowed mode");
-    	}
-
+		try {
+			// We get the Display Modes
+			// Let's just ignore this for a bit...
+			//DisplayMode[] displayModes = org.lwjgl.opengl.Display.getAvailableDisplayModes();
+			
+			//for(DisplayMode displayMode : displayModes) {
+			//	System.out.println(displayMode.toString());
+			//}
+			
+			//If full screen, set's full screen
+			if (fullscreen)
+			{
+				Display.setFullscreen(fullscreen);
+			}
+			else
+			{
+				//Otherwise just run in window
+				DisplayMode dm = new DisplayMode(width,height);
+		    	Display.setDisplayMode(dm);
+			}
+				
+			return true;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Unable to enter fullscreen, continuing in windowed mode");
+		}
+		
 		return false;
 	}
 
