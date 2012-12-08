@@ -29,20 +29,30 @@ import com.stonetolb.engine.profiles.WorldProfile.WorldDirection;
  */
 public class OverworldMovementComponent extends EntityComponent {
 	
-	public OverworldMovementComponent(String pId) {
+	protected float upDirectionValue;
+	protected float rightDirectionValue;
+	protected float downDirectionValue;
+	protected float leftDirectionValue;
+	
+	public OverworldMovementComponent(String pId, float pUp, float pDown, float pRight, float pLeft) {
 		id = pId;
+		
+		upDirectionValue = pUp;
+		downDirectionValue = pDown;
+		rightDirectionValue = pRight;
+		leftDirectionValue = pLeft;
 	}
 	
 	@Override
 	public void update(long delta) {
 		WorldDirection dir;
-		if(parent.getDirection() == WorldDirection.UP.getDirection()) {
+		if(parent.getDirection() == upDirectionValue) {
 			dir = WorldDirection.UP;
-		} else if (parent.getDirection() == WorldDirection.RIGHT.getDirection()) {
+		} else if (parent.getDirection() == rightDirectionValue) {
 			dir = WorldDirection.RIGHT;
-		} else if (parent.getDirection() == WorldDirection.DOWN.getDirection()) {
+		} else if (parent.getDirection() == downDirectionValue) {
 			dir = WorldDirection.DOWN;
-		} else if (parent.getDirection() == WorldDirection.LEFT.getDirection()) {
+		} else if (parent.getDirection() == leftDirectionValue) {
 			dir = WorldDirection.LEFT;
 		} else {
 			dir = WorldDirection.STILL;

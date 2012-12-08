@@ -50,7 +50,7 @@ public class WorldModule implements Module {
 	private static int 		HEIGHT = 48;
 	
 	private Entity vaughnTwo;
-	private Entity nothing;
+	private Entity anchor;
 	private Entity origin;
 	
 	@Override
@@ -71,177 +71,153 @@ public class WorldModule implements Module {
 		OverworldActorComponent vaughnRender = new OverworldActorComponent("TestComponent");
 		
 		// Gotta make a way to procedurally generate this from a file input...
+		
+		//Create the Animations and Sprites first:
+		Sprite standingToward = new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING);
+		Sprite standingLeft = new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING);
+		Sprite standingRight = new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING);
+		Sprite standingAway =  new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING);
+		
 		AnimationBuilder builder = Animation.builder();
+		Animation toward = builder
+				.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 400)
+				.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(standingToward, 200)
+				.build();
+		Animation left = builder
+				.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(standingLeft, 200)
+				.build();
+		Animation right = builder
+				.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(standingRight, 200)
+				.build();
+		Animation away = builder
+				.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
+				.addFrame(standingAway, 200)
+				.build();
 		
-		vaughn.addAction("toward"
-				, builder.setInterval(walkInterval)
-					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 400)
-					.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.build()
-				);
-		
-		vaughnRender.addAction(
-				new WorldProfile.MovementContext(
-						  WorldProfile.WorldDirection.DOWN.getDirection()
-						, WorldProfile.Speed.WALK.getSpeed()
-					)
-				, new AnimationRenderComponent(
-						  "toward"
-						, builder.setInterval(walkInterval)
-							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.build()
-					)
-			);
-		
-		vaughn.addAction("left"
-				, builder.setInterval(walkInterval)
-					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.build()
-				);
-		vaughnRender.addAction(
-				new WorldProfile.MovementContext(
-						  WorldProfile.WorldDirection.LEFT.getDirection()
-						, WorldProfile.Speed.WALK.getSpeed()
-					)
-				, new AnimationRenderComponent(
-						  "left"
-						, builder.setInterval(walkInterval)
-							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.build()
-					)
-			);
-		
-		vaughn.addAction("right"
-				, builder.setInterval(walkInterval)
-					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.build()
-				);
-		vaughnRender.addAction(
-				new WorldProfile.MovementContext(
-						  WorldProfile.WorldDirection.RIGHT.getDirection()
-						, WorldProfile.Speed.WALK.getSpeed()
-					)
-				, new AnimationRenderComponent(
-						  "left"
-						, builder.setInterval(walkInterval)
-							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.build()
-					)
-			);
-		
-		vaughn.addAction("away"
-				, builder.setInterval(walkInterval)
-					.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-					.build()
-				);
-		vaughnRender.addAction(
-				new WorldProfile.MovementContext(
-						  WorldProfile.WorldDirection.UP.getDirection()
-						, WorldProfile.Speed.WALK.getSpeed()
-					)
-				, new AnimationRenderComponent(
-						  "away"
-						, builder.setInterval(walkInterval)
-							.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(3*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.addFrame(new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 200)
-							.build()
-					)
-			);
-		
-		vaughn.addAction("standingtoward", new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
-		vaughn.addAction("standingleft", new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
-		vaughn.addAction("standingright", new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
-		vaughn.addAction("standingaway", new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING));
-		
-		vaughnRender.addAction(
-				new WorldProfile.MovementContext(
-						  WorldProfile.WorldDirection.DOWN.getDirection()
-						, WorldProfile.Speed.STOP.getSpeed()
-					)
-				, new ImageRenderComponent(
-						  "standingtoward"
-						, new Sprite(sheet.getSubTexture(0*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
-					)
-			);
-		vaughnRender.addAction(
-				new WorldProfile.MovementContext(
-						  WorldProfile.WorldDirection.LEFT.getDirection()
-						, WorldProfile.Speed.STOP.getSpeed()
-					)
-				, new ImageRenderComponent(
-						  "standingleft"
-						, new Sprite(sheet.getSubTexture(0*WIDTH, 1*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
-					)
-			);
-		vaughnRender.addAction(
-				new WorldProfile.MovementContext(
-						  WorldProfile.WorldDirection.RIGHT.getDirection()
-						, WorldProfile.Speed.STOP.getSpeed()
-					)
-				, new ImageRenderComponent(
-						  "standingright"
-						, new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
-					)
-			);
-		vaughnRender.addAction(
-				new WorldProfile.MovementContext(
-						  WorldProfile.WorldDirection.UP.getDirection()
-						, WorldProfile.Speed.STOP.getSpeed()
-					)
-				, new ImageRenderComponent(
-						  "standingaway"
-						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
-					)
-			);
-		
+		//Construct the Old Actor
+		//Clone the Animations since they'll be copied across the other entities
+		vaughn.addAction("toward", toward.clone());
+		vaughn.addAction("left", left.clone());
+		vaughn.addAction("right", right.clone());
+		vaughn.addAction("away", away.clone());
+		vaughn.addAction("standingtoward", standingToward);
+		vaughn.addAction("standingleft", standingLeft);
+		vaughn.addAction("standingright", standingRight);
+		vaughn.addAction("standingaway", standingAway);
 		vaughn.setAction("standingtoward");
 		vaughn.setVerticalMovement(0);
 		vaughn.setHorizontalMovement(0);
 		
-		//Create an entity with new Entity Engine
-		nothing = new Entity("Anchor");
-		nothing.addComponent(new ImageRenderComponent("Nothing", null));
-		nothing.addComponent(new KeyboardControlComponent("WASD", WorldProfile.Control.WASD));
-		nothing.addComponent(new OverworldMovementComponent("Complex"));
-		nothing.setPosition(new Pair<Float,Float>(150F, 150F));
+		// Construct the New Entity's rendering objects
+		vaughnRender.addAction(
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.DOWN.getDirection()
+						, WorldProfile.Speed.WALK.getSpeed()
+					)
+				, new AnimationRenderComponent("toward", toward.clone())
+			);
 		
-		Camera.getCamera().setParent(nothing);
 		
+		vaughnRender.addAction(
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.LEFT.getDirection()
+						, WorldProfile.Speed.WALK.getSpeed()
+					)
+				, new AnimationRenderComponent("left", left.clone())
+			);
+		
+		
+		vaughnRender.addAction(
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.RIGHT.getDirection()
+						, WorldProfile.Speed.WALK.getSpeed()
+					)
+				, new AnimationRenderComponent("right", right.clone())
+			);
+		
+		
+		vaughnRender.addAction(
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.UP.getDirection()
+						, WorldProfile.Speed.WALK.getSpeed()
+					)
+				, new AnimationRenderComponent("away", away.clone())
+			);
+		
+		vaughnRender.addAction(
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.DOWN.getDirection()
+						, WorldProfile.Speed.STOP.getSpeed()
+					)
+				, new ImageRenderComponent("standingtoward", standingToward)
+			);
+		
+		vaughnRender.addAction(
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.LEFT.getDirection()
+						, WorldProfile.Speed.STOP.getSpeed()
+					)
+				, new ImageRenderComponent("standingleft", standingLeft)
+			);
+		
+		vaughnRender.addAction(
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.RIGHT.getDirection()
+						, WorldProfile.Speed.STOP.getSpeed()
+					)
+				, new ImageRenderComponent("standingright", standingRight)
+			);
+		
+		vaughnRender.addAction(
+				new WorldProfile.MovementContext(
+						  WorldProfile.WorldDirection.UP.getDirection()
+						, WorldProfile.Speed.STOP.getSpeed()
+					)
+				, new ImageRenderComponent("standingaway", standingAway)
+			);
+		
+		// null image entity that acts as the camera anchor
+		anchor = new Entity("Anchor");
+		anchor.addComponent(new ImageRenderComponent("Nothing", null));
+		anchor.addComponent(new KeyboardControlComponent("WASD", WorldProfile.Control.WASD));
+		anchor.addComponent(
+				new OverworldMovementComponent("Complex"
+						, WorldProfile.WorldDirection.UP.getDirection()
+						, WorldProfile.WorldDirection.DOWN.getDirection()
+						, WorldProfile.WorldDirection.RIGHT.getDirection()
+						, WorldProfile.WorldDirection.LEFT.getDirection()
+						)
+				);
+		anchor.setPosition(new Pair<Float,Float>(150F, 150F));
+		
+		Camera.getCamera().setParent(anchor);
+		
+		// entity to sit right at 0,0 of the game world
 		origin = new Entity("Origin");
 		origin.addComponent(new ImageRenderComponent("Nothing", null));
 		origin.setPosition(new Pair<Float, Float>(0F,0F));
 		
+		// entity that is parented to the world
 		vaughnTwo = new Entity("Second Vaughn", origin);
-//		nada.addComponent(
-//				new ImageRenderComponent(
-//						  "NullImage"
-//						, new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING)
-//						)
-//				);
 		vaughnTwo.addComponent(new KeyboardControlComponent("Arrows", WorldProfile.Control.ARROWS));
-		vaughnTwo.addComponent(new OverworldMovementComponent("Basic"));
+		vaughnTwo.addComponent(
+				new OverworldMovementComponent("Basic"
+						, WorldProfile.WorldDirection.UP.getDirection()
+						, WorldProfile.WorldDirection.DOWN.getDirection()
+						, WorldProfile.WorldDirection.RIGHT.getDirection()
+						, WorldProfile.WorldDirection.LEFT.getDirection()
+						)
+				);
 		vaughnTwo.addComponent(vaughnRender);
 		vaughnTwo.setPosition(new Pair<Float,Float>(150F,0F));
 		
@@ -285,7 +261,7 @@ public class WorldModule implements Module {
 		
 		vaughn.move(delta);
 		origin.update(delta);
-		nothing.update(delta);
+		anchor.update(delta);
 		vaughnTwo.update(delta);
 	}
 
@@ -293,7 +269,7 @@ public class WorldModule implements Module {
 	public void render(long delta) {
 		vaughn.render(delta);
 		origin.render(delta);
-		nothing.render(delta);
+		anchor.render(delta);
 		vaughnTwo.render(delta);
 	}
 }

@@ -17,62 +17,34 @@
 
 package com.stonetolb.graphics;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.stonetolb.util.IntervalQueue;
-
+import com.stonetolb.util.IntervalQueue.IntervalQueueBuilder;
 
 /**
- * Animation is a glorified list of Sprite objects, which,
- * based on a predetermined interval, changes which Sprite
- * is currently active. 
- * <p>
- * The interval the user specifies is
- * more or less just a suggestion, and the actual interval 
- * is the closest multiple of the list size to the stated 
- * interval. 
- * <p>
- * This object is handled just like a Sprite
- * in terms of drawing commands except you pass in the time since
- * the last frame.
+ * 
  * 
  * @author comet
  */
 public class Animation implements StatefulDrawable{
 	
 	/**
-	 * Helper class used to construct animations from multiple procedure calls.
-	 * Builder reset's state after each build, meaning that subsequent calls to building
-	 * methods will not affect previously built objects.
+	 * Builder object used to construct Animation Objects. This object 
+	 * leverages an {@link IntervalQueueBuilder} to construct the
+	 * underlying {@link IntervalQueue} that the Animation object uses.
+	 * Subsequent calls to this builder after an object has been created
+	 * will not affect any Animations previously built by this object.
 	 * 
 	 * @author james.baiera
 	 *
 	 */
 	public static class AnimationBuilder {
-		private List<Keyframe> frames;
-		private int interval;
-		
-		private AnimationBuilder() {
-			initBuilder();
-		}
-		
-		private void initBuilder() {
-			frames = new ArrayList<Keyframe>();
-			interval = Animation.BASE_MILLISECONDS_PER_FRAME;
-		}
-		
+		private IntervalQueueBuilder<Drawable> frameListBuilder;
+
 		/**
-		 * Sets Animation play time in Milliseconds.
-		 * 
-		 * @param pInterval
-		 * @return this AnimationBuilder
-		 * @deprecated
+		 * Private constructor, called in static method of Animation.
 		 */
-		public AnimationBuilder setInterval(int pInterval) {
-			interval = pInterval;
-			return this;
+		private AnimationBuilder() {
+			frameListBuilder = IntervalQueue.builder();
 		}
 		
 		/**
@@ -86,7 +58,7 @@ public class Animation implements StatefulDrawable{
 		}
 		
 		public AnimationBuilder addFrame(Keyframe pFrame) {
-			frames.add(pFrame);
+			frameListBuilder.append(pFrame, pFrame.getDuration());
 			return this;
 		}
 		
@@ -97,16 +69,7 @@ public class Animation implements StatefulDrawable{
 		 */
 		public Animation build() {
 			//Build result
-			Animation returnValue = new Animation(interval);
-//			returnValue.spriteList = frames;
-			returnValue.addAllFrames(frames);
-			returnValue.updateActual();
-			
-			//reset builder
-			initBuilder();
-			
-			//return
-			return returnValue;
+			return new Animation(frameListBuilder.build());
 		}
 	}
 	
@@ -145,47 +108,36 @@ public class Animation implements StatefulDrawable{
 		
 	}
 	
-	// interval is an approxamation right now, since frames are equidistant in time from each other
-	// This should be fixed later.
-	
-//	private int interval;
 	private int actualInterval;
 	private int stepCount;
 	private boolean running;
-//	protected List<Drawable> spriteList;
 	protected IntervalQueue<Drawable> frameList;
 	
-	private static int BASE_MILLISECONDS_PER_FRAME = 500; //Animation would last half a second
-	
+	/**
+	 * Creates a new {@link AnimationBuilder} and returns it
+	 * 
+	 * @return A new {@link AnimationBuilder} object
+	 */
 	public static AnimationBuilder builder() {
 		return new AnimationBuilder();
 	}
 	
-	private Animation(int pInterval) {
-//		interval = pInterval;
-		actualInterval = pInterval;
-		stepCount = 0;
-		frameList = new IntervalQueue<Drawable>();
-		running = false;
+	/**
+	 * Creates a new Animation object with the same immutable backing 
+	 * as the original.
+	 * 
+	 * @return new Animation object with the same list of frames
+	 */
+	public Animation clone() {
+		return new Animation(frameList);
 	}
 	
-	private void addAllFrames(List<Keyframe> pKeyframes) {
-		for(Keyframe keyframe : pKeyframes) {
-			frameList.add(keyframe.getImage(), keyframe.duration);
-		}
-		actualInterval = frameList.getQueueLength();
+	private Animation(IntervalQueue<Drawable> pFrameList) {
+		actualInterval = pFrameList.getQueueLength();
+		stepCount = 0;
+		frameList = pFrameList;
+		running = false;
 	}
-//	
-//	private void start() {
-//		if(!running) {
-//			stepCount = 0;
-//			running = true;
-//		}
-//	}
-//	
-//	private void stop() {
-//		running = false;
-//	}
 
 	@Override
 	public void ready() {
@@ -222,31 +174,6 @@ public class Animation implements StatefulDrawable{
 			toBeDrawn = toBeDrawn == null ? NullDrawable.INSTANCE : toBeDrawn; //null check
 			
 			toBeDrawn.draw(x, y, z, delta);
-			
-//			// create an increment amount
-//			int inc = (int) (actualInterval / spriteList.size());
-//			// figure out which index to display
-//			int idx = (int) (stepCount / inc);
-//			// draw the needed sprite at the area specified
-//			spriteList.get(idx).draw(x, y, z, delta);
 		}
-	}
-	
-	/**
-	 * Finds the greatest common factor between the interval
-	 * and the number of items in the animation list. Sets the
-	 * actual interval of the Animation
-	 * 
-	 * TODO : Get away from using equal spaced keyframes by default.
-	 * There should be a set of keyframe items which are frames associated
-	 * with how long they should be displayed to the screen.
-	 */
-	private void updateActual() {
-//		int lstSize = spriteList.size();
-//		if (lstSize > 0) {
-//			actualInterval = ((int) (interval / lstSize)) * lstSize;
-//		} else {
-//			actualInterval = interval;
-//		}
 	}
 }

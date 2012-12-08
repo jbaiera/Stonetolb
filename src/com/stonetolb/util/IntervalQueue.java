@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Container that stores Objects associated with an interval of time.
+ * An immutable Container that stores Objects associated with an interval of time.
  * Similar to a time line.
  * <p>
  * An example of the internal structure can be viewed as such<br>
@@ -40,6 +40,46 @@ import java.util.List;
  * 
  */
 public class IntervalQueue<T>{
+	
+	/**
+	 * Builder class used to construct an {@link IntervalQueue} object.
+	 * This builder does not persist it's state between build calls,
+	 * therefore, subsequent modifications made to this builder will not 
+	 * affect the state of already created objects.
+	 * 
+	 * @author james.baiera
+	 *
+	 * @param <T>
+	 */
+	public static class IntervalQueueBuilder<T> {
+		private IntervalQueue<T> internalQueue;
+		
+		private IntervalQueueBuilder() {
+			internalQueue = new IntervalQueue<T>();
+		}
+		
+		/**
+		 * Appends the given object to the time line
+		 * 
+		 * @param pObject Object to be added
+		 * @param pLifeTime Amount of time Object should be represented by an interval
+		 * @return This builder object for command chaining
+		 */
+		public IntervalQueueBuilder<T> append(T pObject, int pLifeTime) {
+			internalQueue.add(pObject, pLifeTime);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @return New Immutable {@link IntervalQueue}
+		 */
+		public IntervalQueue<T> build() {
+			IntervalQueue<T> returnValue = internalQueue;
+			internalQueue = new IntervalQueue<T>();
+			return returnValue;
+		}
+	}
 	
 	/**
 	 * Object that stores start and stop information of a section of interval
@@ -163,7 +203,11 @@ public class IntervalQueue<T>{
 	private List<Interval<T>> data;
 	private int header;
 	
-	public IntervalQueue() {
+	public static <T> IntervalQueueBuilder<T> builder(){
+		return new IntervalQueueBuilder<T>();
+	}
+	
+	private IntervalQueue() {
 		data = new ArrayList<Interval<T>>();
 		header = 0;
 	}
@@ -171,11 +215,13 @@ public class IntervalQueue<T>{
 	/**
 	 * Adds object to end of queue with an interval 
 	 * of (END OF QUEUE) to (END OF QUEUE PLUS DURATION)
+	 * <p>
+	 * Internal method only.
 	 * 
 	 * @param pData Object to store
 	 * @param pDuration Length of interval to store for
 	 */
-	public void add(T pData, int pDuration) {
+	private void add(T pData, int pDuration) {
 		data.add(
 				new Interval<T>(
 						  header              //From next spot in time
@@ -219,7 +265,7 @@ public class IntervalQueue<T>{
 	 * @param pTime
 	 * @return null if value is not found in the time line
 	 */
-	public Interval<T> getIntervalAt(int pTime) {
+	private Interval<T> getIntervalAt(int pTime) {
 		Interval<T> index = new Interval<T>(pTime,pTime,null);
 		return getAt(index);
 	}
@@ -231,7 +277,7 @@ public class IntervalQueue<T>{
 	 * @return null if value is not found in the time line<br>
 	 * first value found if multiple intervals overlap.
 	 */
-	public Interval<T> getAt(Interval<T> pSearchInterval) {
+	private Interval<T> getAt(Interval<T> pSearchInterval) {
 		int location = Collections.binarySearch(data, pSearchInterval, new IntervalOverlapComparator<T>());
 		if (location < 0) {
 			return null;
