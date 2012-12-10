@@ -18,14 +18,18 @@
 package com.stonetolb.game.module;
 
 
+import java.awt.Rectangle;
+
 import org.lwjgl.input.Keyboard;
 
 import com.stonetolb.engine.Entity;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
+import com.stonetolb.engine.component.physics.CollisionComponent;
 import com.stonetolb.engine.component.render.AnimationRenderComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.engine.component.render.OverworldActorComponent;
+import com.stonetolb.engine.physics.PhysicsManager;
 import com.stonetolb.engine.profiles.WorldProfile;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
@@ -44,10 +48,13 @@ import com.stonetolb.util.Pair;
  *
  */
 public class WorldModule implements Module {
-	private Actor			vaughn;
-	private Texture 		sheet;
-	private static int 		WIDTH = 32;
-	private static int 		HEIGHT = 48;
+	private Actor       vaughn;
+	private Texture     sheet;
+	private static int 	WIDTH = 32;
+	private static int 	HEIGHT = 48;
+	private static int  NULLWIDTH = 43;
+	private static int  NULLHEIGHT = 29;
+	private PhysicsManager world;
 	
 	private Entity vaughnTwo;
 	private Entity anchor;
@@ -64,6 +71,8 @@ public class WorldModule implements Module {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		world = new PhysicsManager();
 		
 		vaughn = new Actor(200,100);
 		int walkInterval = 800;
@@ -205,6 +214,12 @@ public class WorldModule implements Module {
 		// entity to sit right at 0,0 of the game world
 		origin = new Entity("Origin");
 		origin.addComponent(new ImageRenderComponent("Nothing", null));
+		origin.addComponent(
+				new CollisionComponent("Basic Bounds"
+						, new Rectangle(0,0,NULLWIDTH,NULLHEIGHT)
+						, world
+						)
+				);
 		origin.setPosition(new Pair<Float, Float>(0F,0F));
 		
 		// entity that is parented to the world
@@ -219,6 +234,12 @@ public class WorldModule implements Module {
 						)
 				);
 		vaughnTwo.addComponent(vaughnRender);
+		vaughnTwo.addComponent(
+				new CollisionComponent("Half Bounds"
+						, new Rectangle(0,HEIGHT/2,WIDTH, HEIGHT/2)
+						, world
+						)
+				);
 		vaughnTwo.setPosition(new Pair<Float,Float>(150F,0F));
 		
 	}
@@ -259,14 +280,19 @@ public class WorldModule implements Module {
 			}
 		}
 		
+		//Process Entities
 		vaughn.move(delta);
 		origin.update(delta);
 		anchor.update(delta);
 		vaughnTwo.update(delta);
+		
+		//Process collisions
+		world.update();
 	}
 
 	@Override
 	public void render(long delta) {
+		//Render Entites
 		vaughn.render(delta);
 		origin.render(delta);
 		anchor.render(delta);

@@ -155,4 +155,12 @@ public class Sprite implements Drawable{
 		// restore the model view matrix to prevent contamination
 		glPopMatrix();
 	}
+	
+	@Override
+	public String toString() {
+		return "Sprite [texture=" + texture + ", width=" + width + ", height="
+				+ height + ", renderMode=" + renderMode + ", zDistance="
+				+ zDistance + "]";
+	}
+
 }
