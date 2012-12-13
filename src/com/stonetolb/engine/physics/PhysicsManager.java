@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import com.stonetolb.engine.Entity;
+
 /**
  * PhysicsManager is an object that manages all physical objects in
  * a game world. 
@@ -16,8 +18,8 @@ import java.util.Set;
  */
 public class PhysicsManager {
 	private Deque<RigidBody> pool;
-	private Map<Integer, RigidBody> active;
-	private Set<Integer> updated;
+	private Map<Entity, RigidBody> active;
+	private Set<Entity> updated;
 	private int runningIndex;
 	private int managedObjects;
 	
@@ -37,8 +39,8 @@ public class PhysicsManager {
 	 */
 	public PhysicsManager(int pStartingPoolSize) {
 		pool = new LinkedList<RigidBody>();
-		active = new HashMap<Integer, RigidBody>();
-		updated = new HashSet<Integer>();
+		active = new HashMap<Entity, RigidBody>();
+		updated = new HashSet<Entity>();
 		runningIndex = 0;
 		
 		if(pStartingPoolSize > 0) {
@@ -66,28 +68,29 @@ public class PhysicsManager {
 	}
 	
 	/**
-	 * Submits a request for a {@link RigidBody} object that is registered to
-	 * this world instance. Method returns an {@link Integer} that is used as
-	 * a key to grab the actual {@link RigidBody}
+	 * Submits a request for a {@link RigidBody} object that will be registered to
+	 * this manager instance. Collision object is bound to the entity it belongs to
+	 * so that in the future, collision messages may be dispatched to notify which
+	 * Entities have actually collided.
 	 * 
 	 * @param pBounds
 	 * @param pEvent
 	 * @return
 	 */
-	public Integer requestRigidBody(Rectangle pBounds, CollisionEvent pEvent) {
+	public boolean requestRigidBody(Entity pKeyEntity, Rectangle pBounds, CollisionEvent pEvent) {
 		if(pool.isEmpty()) {
 			fillPool(managedObjects);
 			managedObjects *= 2;
 		}
 		
-		Integer key = new Integer(runningIndex);
-		runningIndex++;
+//		Integer key = new Integer(runningIndex);
+//		runningIndex++;
 		
 		RigidBody toBeAdded = pool.removeLast();
 		toBeAdded.init(pBounds, pEvent);
-		active.put(key, toBeAdded);
+		active.put(pKeyEntity, toBeAdded);
 		
-		return key;
+		return true;
 	}
 	
 	/**
@@ -98,24 +101,12 @@ public class PhysicsManager {
 	 * 
 	 * @param key
 	 */
-	public void purgeRigidBody(Integer key) {
-		RigidBody purged = active.remove(key);
+	public void purgeRigidBody(Entity pKey) {
+		RigidBody purged = active.remove(pKey);
 		if(purged != null) {
 			purged.clear();
 			pool.addLast(purged);
 		}
-	}
-	
-	/**
-	 * Returns the {@link RigidBody} that is bound to this key value. Users should be
-	 * careful to not store {@link RigidBody} objects locally since once they are 
-	 * returned to the pool, they will be utilized by a different object at some point
-	 * 
-	 * @param key
-	 * @return
-	 */
-	public RigidBody getRigidBody(Integer key) {
-		return active.get(key);
 	}
 	
 	/**
@@ -126,11 +117,13 @@ public class PhysicsManager {
 	 * @param x
 	 * @param y
 	 */
-	public void updateObjectPosition(Integer key, int x, int y) {
-		RigidBody toUpdate = active.get(key);
-		if (toUpdate != null) {
-			toUpdate.updatePosition(x, y);
-			updated.add(key);
+	public void updateObjectPosition(Entity key, int x, int y) {
+		if (key != null) {
+			RigidBody toUpdate = active.get(key);
+			if (toUpdate != null) {
+				toUpdate.updatePosition(x, y);
+				updated.add(key);
+			}
 		}
 	}
 	
@@ -143,8 +136,8 @@ public class PhysicsManager {
 		Set<CollisionEvent> collisions = new HashSet<CollisionEvent>();
 		
 		//Check Everything to see if they collided.
-		for(Integer key : updated) {
-			for(Integer otherKey : active.keySet()) {
+		for(Entity key : updated) {
+			for(Entity otherKey : active.keySet()) {
 				if(!key.equals(otherKey)) {
 					CollisionEvent event = active.get(key).collidesWith(active.get(otherKey));
 

@@ -32,8 +32,8 @@ public class CollisionComponent extends EntityComponent implements
 	/** The offset from the Entity Origin that the bounding box sits*/
 	private Pair<Integer, Integer> offset;
 	
-	/** Binding to the rigid body object in the physics manager */
-	private Integer rigidBodyKey;
+	/** Rectangle object used as the bounding box for the component */
+	private Rectangle boundingBox;
 	
 	/** The Physics Manager */
 	private PhysicsManager world;
@@ -42,9 +42,7 @@ public class CollisionComponent extends EntityComponent implements
 		id = pId;
 		world = pWorld;
 		offset = new Pair<Integer, Integer>(pBounds.x, pBounds.y);
-		
-		// We register this object as the handler for collisions
-		rigidBodyKey = pWorld.requestRigidBody(pBounds, this);
+		boundingBox = pBounds;
 		
 		// These floats are not pairs because this is faster than making and throwing out
 		// Pair objects (one hundred * entities in world) times per second
@@ -58,8 +56,11 @@ public class CollisionComponent extends EntityComponent implements
 	public void setOwner(Entity pParent) {
 		parent = pParent;
 		
+		// We register this object as the handler for collisions
+		world.requestRigidBody(parent, boundingBox, this);
+		
 		//Update the bounding box position and our logs of our last position.
-		world.updateObjectPosition(rigidBodyKey
+		world.updateObjectPosition(parent
 				, offset.x + parent.getAbsolute().x.intValue()
 				, offset.y + parent.getAbsolute().y.intValue()
 				);
@@ -92,7 +93,7 @@ public class CollisionComponent extends EntityComponent implements
 		if(currentXPosition != lastXPosition || currentYPosition != lastYPosition) 
 		{
 			//Location of the box is the offset plus absolute
-			world.updateObjectPosition(rigidBodyKey
+			world.updateObjectPosition(parent
 					, offset.x + parent.getAbsolute().x.intValue()
 					, offset.y + parent.getAbsolute().y.intValue()
 					);
