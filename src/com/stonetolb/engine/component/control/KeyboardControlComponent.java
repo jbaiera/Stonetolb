@@ -43,16 +43,16 @@ public class KeyboardControlComponent extends EntityComponent {
 	public void update(long delta) {
 		
 		if(Keyboard.isKeyDown(controls.keyUp())) {
-			parent.setDirection(0);
+			parent.setDirection(WorldProfile.WorldDirection.UP.getDirection());
 			parent.setSpeed(WorldProfile.Speed.WALK.getSpeed());
 		} else if (Keyboard.isKeyDown(controls.keyDown())) {
-			parent.setDirection(2);
+			parent.setDirection(WorldProfile.WorldDirection.DOWN.getDirection());
 			parent.setSpeed(WorldProfile.Speed.WALK.getSpeed());
 		} else if (Keyboard.isKeyDown(controls.keyLeft())) {
-			parent.setDirection(3);
+			parent.setDirection(WorldProfile.WorldDirection.LEFT.getDirection());
 			parent.setSpeed(WorldProfile.Speed.WALK.getSpeed());
 		} else if (Keyboard.isKeyDown(controls.keyRight())) {
-			parent.setDirection(1);
+			parent.setDirection(WorldProfile.WorldDirection.RIGHT.getDirection());
 			parent.setSpeed(WorldProfile.Speed.WALK.getSpeed());
 		} else {
 			parent.setSpeed(WorldProfile.Speed.STOP.getSpeed());

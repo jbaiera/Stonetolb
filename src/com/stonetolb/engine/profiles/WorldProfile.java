@@ -100,32 +100,39 @@ public class WorldProfile {
 		}
 	}
 	
+	/**
+	 * Direction values are measured in degrees starting from the right and rotating clockwise
+	 * @author james.baiera
+	 *
+	 */
 	public enum WorldDirection {
-		UP(0,0,-1),
-		RIGHT(1,1,0),
-		DOWN(2,0,1),
-		LEFT(3,-1,0),
-		STILL(-1, 0, 0);
+		UP(270),
+		RIGHT(0),
+		DOWN(90),
+		LEFT(180),
+		STILL(90);
 		
-		private WorldDirection(float pDirection, int pXFactor, int pYFactor) {
+		private WorldDirection(float pDirection) {
 			direction = pDirection;
-			xFactor = pXFactor;
-			yFactor = pYFactor;
+//			xFactor = pXFactor;
+//			yFactor = pYFactor;
+			xFactor = Math.cos((double) Math.toRadians(pDirection));
+			yFactor = Math.sin((double) Math.toRadians(pDirection));
 		}
 		
-		private int xFactor;
-		private int yFactor;
+		private double xFactor;
+		private double yFactor;
 		private float direction;
 		
 		public float getDirection() {
 			return direction;
 		}
 		
-		public int getXFactor() {
+		public double getXFactor() {
 			return xFactor;
 		}
 		
-		public int getYFactor() {
+		public double getYFactor() {
 			return yFactor;
 		}
 	}

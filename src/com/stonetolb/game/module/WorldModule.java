@@ -199,14 +199,7 @@ public class WorldModule implements Module {
 		anchor = new Entity("Anchor");
 		anchor.addComponent(new ImageRenderComponent("Nothing", null));
 		anchor.addComponent(new KeyboardControlComponent("WASD", WorldProfile.Control.WASD));
-		anchor.addComponent(
-				new OverworldMovementComponent("Complex"
-						, WorldProfile.WorldDirection.UP.getDirection()
-						, WorldProfile.WorldDirection.DOWN.getDirection()
-						, WorldProfile.WorldDirection.RIGHT.getDirection()
-						, WorldProfile.WorldDirection.LEFT.getDirection()
-						)
-				);
+		anchor.addComponent(new OverworldMovementComponent("Complex"));
 		anchor.setPosition(new Pair<Float,Float>(150F, 150F));
 		
 		Camera.getCamera().setParent(anchor);
@@ -226,13 +219,7 @@ public class WorldModule implements Module {
 		vaughnTwo = new Entity("Second Vaughn", origin);
 		vaughnTwo.addComponent(new KeyboardControlComponent("Arrows", WorldProfile.Control.ARROWS));
 		vaughnTwo.addComponent(
-				new OverworldMovementComponent("Basic"
-						, WorldProfile.WorldDirection.UP.getDirection()
-						, WorldProfile.WorldDirection.DOWN.getDirection()
-						, WorldProfile.WorldDirection.RIGHT.getDirection()
-						, WorldProfile.WorldDirection.LEFT.getDirection()
-						)
-				);
+				new OverworldMovementComponent("Basic"));
 		vaughnTwo.addComponent(vaughnRender);
 		vaughnTwo.addComponent(
 				new CollisionComponent("Half Bounds"
