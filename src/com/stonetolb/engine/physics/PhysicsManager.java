@@ -7,6 +7,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 import com.stonetolb.engine.Entity;
 
@@ -19,17 +25,18 @@ import com.stonetolb.engine.Entity;
 public class PhysicsManager {
 	private Deque<RigidBody> pool;
 	private Map<Entity, RigidBody> active;
-	private Set<Entity> updated;
-	private int runningIndex;
+	private Set<CollisionTask> updated;
 	private int managedObjects;
+	private CompletionService<Set<CollisionEvent>> collisionService;
 	
-	private static int DEFAULT_POOL_SIZE = 20;
+	private static int DEFAULT_OBJECT_POOL_SIZE = 20;
+	private static int DEFAULT_THREAD_POOL_SIZE = 4;
 	
 	/**
 	 * Construct manager with base pool size
 	 */
 	public PhysicsManager() {
-		this(DEFAULT_POOL_SIZE);
+		this(DEFAULT_OBJECT_POOL_SIZE);
 	}
 	
 	/**
@@ -40,17 +47,19 @@ public class PhysicsManager {
 	public PhysicsManager(int pStartingPoolSize) {
 		pool = new LinkedList<RigidBody>();
 		active = new HashMap<Entity, RigidBody>();
-		updated = new HashSet<Entity>();
-		runningIndex = 0;
+		updated = new HashSet<CollisionTask>();
 		
 		if(pStartingPoolSize > 0) {
 			managedObjects = pStartingPoolSize;
 		}
 		else {
-			managedObjects = DEFAULT_POOL_SIZE;
+			managedObjects = DEFAULT_OBJECT_POOL_SIZE;
 		}
 		
 		fillPool(managedObjects);
+		
+		ExecutorService exec = Executors.newFixedThreadPool(DEFAULT_THREAD_POOL_SIZE);
+		collisionService = new ExecutorCompletionService<Set<CollisionEvent>>(exec);
 	}
 	
 	/**
@@ -82,9 +91,6 @@ public class PhysicsManager {
 			fillPool(managedObjects);
 			managedObjects *= 2;
 		}
-		
-//		Integer key = new Integer(runningIndex);
-//		runningIndex++;
 		
 		RigidBody toBeAdded = pool.removeLast();
 		toBeAdded.init(pBounds, pEvent);
@@ -122,7 +128,7 @@ public class PhysicsManager {
 			RigidBody toUpdate = active.get(key);
 			if (toUpdate != null) {
 				toUpdate.updatePosition(x, y);
-				updated.add(key);
+				updated.add(new CollisionTask(key, active));
 			}
 		}
 	}
@@ -133,26 +139,46 @@ public class PhysicsManager {
 	 * Brute force. Must reiterate on
 	 */
 	public void update() {
-		Set<CollisionEvent> collisions = new HashSet<CollisionEvent>();
 		
 		//Check Everything to see if they collided.
-		for(Entity key : updated) {
-			for(Entity otherKey : active.keySet()) {
-				if(!key.equals(otherKey)) {
-					CollisionEvent event = active.get(key).collidesWith(active.get(otherKey));
-
-					if(event != null) {
-						collisions.add(event);
-					}
-				}
+//		for(Entity key : updated) {
+//			futures.add(collisionDispatcher.submit(new CollisionTask(key, active)));
+//			for(Entity otherKey : active.keySet()) {
+//				if(!key.equals(otherKey)) {
+//					CollisionEvent event = active.get(key).collidesWith(active.get(otherKey));
+//
+//					if(event != null) {
+//						collisions.add(event);
+//					}
+//				}
+//			}
+//		}
+		
+		try {
+			Set<CollisionEvent> collisions = new HashSet<CollisionEvent>();
+			
+			//Submit tasks
+			for(CollisionTask task : updated) {
+				collisionService.submit(task);
 			}
+			
+			//Aggregate task returns
+			for(int taskIndex = 0; taskIndex < updated.size(); ++taskIndex) {
+				collisions.addAll(collisionService.take().get());
+			}
+			
+			//Dispatch Collision Events
+			for(CollisionEvent eachEvent : collisions) {
+				eachEvent.onCollision();
+			}
+		} catch (InterruptedException ie) {
+			Logger logger = Logger.getLogger("PHYSICS");
+			logger.severe("Physics Manager interrupted during collision analysis step");
+		} catch (ExecutionException ee) {
+			Logger logger = Logger.getLogger("PHYSICS");
+			logger.severe("Error occured in collision task object");
+		} finally {
+			updated.clear();
 		}
-		
-		//Dispatch Collision Events
-		for(CollisionEvent eachEvent : collisions) {
-			eachEvent.onCollision();
-		}
-		
-		updated.clear();
 	}
 }

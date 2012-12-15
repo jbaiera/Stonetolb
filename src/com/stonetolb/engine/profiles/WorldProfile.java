@@ -114,26 +114,12 @@ public class WorldProfile {
 		
 		private WorldDirection(float pDirection) {
 			direction = pDirection;
-//			xFactor = pXFactor;
-//			yFactor = pYFactor;
-			xFactor = Math.cos((double) Math.toRadians(pDirection));
-			yFactor = Math.sin((double) Math.toRadians(pDirection));
 		}
 		
-		private double xFactor;
-		private double yFactor;
 		private float direction;
 		
 		public float getDirection() {
 			return direction;
-		}
-		
-		public double getXFactor() {
-			return xFactor;
-		}
-		
-		public double getYFactor() {
-			return yFactor;
 		}
 	}
 }
