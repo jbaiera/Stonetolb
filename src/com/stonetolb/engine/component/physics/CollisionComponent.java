@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import com.stonetolb.engine.Entity;
 import com.stonetolb.engine.component.EntityComponent;
 import com.stonetolb.engine.physics.CollisionEvent;
+import com.stonetolb.engine.physics.CollisionResolution;
 import com.stonetolb.engine.physics.PhysicsManager;
 import com.stonetolb.util.Pair;
 
@@ -24,6 +25,9 @@ public class CollisionComponent extends EntityComponent implements
 	/** Location of the Entity last update */
 	private float lastXPosition;
 	private float lastYPosition;
+	
+	/** Set true if resolution has already occurred on this object */
+	private boolean hasResolvedAlready;
 	
 	/** Location of the Entity this update */
 	private float currentXPosition;
@@ -50,6 +54,8 @@ public class CollisionComponent extends EntityComponent implements
 		lastYPosition = 0F;
 		currentXPosition = 0F;
 		currentYPosition = 0F;
+		
+		hasResolvedAlready = false;
 	}
 	
 	@Override
@@ -73,15 +79,36 @@ public class CollisionComponent extends EntityComponent implements
 	 * Called in the event that a collision occurs.
 	 */
 	@Override
-	public void onCollision() {
-		//Set the position to be at the last spot that was good
-		parent.setPosition(new Pair<Float, Float>(lastXPosition, lastYPosition));
-		currentXPosition = lastXPosition;
-		currentYPosition = lastYPosition;
+	public CollisionResolution onCollision() {
+		if(!hasResolvedAlready) {
+			//Set the position to be at the last spot that was good
+			parent.setPosition(new Pair<Float, Float>(lastXPosition, lastYPosition));
+			currentXPosition = lastXPosition;
+			currentYPosition = lastYPosition;
+			
+			//Make sure that the world knows that you've moved back
+			world.updateObjectPosition(parent
+					, offset.x + parent.getAbsolute().x.intValue()
+					, offset.y + parent.getAbsolute().y.intValue()
+					);
+			
+			//Make sure that we dont try to resolve this object again
+			hasResolvedAlready = true;
+			
+			//Notify of normal collision resolution
+			return CollisionResolution.NORMAL;
+		}
+		
+		//Otherwise, was already resolved
+		return CollisionResolution.PREVIOUSLY;
 	}
 
 	@Override
 	public void update(long delta) {
+		//At this point all bets are off
+		// If we are updating then there is a chance of collision
+		hasResolvedAlready = false;
+		
 		//Update last position to be the current before
 		lastXPosition = currentXPosition;
 		lastYPosition = currentYPosition;

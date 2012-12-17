@@ -9,6 +9,6 @@ package com.stonetolb.engine.physics;
  */
 public interface CollisionEvent {
 	
-	public void onCollision();
+	public CollisionResolution onCollision();
 	
 }

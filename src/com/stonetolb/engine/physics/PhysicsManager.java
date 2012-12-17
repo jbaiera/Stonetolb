@@ -26,6 +26,7 @@ public class PhysicsManager {
 	private Deque<RigidBody> pool;
 	private Map<Entity, RigidBody> active;
 	private Set<CollisionTask> updated;
+	private Set<CollisionTask> currentRound;
 	private int managedObjects;
 	private CompletionService<Set<CollisionEvent>> collisionService;
 	
@@ -48,6 +49,7 @@ public class PhysicsManager {
 		pool = new LinkedList<RigidBody>();
 		active = new HashMap<Entity, RigidBody>();
 		updated = new HashSet<CollisionTask>();
+		currentRound = new HashSet<CollisionTask>();
 		
 		if(pStartingPoolSize > 0) {
 			managedObjects = pStartingPoolSize;
@@ -134,43 +136,55 @@ public class PhysicsManager {
 	}
 	
 	/**
-	 * Iterates over each {@link RigidBody} that and checks for collisions
-	 * <p>
-	 * Brute force. Must reiterate on
+	 * Will run the update method until all collisions have been resolved.
+	 * 
 	 */
+	public void resolveAllCollisions() {
+		//Wait until all collisions have been resolved
+		while(step() > 0);
+		
+		//Clear the update list
+		updated.clear();
+	}
+	
 	public void update() {
-		
-		//Check Everything to see if they collided.
-//		for(Entity key : updated) {
-//			futures.add(collisionDispatcher.submit(new CollisionTask(key, active)));
-//			for(Entity otherKey : active.keySet()) {
-//				if(!key.equals(otherKey)) {
-//					CollisionEvent event = active.get(key).collidesWith(active.get(otherKey));
-//
-//					if(event != null) {
-//						collisions.add(event);
-//					}
-//				}
-//			}
-//		}
-		
+		step();
+		updated.clear();
+	}
+	
+	/**
+	 * Launches a Collision Task for each updated RigidBody this round.
+	 * 
+	 * @return Number of collision events dispatched during the update<br>
+	 * -1 on engine error<br>
+	 * If non zero, there may be unresolved collisions
+	 */
+	private int step() {
 		try {
 			Set<CollisionEvent> collisions = new HashSet<CollisionEvent>();
+			currentRound.addAll(updated);
+			int numberOfNormalResolutions = 0;
 			
 			//Submit tasks
-			for(CollisionTask task : updated) {
+			for(CollisionTask task : currentRound) {
 				collisionService.submit(task);
 			}
 			
 			//Aggregate task returns
-			for(int taskIndex = 0; taskIndex < updated.size(); ++taskIndex) {
+			for(int taskIndex = 0; taskIndex < currentRound.size(); ++taskIndex) {
 				collisions.addAll(collisionService.take().get());
 			}
 			
 			//Dispatch Collision Events
 			for(CollisionEvent eachEvent : collisions) {
-				eachEvent.onCollision();
+				//Call and check resolution
+				if(eachEvent.onCollision() == CollisionResolution.NORMAL) {
+					++numberOfNormalResolutions;
+				}
 			}
+			
+			return numberOfNormalResolutions;
+			
 		} catch (InterruptedException ie) {
 			Logger logger = Logger.getLogger("PHYSICS");
 			logger.severe("Physics Manager interrupted during collision analysis step");
@@ -178,7 +192,10 @@ public class PhysicsManager {
 			Logger logger = Logger.getLogger("PHYSICS");
 			logger.severe("Error occured in collision task object");
 		} finally {
-			updated.clear();
+			currentRound.clear();
 		}
+		
+		return -1;
 	}
+	
 }

@@ -274,7 +274,7 @@ public class WorldModule implements Module {
 		vaughnTwo.update(delta);
 		
 		//Process collisions
-		world.update();
+		world.resolveAllCollisions();
 	}
 
 	@Override
