@@ -20,8 +20,6 @@ package com.stonetolb.game.module;
 
 import java.awt.Rectangle;
 
-import org.lwjgl.input.Keyboard;
-
 import com.stonetolb.engine.Entity;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
@@ -38,7 +36,6 @@ import com.stonetolb.graphics.Sprite;
 import com.stonetolb.graphics.Texture;
 import com.stonetolb.graphics.engine.TextureLoader;
 import com.stonetolb.render.Camera;
-import com.stonetolb.render.entities.Actor;
 import com.stonetolb.util.Pair;
 
 /**
