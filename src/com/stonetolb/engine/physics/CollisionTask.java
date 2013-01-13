@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 
 import com.stonetolb.engine.Entity;
 
-public class CollisionTask implements Callable<Set<CollisionEvent>> {
+class CollisionTask implements Callable<Set<CollisionEvent>> {
 	
 	private Entity objectKey;
 	private Map<Entity,RigidBody> world;

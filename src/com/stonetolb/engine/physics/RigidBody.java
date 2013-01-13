@@ -7,7 +7,7 @@ import java.awt.Rectangle;
  * @author james.baiera
  *
  */
-public class RigidBody {
+class RigidBody {
 	protected CollisionEvent event;
 	protected Rectangle bounds;
 	protected boolean inUse;
