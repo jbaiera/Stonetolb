@@ -48,7 +48,6 @@ import com.stonetolb.util.Pair;
  *
  */
 public class WorldModule implements Module {
-	private Actor       vaughn;
 	private Texture     sheet;
 	private static int 	WIDTH = 32;
 	private static int 	HEIGHT = 48;
@@ -74,7 +73,6 @@ public class WorldModule implements Module {
 		
 		world = new PhysicsManager();
 		
-		vaughn = new Actor(200,100);
 		int walkInterval = 800;
 		
 		OverworldActorComponent vaughnRender = new OverworldActorComponent("TestComponent");
@@ -113,21 +111,7 @@ public class WorldModule implements Module {
 				.addFrame(standingAway, 175)
 				.build();
 		
-		//Construct the Old Actor
-		//Clone the Animations since they'll be copied across the other entities
-		vaughn.addAction("toward", toward.clone());
-		vaughn.addAction("left", left.clone());
-		vaughn.addAction("right", right.clone());
-		vaughn.addAction("away", away.clone());
-		vaughn.addAction("standingtoward", standingToward);
-		vaughn.addAction("standingleft", standingLeft);
-		vaughn.addAction("standingright", standingRight);
-		vaughn.addAction("standingaway", standingAway);
-		vaughn.setAction("standingtoward");
-		vaughn.setVerticalMovement(0);
-		vaughn.setHorizontalMovement(0);
-		
-		// Construct the New Entity's rendering objects
+		// Construct the Entity's rendering objects
 		vaughnRender.addAction(
 				new WorldProfile.MovementContext(
 						  WorldProfile.WorldDirection.DOWN.getDirection()
@@ -232,43 +216,8 @@ public class WorldModule implements Module {
 	}
 
 	@Override
-	public void step(long delta) {
-		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			vaughn.setVerticalMovement(-75);
-			vaughn.setHorizontalMovement(0);
-			vaughn.setAction("away");
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			vaughn.setVerticalMovement(75);
-			vaughn.setHorizontalMovement(0);
-			vaughn.setAction("toward");
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			vaughn.setVerticalMovement(0);
-			vaughn.setHorizontalMovement(-75);
-			vaughn.setAction("left");
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			vaughn.setVerticalMovement(0);
-			vaughn.setHorizontalMovement(75);
-			vaughn.setAction("right");
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
-			vaughn.setVerticalMovement(0);
-			vaughn.setHorizontalMovement(0);
-			vaughn.setAction(Actor.EMPTY);
-		} else {
-			vaughn.setVerticalMovement(0);
-			vaughn.setHorizontalMovement(0);
-			if(vaughn.getDrawingName() == "toward") {
-				vaughn.setAction("standingtoward");
-			} else if (vaughn.getDrawingName() == "away") {
-				vaughn.setAction("standingaway");
-			} else if (vaughn.getDrawingName() == "left") {
-				vaughn.setAction("standingleft");
-			} else if (vaughn.getDrawingName() == "right") {
-				vaughn.setAction("standingright");
-			}
-		}
-		
+	public void step(long delta) {		
 		//Process Entities
-		vaughn.move(delta);
 		origin.update(delta);
 		anchor.update(delta);
 		vaughnTwo.update(delta);
@@ -280,7 +229,6 @@ public class WorldModule implements Module {
 	@Override
 	public void render(long delta) {
 		//Render Entites
-		vaughn.render(delta);
 		origin.render(delta);
 		anchor.render(delta);
 		vaughnTwo.render(delta);
