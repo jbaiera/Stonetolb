@@ -24,9 +24,10 @@ import com.stonetolb.engine.component.EntityComponent;
  * @author james.baiera
  *
  */
-public abstract class RenderComponent extends EntityComponent {
+@Deprecated
+public abstract class RenderComponentOld extends EntityComponent {
 	
-	public RenderComponent(String pId) {
+	public RenderComponentOld(String pId) {
 		id = pId;
 	}
 	

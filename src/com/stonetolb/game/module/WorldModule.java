@@ -22,10 +22,12 @@ import java.awt.Rectangle;
 
 import org.lwjgl.input.Keyboard;
 
-import com.stonetolb.engine.Entity;
+import com.artemis.Entity;
+import com.artemis.World;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
 import com.stonetolb.engine.component.physics.CollisionComponent;
+import com.stonetolb.engine.component.position.PositionComponent;
 import com.stonetolb.engine.component.render.AnimationRenderComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.engine.component.render.OverworldActorComponent;
@@ -49,21 +51,26 @@ import com.stonetolb.util.Pair;
  */
 public class WorldModule implements Module {
 	private Actor       vaughn;
+	
 	private Texture     sheet;
 	private static int 	WIDTH = 32;
 	private static int 	HEIGHT = 48;
 	private static int  NULLWIDTH = 43;
 	private static int  NULLHEIGHT = 29;
-	private PhysicsManager world;
 	
-	private Entity vaughnTwo;
-	private Entity anchor;
-	private Entity origin;
+	private PhysicsManager physicsWorld;
+	
+	private com.stonetolb.engine.Entity vaughnTwo;
+	private com.stonetolb.engine.Entity anchor;
+	private com.stonetolb.engine.Entity origin;
+	
+	private World world;
+	
+	private Entity newEnt;
 	
 	@Override
 	public void init() {
 		// Create an old style actor:
-		
 		try {
 			this.sheet = TextureLoader.getInstance().getTexture("sprites/Vaughn/world/Vaughn.png");
 		} catch(Exception e) {
@@ -72,7 +79,7 @@ public class WorldModule implements Module {
 			System.exit(1);
 		}
 		
-		world = new PhysicsManager();
+		physicsWorld = new PhysicsManager();
 		
 		vaughn = new Actor(200,100);
 		int walkInterval = 800;
@@ -196,7 +203,7 @@ public class WorldModule implements Module {
 			);
 		
 		// null image entity that acts as the camera anchor
-		anchor = new Entity("Anchor");
+		anchor = new com.stonetolb.engine.Entity("Anchor");
 		anchor.addComponent(new ImageRenderComponent("Nothing", null));
 		anchor.addComponent(new KeyboardControlComponent("WASD", WorldProfile.Control.WASD));
 		anchor.addComponent(new OverworldMovementComponent("Complex"));
@@ -205,18 +212,18 @@ public class WorldModule implements Module {
 		Camera.getCamera().setParent(anchor);
 		
 		// entity to sit right at 0,0 of the game world
-		origin = new Entity("Origin");
+		origin = new com.stonetolb.engine.Entity("Origin");
 		origin.addComponent(new ImageRenderComponent("Nothing", null));
 		origin.addComponent(
 				new CollisionComponent("Basic Bounds"
 						, new Rectangle(0,0,NULLWIDTH,NULLHEIGHT)
-						, world
+						, physicsWorld
 						)
 				);
 		origin.setPosition(new Pair<Float, Float>(0F,0F));
 		
 		// entity that is parented to the world
-		vaughnTwo = new Entity("Second Vaughn", origin);
+		vaughnTwo = new com.stonetolb.engine.Entity("Second Vaughn", origin);
 		vaughnTwo.addComponent(new KeyboardControlComponent("Arrows", WorldProfile.Control.ARROWS));
 		vaughnTwo.addComponent(
 				new OverworldMovementComponent("Basic"));
@@ -224,11 +231,14 @@ public class WorldModule implements Module {
 		vaughnTwo.addComponent(
 				new CollisionComponent("Half Bounds"
 						, new Rectangle(0,HEIGHT/2,WIDTH, HEIGHT/2)
-						, world
+						, physicsWorld
 						)
 				);
 		vaughnTwo.setPosition(new Pair<Float,Float>(150F,0F));
 		
+		//Artemis integration
+		newEnt = world.createEntity();
+		newEnt.addComponent(new PositionComponent(30, 30));
 	}
 
 	@Override
@@ -274,7 +284,7 @@ public class WorldModule implements Module {
 		vaughnTwo.update(delta);
 		
 		//Process collisions
-		world.resolveAllCollisions();
+		physicsWorld.resolveAllCollisions();
 	}
 
 	@Override

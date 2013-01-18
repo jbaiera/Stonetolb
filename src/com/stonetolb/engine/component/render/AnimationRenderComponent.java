@@ -5,7 +5,7 @@ import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.StatefulDrawable;
 
-public class AnimationRenderComponent extends RenderComponent {
+public class AnimationRenderComponent extends RenderComponentOld {
 
 	StatefulDrawable animation;
 	
