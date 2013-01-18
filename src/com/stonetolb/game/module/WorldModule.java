@@ -27,12 +27,14 @@ import com.artemis.World;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
 import com.stonetolb.engine.component.physics.CollisionComponent;
-import com.stonetolb.engine.component.position.PositionComponent;
+import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.AnimationRenderComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.engine.component.render.OverworldActorComponent;
+import com.stonetolb.engine.component.render.RenderComponent;
 import com.stonetolb.engine.physics.PhysicsManager;
 import com.stonetolb.engine.profiles.WorldProfile;
+import com.stonetolb.engine.system.RenderSystem;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
 import com.stonetolb.graphics.ImageRenderMode;
@@ -67,6 +69,7 @@ public class WorldModule implements Module {
 	private World world;
 	
 	private Entity newEnt;
+	private RenderSystem rs;
 	
 	@Override
 	public void init() {
@@ -237,8 +240,15 @@ public class WorldModule implements Module {
 		vaughnTwo.setPosition(new Pair<Float,Float>(150F,0F));
 		
 		//Artemis integration
+		world = new World();
+		rs = new RenderSystem();
+		world.setSystem(rs, true);
+		world.initialize();
+		
 		newEnt = world.createEntity();
-		newEnt.addComponent(new PositionComponent(30, 30));
+		newEnt.addComponent(new Position(30, 30));
+		newEnt.addComponent(new RenderComponent(standingToward));
+		newEnt.addToWorld();
 	}
 
 	@Override
@@ -285,6 +295,9 @@ public class WorldModule implements Module {
 		
 		//Process collisions
 		physicsWorld.resolveAllCollisions();
+		
+		world.setDelta(delta);
+		world.process();
 	}
 
 	@Override
@@ -294,5 +307,7 @@ public class WorldModule implements Module {
 		origin.render(delta);
 		anchor.render(delta);
 		vaughnTwo.render(delta);
+		
+		rs.process();
 	}
 }

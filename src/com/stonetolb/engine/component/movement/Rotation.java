@@ -2,10 +2,10 @@ package com.stonetolb.engine.component.movement;
 
 import com.artemis.Component;
 
-public class RotationComponent extends Component {
+public class Rotation extends Component {
 	private double rotation;
 	
-	public RotationComponent(float pRotation) {
+	public Rotation(float pRotation) {
 		rotation = pRotation;
 	}
 	

@@ -2,10 +2,10 @@ package com.stonetolb.engine.component.movement;
 
 import com.artemis.Component;
 
-public class VelocityComponent extends Component {
+public class Velocity extends Component {
 	private float velocity;
 	
-	public VelocityComponent(float pVelocity) {
+	public Velocity(float pVelocity) {
 		velocity = pVelocity;
 	}
 	

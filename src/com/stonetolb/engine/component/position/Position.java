@@ -2,11 +2,11 @@ package com.stonetolb.engine.component.position;
 
 import com.artemis.Component;
 
-public class PositionComponent extends Component{
+public class Position extends Component{
 	private float xpos;
 	private float ypos;
 	
-	public PositionComponent(float pXpos, float pYpos) {
+	public Position(float pXpos, float pYpos) {
 		xpos = pXpos;
 		ypos = pYpos;
 	}
@@ -27,7 +27,7 @@ public class PositionComponent extends Component{
 		ypos = pNew;
 	}
 	
-	public void setPosition(PositionComponent other) {
+	public void setPosition(Position other) {
 		xpos = other.xpos;
 		ypos = other.ypos;
 	}
