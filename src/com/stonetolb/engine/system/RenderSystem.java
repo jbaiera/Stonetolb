@@ -13,6 +13,7 @@ public class RenderSystem extends EntityProcessingSystem {
 	private @Mapper ComponentMapper<Position> positionMap;
 	private @Mapper ComponentMapper<RenderComponent> renderMap; 
 	
+	@SuppressWarnings("unchecked")
 	public RenderSystem() {
 		super(Aspect.getAspectForAll(Position.class, RenderComponent.class));
 	}

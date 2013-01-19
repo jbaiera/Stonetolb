@@ -25,7 +25,10 @@ import org.lwjgl.input.Keyboard;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
+import com.stonetolb.engine.component.control.PlayerControl;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
+import com.stonetolb.engine.component.movement.Rotation;
+import com.stonetolb.engine.component.movement.Velocity;
 import com.stonetolb.engine.component.physics.CollisionComponent;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.AnimationRenderComponent;
@@ -34,6 +37,8 @@ import com.stonetolb.engine.component.render.OverworldActorComponent;
 import com.stonetolb.engine.component.render.RenderComponent;
 import com.stonetolb.engine.physics.PhysicsManager;
 import com.stonetolb.engine.profiles.WorldProfile;
+import com.stonetolb.engine.system.MovementSystem;
+import com.stonetolb.engine.system.PlayerControlSystem;
 import com.stonetolb.engine.system.RenderSystem;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
@@ -243,11 +248,16 @@ public class WorldModule implements Module {
 		world = new World();
 		rs = new RenderSystem();
 		world.setSystem(rs, true);
+		world.setSystem(new PlayerControlSystem());
+		world.setSystem(new MovementSystem());
 		world.initialize();
 		
 		newEnt = world.createEntity();
 		newEnt.addComponent(new Position(30, 30));
 		newEnt.addComponent(new RenderComponent(standingToward));
+		newEnt.addComponent(new Rotation(WorldProfile.WorldDirection.DOWN.getDirection()));
+		newEnt.addComponent(new Velocity(WorldProfile.Speed.STOP.getSpeed()));
+		newEnt.addComponent(new PlayerControl(WorldProfile.Control.ARROWS)); //Control profile does not matter. Moving away from that soon...
 		newEnt.addToWorld();
 	}
 
