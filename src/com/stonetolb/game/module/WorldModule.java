@@ -35,14 +35,17 @@ import com.stonetolb.engine.component.render.AnimationRenderComponent;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.engine.component.render.OverworldActorComponent;
 import com.stonetolb.engine.component.render.RenderComponent;
+import com.stonetolb.engine.component.render.SpriteControl;
 import com.stonetolb.engine.physics.PhysicsManager;
 import com.stonetolb.engine.profiles.WorldProfile;
 import com.stonetolb.engine.system.MovementSystem;
 import com.stonetolb.engine.system.PlayerControlSystem;
 import com.stonetolb.engine.system.RenderSystem;
+import com.stonetolb.engine.system.SpriteControlSystem;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
 import com.stonetolb.graphics.ImageRenderMode;
+import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.Sprite;
 import com.stonetolb.graphics.Texture;
 import com.stonetolb.graphics.engine.TextureLoader;
@@ -250,14 +253,69 @@ public class WorldModule implements Module {
 		world.setSystem(rs, true);
 		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new MovementSystem());
+		world.setSystem(new SpriteControlSystem());
 		world.initialize();
+		
+		SpriteControl sc = new SpriteControl()
+				.setNoOp(NullDrawable.getInstance())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.DOWN.getDirection()
+								, WorldProfile.Speed.WALK.getSpeed()
+								)
+					, toward.clone())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.UP.getDirection()
+								, WorldProfile.Speed.WALK.getSpeed()
+								)
+					, away.clone())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.RIGHT.getDirection()
+								, WorldProfile.Speed.WALK.getSpeed()
+								)
+					, right.clone())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.LEFT.getDirection()
+								, WorldProfile.Speed.WALK.getSpeed()
+								)
+					, left.clone())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.DOWN.getDirection()
+								, WorldProfile.Speed.STOP.getSpeed()
+								)
+					, standingToward)
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.UP.getDirection()
+								, WorldProfile.Speed.STOP.getSpeed()
+								)
+					, standingAway)
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.RIGHT.getDirection()
+								, WorldProfile.Speed.STOP.getSpeed()
+								)
+					, standingRight)
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.LEFT.getDirection()
+								, WorldProfile.Speed.STOP.getSpeed()
+								)
+					, standingLeft);
 		
 		newEnt = world.createEntity();
 		newEnt.addComponent(new Position(30, 30));
-		newEnt.addComponent(new RenderComponent(standingToward));
+		Animation t = toward.clone();
+		t.ready();
+		newEnt.addComponent(new RenderComponent(t));
 		newEnt.addComponent(new Rotation(WorldProfile.WorldDirection.DOWN.getDirection()));
 		newEnt.addComponent(new Velocity(WorldProfile.Speed.STOP.getSpeed()));
 		newEnt.addComponent(new PlayerControl(WorldProfile.Control.ARROWS)); //Control profile does not matter. Moving away from that soon...
+		newEnt.addComponent(sc);
 		newEnt.addToWorld();
 	}
 

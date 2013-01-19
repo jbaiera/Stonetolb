@@ -42,7 +42,7 @@ public class Actor extends BaseEntity {
 	 */
 	public Actor(int x, int y) {
 		super(x,y);
-		actionbank.put(EMPTY, NullDrawable.INSTANCE);
+		actionbank.put(EMPTY, NullDrawable.getInstance());
 		setDrawable(actionbank.get(EMPTY), EMPTY);
 	}
 	

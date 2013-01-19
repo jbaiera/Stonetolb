@@ -15,7 +15,7 @@ public class AnimationRenderComponent extends RenderComponentOld {
 			animation = pAnimation;
 		} else {
 			//Create a low impact animation
-			animation = Animation.builder().addFrame(NullDrawable.INSTANCE, 5000).build();
+			animation = Animation.builder().addFrame(NullDrawable.getInstance(), 5000).build();
 		}
 	}
 	

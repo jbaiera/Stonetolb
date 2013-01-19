@@ -34,4 +34,6 @@ public interface Drawable {
 	 * @param delta amount of time that has past since last drawing
 	 */
 	public void draw(int x, int y, int z, long delta);
+	
+	public void accept(Critic critic);
 }

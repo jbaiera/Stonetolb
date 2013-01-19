@@ -157,6 +157,11 @@ public class Sprite implements Drawable{
 	}
 	
 	@Override
+	public void accept(Critic critic) {
+		critic.analyze(this);
+	}
+	
+	@Override
 	public String toString() {
 		return "Sprite [texture=" + texture + ", width=" + width + ", height="
 				+ height + ", renderMode=" + renderMode + ", zDistance="

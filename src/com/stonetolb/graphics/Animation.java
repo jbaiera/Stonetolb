@@ -106,6 +106,10 @@ public class Animation implements StatefulDrawable{
 			image.draw(x, y, z, delta);
 		}
 		
+		@Override
+		public void accept(Critic critic) {
+			critic.analyze(this);
+		}
 	}
 	
 	private int actualInterval;
@@ -171,9 +175,14 @@ public class Animation implements StatefulDrawable{
 			// Find the drawable that will be at this point in time
 			// and draw it
 			Drawable toBeDrawn = frameList.getDataAt(stepCount);
-			toBeDrawn = toBeDrawn == null ? NullDrawable.INSTANCE : toBeDrawn; //null check
+			toBeDrawn = toBeDrawn == null ? NullDrawable.getInstance() : toBeDrawn; //null check
 			
 			toBeDrawn.draw(x, y, z, delta);
 		}
+	}
+
+	@Override
+	public void accept(Critic critic) {
+		critic.analyze(this);
 	}
 }

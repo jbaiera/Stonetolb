@@ -42,7 +42,7 @@ public class ImageRenderComponent extends RenderComponentOld {
 		}
 		else 
 		{
-			image = NullDrawable.INSTANCE;
+			image = NullDrawable.getInstance();
 		}
 	}
 
