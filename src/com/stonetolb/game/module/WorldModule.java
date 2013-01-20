@@ -32,12 +32,14 @@ import com.stonetolb.engine.component.movement.Velocity;
 import com.stonetolb.engine.component.physics.CollisionComponent;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.AnimationRenderComponent;
+import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.engine.component.render.OverworldActorComponent;
 import com.stonetolb.engine.component.render.RenderComponent;
 import com.stonetolb.engine.component.render.SpriteControl;
 import com.stonetolb.engine.physics.PhysicsManager;
 import com.stonetolb.engine.profiles.WorldProfile;
+import com.stonetolb.engine.system.CameraSystem;
 import com.stonetolb.engine.system.MovementSystem;
 import com.stonetolb.engine.system.PlayerControlSystem;
 import com.stonetolb.engine.system.RenderSystem;
@@ -220,7 +222,8 @@ public class WorldModule implements Module {
 		anchor.addComponent(new OverworldMovementComponent("Complex"));
 		anchor.setPosition(new Pair<Float,Float>(150F, 150F));
 		
-		Camera.getCamera().setParent(anchor);
+//		Camera.getCamera().setParent(anchor);
+		Camera.getCamera().updatePosition(NULLWIDTH/2.0F, NULLHEIGHT/2.0F);
 		
 		// entity to sit right at 0,0 of the game world
 		origin = new com.stonetolb.engine.Entity("Origin");
@@ -254,6 +257,7 @@ public class WorldModule implements Module {
 		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new MovementSystem());
 		world.setSystem(new SpriteControlSystem());
+		world.setSystem(new CameraSystem());
 		world.initialize();
 		
 		SpriteControl sc = new SpriteControl()
@@ -316,6 +320,7 @@ public class WorldModule implements Module {
 		newEnt.addComponent(new Velocity(WorldProfile.Speed.STOP.getSpeed()));
 		newEnt.addComponent(new PlayerControl(WorldProfile.Control.ARROWS)); //Control profile does not matter. Moving away from that soon...
 		newEnt.addComponent(sc);
+		newEnt.addComponent(Camera.getCamera().attachTo(new CameraMount(WIDTH/2.0F, HEIGHT/2.0F)));
 		newEnt.addToWorld();
 	}
 
