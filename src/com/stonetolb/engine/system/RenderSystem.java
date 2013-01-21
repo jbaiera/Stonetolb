@@ -43,6 +43,12 @@ import com.stonetolb.Game;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.RenderComponent;
 
+/**
+ * System used to display Entities to the screen.
+ * 
+ * @author james.baiera
+ *
+ */
 public class RenderSystem extends EntityProcessingSystem {
 	private final int width;
 	private final int height;

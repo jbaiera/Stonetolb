@@ -21,9 +21,16 @@ import com.stonetolb.util.IntervalQueue;
 import com.stonetolb.util.IntervalQueue.IntervalQueueBuilder;
 
 /**
+ * Animation is a StatefulDrawable object that represents a list of Sprites that
+ * are displayed in quick succession to simulate motion. Animations are backed by 
+ * an Immutable Interval Queue to store the images and their lifetimes. Animations
+ * contain states to keep track of frame display times as well as actively rendering
+ * objects. It is a poor idea to reuse the same Animation across multiple objects.
+ * Animation is a thin object compared to it's immutable backing, so it is often wise
+ * to run clone the Animation should you want to reuse the animation frame set.
  * 
+ * @author james.baiera
  * 
- * @author comet
  */
 public class Animation implements StatefulDrawable{
 	

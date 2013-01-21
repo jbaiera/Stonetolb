@@ -26,6 +26,13 @@ import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.render.Camera;
 
+/**
+ * System that handles Camera movement for any Entity with the Camera
+ * attached to its CameraMount
+ * 
+ * @author james.baiera
+ *
+ */
 public class CameraSystem extends EntityProcessingSystem {
 	private @Mapper ComponentMapper<Position> positionMap;
 	private @Mapper ComponentMapper<CameraMount> mountMap;

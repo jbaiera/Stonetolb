@@ -31,6 +31,13 @@ import com.stonetolb.graphics.Critic;
 import com.stonetolb.graphics.Drawable;
 import com.stonetolb.graphics.StatefulDrawable;
 
+/**
+ * System used to change an Entity's visual representation based on 
+ * its state.
+ * 
+ * @author james.baiera
+ *
+ */
 public class SpriteControlSystem extends EntityProcessingSystem implements Critic{
 	private @Mapper ComponentMapper<SpriteControl> spriteControlMap;
 	private @Mapper ComponentMapper<RenderComponent> renderComponentMap;

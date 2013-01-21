@@ -29,6 +29,12 @@ import com.stonetolb.engine.component.movement.Rotation;
 import com.stonetolb.engine.component.movement.Velocity;
 import com.stonetolb.engine.profiles.WorldProfile;
 
+/**
+ * System used to listen for input and modify an Entity's state accordingly
+ *  
+ * @author james.baiera
+ *
+ */
 public class PlayerControlSystem extends EntityProcessingSystem {
 	private @Mapper ComponentMapper<Velocity> velocityMap;
 	private @Mapper ComponentMapper<Rotation> rotationMap;
@@ -42,6 +48,7 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	public PlayerControlSystem() {
 		super(Aspect.getAspectForAll(PlayerControl.class, Velocity.class, Rotation.class));
 	}
+	
 	@Override
 	protected void process(Entity arg0) {
 		Velocity vel = velocityMap.get(arg0);

@@ -22,6 +22,7 @@ import java.io.IOException;
 /**
  * Null object that implements the {@link Drawable} interface.
  * Used to represent non existant resources.
+ * 
  * @author james.baiera
  *
  */

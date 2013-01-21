@@ -25,6 +25,11 @@ import java.util.concurrent.Callable;
 
 import com.stonetolb.engine.Entity;
 
+/**
+ * Callable object used to compute collision occurrences.
+ * @author james.baiera
+ *
+ */
 class CollisionTask implements Callable<Set<CollisionEvent>> {
 	
 	private Entity objectKey;

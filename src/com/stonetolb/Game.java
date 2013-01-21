@@ -33,6 +33,7 @@ import com.stonetolb.render.Camera;
  * list of things to draw.
  * 
  * @author james.baiera
+ * 
  */
 public class Game {
 	private static long	TIMER_TICKS_PER_SECOND = Sys.getTimerResolution();

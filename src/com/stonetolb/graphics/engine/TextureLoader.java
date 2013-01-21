@@ -67,7 +67,7 @@ import com.stonetolb.graphics.Texture;
  * This class is a singleton, since there should only ever be one place that 
  * can return a Texture since they are cached as they are loaded.
  * 
- * @author comet
+ * @author james.baiera
  */
 public class TextureLoader {
     /** The table of textures that have been loaded in this loader */

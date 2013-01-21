@@ -21,7 +21,7 @@ package com.stonetolb.graphics;
  * All objects that are capable of being displayed to the screen
  * must implement this interface.
  * 
- * @author comet
+ * @author james.baiera
  */
 public interface Drawable {
 	

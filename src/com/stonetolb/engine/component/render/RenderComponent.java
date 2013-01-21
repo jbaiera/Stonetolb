@@ -21,6 +21,14 @@ import com.artemis.Component;
 import com.stonetolb.graphics.Drawable;
 import com.stonetolb.graphics.NullDrawable;
 
+/**
+ * Component that represents the visual aspect of an Entity. 
+ * Any Drawable may be placed into this Component for the visual
+ * aspect.
+ * 
+ * @author james.baiera
+ *
+ */
 public class RenderComponent extends Component {
 	private Drawable drawable;
 	

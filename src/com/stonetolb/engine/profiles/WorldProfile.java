@@ -19,7 +19,11 @@ package com.stonetolb.engine.profiles;
 
 import org.lwjgl.input.Keyboard;
 
-
+/**
+ * Module used to run any and all world movement and interaction
+ * @author james.baiera
+ *
+ */
 public class WorldProfile {
 	public enum Control {
 		ARROWS(   Keyboard.KEY_UP

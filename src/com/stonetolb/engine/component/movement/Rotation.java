@@ -19,6 +19,14 @@ package com.stonetolb.engine.component.movement;
 
 import com.artemis.Component;
 
+/**
+ * Component that represents a rotational orientation of an
+ * entity. Rotation values are angle values increasing clockwise 
+ * with zero degrees pointed towards the right of the screen.
+ * 
+ * @author james.baiera
+ * 
+ */
 public class Rotation extends Component {
 	private double rotation;
 	

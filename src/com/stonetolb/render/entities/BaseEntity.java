@@ -27,7 +27,7 @@ import com.stonetolb.render.graphics.Entity;
  * The BaseEntity is a simple object that stores a single Drawable object, as well as 
  * the location and movement states. 
  *  
- * @author comet
+ * @author james.baiera
  * @deprecated
  */
 public class BaseEntity implements Entity{

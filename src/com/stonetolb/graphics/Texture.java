@@ -29,7 +29,7 @@ import static org.lwjgl.opengl.GL11.*;
  * mapping coordinates need to be adjusted to match up the drawing the
  * sprite against the texture.
  * 
- * @author comet
+ * @author james.baiera
  */
 public class Texture {
 

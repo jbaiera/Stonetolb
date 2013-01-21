@@ -26,6 +26,12 @@ import com.stonetolb.engine.component.movement.Rotation;
 import com.stonetolb.engine.component.movement.Velocity;
 import com.stonetolb.engine.component.position.Position;
 
+/**
+ * System used to process an Entity's change in position every frame.
+ * 
+ * @author james.baiera
+ *
+ */
 public class MovementSystem extends EntityProcessingSystem {
 	private @Mapper ComponentMapper<Position> positionMap;
 	private @Mapper ComponentMapper<Velocity> velocityMap;

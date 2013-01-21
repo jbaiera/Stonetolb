@@ -25,6 +25,14 @@ import com.stonetolb.engine.profiles.WorldProfile.MovementContext;
 import com.stonetolb.graphics.Drawable;
 import com.stonetolb.graphics.NullDrawable;
 
+/**
+ * Component that stores Drawable aspects that an Entity may 
+ * use to represent itself visually. Entity states are stored
+ * in a key that is then mapped to the specific visual representation.
+ * 
+ * @author james.baiera
+ *
+ */
 public class SpriteControl extends Component {
 	private final Map<MovementContext, Drawable> actionMapping;
 	private Drawable noOp;

@@ -22,6 +22,7 @@ import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.StatefulDrawable;
 
+@Deprecated
 public class AnimationRenderComponent extends RenderComponentOld {
 
 	StatefulDrawable animation;

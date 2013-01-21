@@ -19,6 +19,12 @@ package com.stonetolb.engine.component.position;
 
 import com.artemis.Component;
 
+/**
+ * Component used to represent an Entity's location in space.
+ * 
+ * @author james.baiera
+ *
+ */
 public class Position extends Component{
 	private float xpos;
 	private float ypos;

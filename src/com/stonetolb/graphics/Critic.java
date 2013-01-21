@@ -18,11 +18,12 @@
 package com.stonetolb.graphics;
 
 /**
- * Interface that should be implemented by anything that may need to determine
- * the difference between a drawable and a stateful drawable for reasons.
+ * Interface that defines handler methods for the general Drawable
+ * Interface Definition Tree. Should an object require to perform 
+ * specific actions based on the type of Drawable that an object 
+ * may be, it should implement this interface and override the 
+ * corresponding handler methods.
  * 
- * Interface name is a play on words, since it takes a critic to really understand
- * art...
  * @author james.baiera
  *
  */
