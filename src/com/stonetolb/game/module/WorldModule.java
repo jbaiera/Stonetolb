@@ -252,7 +252,7 @@ public class WorldModule implements Module {
 		
 		//Artemis integration
 		world = new World();
-		rs = new RenderSystem();
+		rs = new RenderSystem(800,600);
 		world.setSystem(rs, true);
 		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new MovementSystem());
@@ -375,12 +375,17 @@ public class WorldModule implements Module {
 
 	@Override
 	public void render(long delta) {
+		rs.process();
+		
 		//Render Entites
 		vaughn.render(delta);
 		origin.render(delta);
 		anchor.render(delta);
 		vaughnTwo.render(delta);
-		
-		rs.process();
+	}
+	
+	@Override
+	public String toString() {
+		return "WorldModule";
 	}
 }

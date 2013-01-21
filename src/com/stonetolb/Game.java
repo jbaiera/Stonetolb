@@ -17,30 +17,13 @@
 
 package com.stonetolb;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glViewport;
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
 
 import com.stonetolb.game.module.Module;
-import com.stonetolb.game.module.WorldModule;
 import com.stonetolb.render.Camera;
 
 /**
@@ -52,144 +35,201 @@ import com.stonetolb.render.Camera;
  * @author comet
  */
 public class Game {
+	private static long	TIMER_TICKS_PER_SECOND = Sys.getTimerResolution();
+	private static Game INSTANCE;
+	
+	private String windowTitle;
+	private int	windowWidth;
+	private int	windowHeight;
 
-	/** The normal title of the window */
-	private String WINDOW_TITLE	= "Stonetolb 0.0.4";
-
-	/** The width of the game display area */
-	private int	width = 800;
-
-	/** The height of the game display area */
-	private int	height = 600;
-
-	/** The time at which the last rendering loop started from the point of view of the game logic */
-	private long lastLoopTime = getTime();
-
-	/** The time since the last record of fps */
+	private long lastLoopTime;
 	private long lastFpsTime;
-
-	/** The recorded fps */
 	private int	fps;
-	private static long	timerTicksPerSecond	= Sys.getTimerResolution();
-
-	/** True if the game is currently "running", i.e. the game loop is looping */
-	public static boolean gameRunning = true;
-
-	/** Whether we're running in fullscreen mode */
+	
+	private boolean gameRunning;
 	private boolean	fullscreen;
 
-	/** Is this an application or applet */
-	private static boolean isApplication;
-
-	/** Game Module that handles the game play */
-	Module world = new WorldModule();
+	private Module module;
+	
+	/**
+	 * Creates the Game object and returns it.
+	 * 
+	 * @param pWindowTitle
+	 * @param pWindowWidth
+	 * @param pWindoHeight
+	 * @param pModuleToRun
+	 * @param fullscreen
+	 * @return
+	 */
+	public static Game createGame(String pWindowTitle, int pWindowWidth, int pWindowHeight, String pModuleToRun, boolean fullscreen)
+	{
+		if (INSTANCE == null) {
+			INSTANCE = new Game(pWindowTitle, pWindowWidth, pWindowHeight, pModuleToRun, fullscreen);
+		}
+		
+		return INSTANCE;
+	}
+	
+	/**
+	 * Returns the singleton game object if it has been created. Null if not yet created.
+	 * @return
+	 */
+	public static Game getGame() {
+		return INSTANCE;
+	}
 	
 	/**
 	 * Construct our game and set it running.
+	 * @param pWindowWidth
+	 * @param pWindowHeight
+	 * @param pModuleToRun
 	 * @param fullscreen
-	 *
 	 */
-	public Game(boolean fullscreen) {
+	private Game(
+			  String pWindowTitle
+			, int pWindowWidth
+			, int pWindowHeight
+			, String pModuleToRun
+			, boolean fullscreen) 
+	{
+		this.windowTitle = pWindowTitle;
+		this.windowWidth = pWindowWidth;
+		this.windowHeight = pWindowHeight;
 		this.fullscreen = fullscreen;
-		initialize();
-	}
-
-	/**
-	 * Get the high resolution time in milliseconds
-	 *
-	 * @return The high resolution time in milliseconds
-	 */
-	public static long getTime() {
-		// we get the "timer ticks" from the high resolution timer
-		// multiply by 1000 so our end result is in milliseconds
-		// then divide by the number of ticks in a second giving
-		// us a nice clear time in milliseconds
-		return (Sys.getTime() * 1000) / timerTicksPerSecond;
-	}
-
-	/**
-	 * Sleep for a fixed number of milliseconds.
-	 *
-	 * @param duration The amount of time in milliseconds to sleep for
-	 */
-	public static void sleep(long duration) {
+		this.gameRunning = true;
+		
+		// Dynamically load a module by name
+		System.out.println("Loading Game Module...");
 		try {
-			Thread.sleep((duration * timerTicksPerSecond) / 1000);
-		} catch (InterruptedException inte) {
+			Class<?> clazz = Class.forName(pModuleToRun);
+			module = (Module) clazz.newInstance();
+			
+			System.out.println("Module Loaded : " + module.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (module == null) {
+				System.out.println("Failed to load module : " + pModuleToRun);
+				System.exit(1);
+			}
+		}
+	}
+
+	/**
+	 * Initializes game, runs game, then cleans up screen on game completion
+	 */
+	public void execute() {
+		initialize();
+		
+		gameLoop();
+
+		Display.destroy();
+	}
+	
+	/**
+	 * Initializes and runs the main game loop. Continues to run logic each 
+	 * frame until game ends.
+	 */
+	private void gameLoop() {
+		while (gameRunning) {
+			// run game logic for this frame
+			gameLogic();
+
+			// update window contents
+			Display.update();
 		}
 	}
 
 	/**
 	 * Initialize the common elements for the game
 	 */
-	public void initialize() {
-		// initialize the window beforehand
+	private void initialize() {
 		try {
 			setDisplayMode();
-			Display.setTitle(WINDOW_TITLE);
-			Display.setFullscreen(fullscreen);
+			Display.setTitle(windowTitle);
 			Display.create();
 
-			// grab the mouse, dont want that hideous cursor when we're playing!
-			//if (isApplication) {
-			//	Mouse.setGrabbed(true);
-			//}
-
-			// enable textures since we're going to use these for our sprites
-			glEnable(GL_TEXTURE_2D);
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glEnable(GL_DEPTH_TEST);
-			
-			// Testing some states
-			GL11.glClearDepth(1.0);
-			GL11.glDepthFunc(GL11.GL_LEQUAL);
-			GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
-			glEnable(GL11.GL_ALPHA_TEST);
-			glEnable(GL11.GL_CULL_FACE);
-			
 			// Create the Camera and update it's position on the plane
-			Camera.createCamera(width, height);
-			Camera.getCamera().moveCamera(); // Update Camera to move to position
+			Camera.createCamera(windowWidth, windowHeight);
+			Camera.getCamera().moveCamera();
 			
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			glViewport(0, 0, width, height);
+			// Set starting time for game loop
+			lastLoopTime = getTime();
 			
 		} catch (LWJGLException le) {
 			System.out.println("Game exiting - exception in initialization:");
 			le.printStackTrace();
-			Game.gameRunning = false;
+			gameRunning = false;
 			return;
 		}
 
 		// setup the initial game state
-		startGame();
+		module.init();
 	}
 
 	/**
-	* Sets the display mode for fullscreen mode
+	 * Notification that a frame is being rendered. Responsible for
+	 * running game logic and rendering the scene.
+	 */
+	private void gameLogic() {
+		// Sync Display to 60 fps
+		Display.sync(60);
+
+		// Calculate time since last loop
+		long delta = getTime() - lastLoopTime;
+		lastLoopTime = getTime();
+		lastFpsTime += delta;
+		fps++;
+
+		// update our FPS counter if one second has passed
+		if (lastFpsTime >= 1000) {
+			Display.setTitle(windowTitle + " (FPS: " + fps + ")");
+			lastFpsTime = 0;
+			fps = 0;
+		}
+
+		// Allow Game Logic
+		module.step(delta);
+		
+		// render the game frame
+		module.render(delta);
+		
+		// Update Camera's position
+		Camera.getCamera().moveCamera();
+		
+		// if escape has been pressed, stop the game
+		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))) {
+			gameRunning = false;
+		}
+	}
+
+	/**
+	* Sets the display mode
 	*/
 	private boolean setDisplayMode() {
 		try {
-			// We get the Display Modes
-			// Let's just ignore this for a bit...
-			//DisplayMode[] displayModes = org.lwjgl.opengl.Display.getAvailableDisplayModes();
+			//----------------------------------------------------------------------
+			// TEST : Getting display modes
+			// TODO : REVISIT LATER
+//			DisplayMode[] displayModes = org.lwjgl.opengl.Display.getAvailableDisplayModes();
+//			
+//			int i = 0;
+//			for(DisplayMode displayMode : displayModes) {
+//				System.out.println(i++ + ": " + displayMode.toString() + " F:" + displayMode.isFullscreenCapable());
+//			}
+			// END TEST
+			//----------------------------------------------------------------------
 			
-			//for(DisplayMode displayMode : displayModes) {
-			//	System.out.println(displayMode.toString());
-			//}
+			// Set display mode for the window
+			DisplayMode dm = new DisplayMode(windowWidth,windowHeight);
+			System.out.println("USING : " + dm.toString());
+			System.out.println("FSC : " + dm.isFullscreenCapable());
+	    	Display.setDisplayMode(dm);
 			
 			//If full screen, set's full screen
-			if (fullscreen)
+			if (fullscreen && dm.isFullscreenCapable())
 			{
 				Display.setFullscreen(fullscreen);
-			}
-			else
-			{
-				//Otherwise just run in window
-				DisplayMode dm = new DisplayMode(width,height);
-		    	Display.setDisplayMode(dm);
 			}
 				
 			return true;
@@ -201,94 +241,25 @@ public class Game {
 		
 		return false;
 	}
-
+	
 	/**
-	 * Initializes the game stack and readies it for the game loop
-	 */
-	private void startGame() {
-		// Create the first game module and init
-		world.init();
-	}
-
-	/**
-	 * Run the main game loop. This method keeps rendering the scene
-	 * and requesting that the callback updates its screen.
-	 */
-	private void gameLoop() {
-		while (Game.gameRunning) {
-		
-			// clear screen
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			
-			// let subsystem paint
-			frameRendering();
-
-			// update window contents
-			Display.update();
-		}
-
-		// clean up
-		Display.destroy();
-	}
-
-	/**
-	 * Notification that a frame is being rendered. Responsible for
-	 * running game logic and rendering the scene.
-	 */
-	public void frameRendering() {
-		//SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
-		Display.sync(60);
-
-		// work out how long its been since the last update, this
-		// will be used to calculate how far the entities should
-		// move this loop
-		long delta = getTime() - lastLoopTime;
-		lastLoopTime = getTime();
-		lastFpsTime += delta;
-		fps++;
-
-		// update our FPS counter if a second has passed
-		if (lastFpsTime >= 1000) {
-			Display.setTitle(WINDOW_TITLE + " (FPS: " + fps + ")");
-			lastFpsTime = 0;
-			fps = 0;
-		}
-
-		// Allow Game Logic
-		world.step(delta);
-					
-		// render the game frame
-		world.render(delta);
-		
-		// Update Camera's position
-		Camera.getCamera().moveCamera();
-		
-		// if escape has been pressed, stop the game
-		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
-			Game.gameRunning = false;
-		}
-	}
-
-	/**
-	 * The entry point into the game. We'll simply create an
-	 * instance of class which will start the display and game
-	 * loop.
+	 * Get the high resolution time in milliseconds
 	 *
-	 * @param argv The arguments that are passed into our game
+	 * @return The high resolution time in milliseconds
 	 */
-	public static void main(String argv[]) {
-		isApplication = true;
-		System.out.println("Use -fullscreen for fullscreen mode");
-		new Game((argv.length > 0 && "-fullscreen".equalsIgnoreCase(argv[0]))).execute();
-		System.exit(0);
+	public static long getTime() {
+		// we get the "timer ticks" from the high resolution timer
+		// multiply by 1000 so our end result is in milliseconds
+		// then divide by the number of ticks in a second giving
+		// us a nice clear time in milliseconds
+		return (Sys.getTime() * 1000) / TIMER_TICKS_PER_SECOND;
 	}
-
-	/**
-	 * Starts game loop, which runs until signaled to stop
-	 */
-	public void execute() {
-		gameLoop();
+	
+	public int getWindowWidth() {
+		return windowWidth;
+	}
+	
+	public int getWindowHeight() {
+		return windowHeight;
 	}
 }
