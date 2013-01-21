@@ -32,7 +32,7 @@ import com.stonetolb.render.Camera;
  * render operation, which will draw each sprite contained in the 
  * list of things to draw.
  * 
- * @author comet
+ * @author james.baiera
  */
 public class Game {
 	private static long	TIMER_TICKS_PER_SECOND = Sys.getTimerResolution();
@@ -66,7 +66,6 @@ public class Game {
 		if (INSTANCE == null) {
 			INSTANCE = new Game(pWindowTitle, pWindowWidth, pWindowHeight, pModuleToRun, fullscreen);
 		}
-		
 		return INSTANCE;
 	}
 	
@@ -120,9 +119,7 @@ public class Game {
 	 */
 	public void execute() {
 		initialize();
-		
 		gameLoop();
-
 		Display.destroy();
 	}
 	
@@ -151,7 +148,6 @@ public class Game {
 
 			// Create the Camera and update it's position on the plane
 			Camera.createCamera(windowWidth, windowHeight);
-			Camera.getCamera().moveCamera();
 			
 			// Set starting time for game loop
 			lastLoopTime = getTime();
@@ -222,8 +218,8 @@ public class Game {
 			
 			// Set display mode for the window
 			DisplayMode dm = new DisplayMode(windowWidth,windowHeight);
-			System.out.println("USING : " + dm.toString());
-			System.out.println("FSC : " + dm.isFullscreenCapable());
+			System.out.println("Using Display Mode  : " + dm.toString());
+			System.out.println("Full Screen Capable : " + dm.isFullscreenCapable());
 	    	Display.setDisplayMode(dm);
 			
 			//If full screen, set's full screen
@@ -255,10 +251,18 @@ public class Game {
 		return (Sys.getTime() * 1000) / TIMER_TICKS_PER_SECOND;
 	}
 	
+	/**
+	 * Returns the set window width
+	 * @return
+	 */
 	public int getWindowWidth() {
 		return windowWidth;
 	}
 	
+	/**
+	 * Returns the set window height
+	 * @return
+	 */
 	public int getWindowHeight() {
 		return windowHeight;
 	}
