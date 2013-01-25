@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="lib/lwjgl.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/Users/james.baiera/Play/Misc/lwjgl-2.8.4/doc/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/james.baiera/Play/Misc/lwjgl-2.8.4/native/macosx"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Stonetolb/native/lwjgl/macosx"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="res"/>
@@ -15,5 +15,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/TWL.jar"/>
+	<classpathentry kind="lib" path="lib/xpp3-1.1.4c.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
