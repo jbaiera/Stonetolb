@@ -17,6 +17,8 @@
 
 package com.stonetolb.engine.system;
 
+import org.lwjgl.input.Keyboard;
+
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -42,6 +44,13 @@ public class CameraSystem extends EntityProcessingSystem {
 	}
 	
 	@Override
+	protected void begin() {
+		// TODO Auto-generated method stub
+		super.begin();
+		Camera.getCamera().updatePosition(0f, 0f);
+	}
+	
+	@Override
 	protected void process(Entity arg0) {
 		Position pos = positionMap.get(arg0);
 		CameraMount mnt = mountMap.get(arg0);
@@ -55,5 +64,4 @@ public class CameraSystem extends EntityProcessingSystem {
 					);
 		}
 	}
-
 }

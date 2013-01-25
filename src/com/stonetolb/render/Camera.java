@@ -19,7 +19,7 @@ package com.stonetolb.render;
 
 import org.lwjgl.opengl.GL11;
 
-import com.stonetolb.engine.Entity;
+import com.artemis.Entity;
 import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.util.Pair;
 
@@ -41,7 +41,7 @@ public class Camera {
 	private Pair<Float, Float> position;
 	private int screenWidth;
 	private int screenHeight;
-	private Entity parent;
+	private com.stonetolb.engine.Entity parent;
 	private CameraMount mount;
 	
 	public static synchronized void createCamera(int pWidth, int pHeight) {
@@ -69,7 +69,7 @@ public class Camera {
 	
 	public void detach() {
 		mount = null;
-		position = ORIGIN;
+		updatePosition(ORIGIN.x.floatValue(), ORIGIN.y.floatValue());
 	}
 	
 	public boolean isAttachedTo(CameraMount pMount) {
@@ -77,7 +77,7 @@ public class Camera {
 	}
 	
 	@Deprecated
-	public void setParent(Entity pParent) {
+	public void setParent(com.stonetolb.engine.Entity pParent) {
 		parent = pParent;
 		updatePosition();
 	}
@@ -99,8 +99,6 @@ public class Camera {
 	}
 	
 	public void moveCamera() {
-//		updatePosition();
-		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		GL11.glOrtho(
