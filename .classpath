@@ -9,6 +9,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="res"/>
-	<classpathentry kind="lib" path="/Users/james.baiera/Play/workspace/Stonetolb/lib/artemis.jar"/>
+	<classpathentry kind="lib" path="lib/artemis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
