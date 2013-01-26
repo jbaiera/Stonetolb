@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.stonetolb.engine.component.EntityComponent;
-import com.stonetolb.engine.component.render.RenderComponent;
+import com.stonetolb.engine.component.render.RenderComponentOld;
 import com.stonetolb.util.Pair;
 
 /**
@@ -30,7 +30,7 @@ import com.stonetolb.util.Pair;
  * <p>
  * They are composed of different concrete {@link EntityComponent} 
  * that change it's behavior. They characteristically have only one 
- * {@link RenderComponent} which defines how they are rendered.
+ * {@link RenderComponentOld} which defines how they are rendered.
  * <p>
  * Entities may have parent Entities. This creates a locational dependancy only.
  * Entities will continue to display their coordinates as a displacement from the origin, 
@@ -46,6 +46,7 @@ import com.stonetolb.util.Pair;
  * @author comet
  *
  */
+@Deprecated
 public class Entity {
 	private String id;
 	
@@ -55,7 +56,7 @@ public class Entity {
 	protected int speed;
 	protected Entity sceneParent;
 	
-	protected RenderComponent renderComponent;
+	protected RenderComponentOld renderComponent;
 	
 	protected Map<String,EntityComponent> components;
 	
@@ -97,8 +98,8 @@ public class Entity {
 	 * @param pNewComponent
 	 */
 	public void addComponent(EntityComponent pNewComponent) {
-		if (RenderComponent.class.isInstance(pNewComponent)) {
-			renderComponent = (RenderComponent) pNewComponent;
+		if (RenderComponentOld.class.isInstance(pNewComponent)) {
+			renderComponent = (RenderComponentOld) pNewComponent;
 		}
 		
 		pNewComponent.setOwner(this);

@@ -20,18 +20,34 @@ package com.stonetolb.game.module;
 
 import java.awt.Rectangle;
 
-import com.stonetolb.engine.Entity;
+import org.lwjgl.input.Keyboard;
+
+import com.artemis.Entity;
+import com.artemis.World;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
+import com.stonetolb.engine.component.control.PlayerControl;
 import com.stonetolb.engine.component.movement.OverworldMovementComponent;
+import com.stonetolb.engine.component.movement.Rotation;
+import com.stonetolb.engine.component.movement.Velocity;
 import com.stonetolb.engine.component.physics.CollisionComponent;
+import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.AnimationRenderComponent;
+import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.engine.component.render.ImageRenderComponent;
 import com.stonetolb.engine.component.render.OverworldActorComponent;
+import com.stonetolb.engine.component.render.RenderComponent;
+import com.stonetolb.engine.component.render.SpriteControl;
 import com.stonetolb.engine.physics.PhysicsManager;
 import com.stonetolb.engine.profiles.WorldProfile;
+import com.stonetolb.engine.system.CameraSystem;
+import com.stonetolb.engine.system.MovementSystem;
+import com.stonetolb.engine.system.PlayerControlSystem;
+import com.stonetolb.engine.system.RenderSystem;
+import com.stonetolb.engine.system.SpriteControlSystem;
 import com.stonetolb.graphics.Animation;
 import com.stonetolb.graphics.Animation.AnimationBuilder;
 import com.stonetolb.graphics.ImageRenderMode;
+import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.Sprite;
 import com.stonetolb.graphics.Texture;
 import com.stonetolb.graphics.engine.TextureLoader;
@@ -50,16 +66,21 @@ public class WorldModule implements Module {
 	private static int 	HEIGHT = 48;
 	private static int  NULLWIDTH = 43;
 	private static int  NULLHEIGHT = 29;
-	private PhysicsManager world;
 	
-	private Entity vaughnTwo;
-	private Entity anchor;
-	private Entity origin;
+	private PhysicsManager physicsWorld;
+	
+	private com.stonetolb.engine.Entity vaughnTwo;
+	private com.stonetolb.engine.Entity anchor;
+	private com.stonetolb.engine.Entity origin;
+	
+	private World world;
+	
+	private Entity newEnt;
+	private RenderSystem rs;
 	
 	@Override
 	public void init() {
 		// Create an old style actor:
-		
 		try {
 			this.sheet = TextureLoader.getInstance().getTexture("sprites/Vaughn/world/Vaughn.png");
 		} catch(Exception e) {
@@ -68,7 +89,7 @@ public class WorldModule implements Module {
 			System.exit(1);
 		}
 		
-		world = new PhysicsManager();
+		physicsWorld = new PhysicsManager();
 		
 		int walkInterval = 800;
 		
@@ -177,27 +198,28 @@ public class WorldModule implements Module {
 			);
 		
 		// null image entity that acts as the camera anchor
-		anchor = new Entity("Anchor");
+		anchor = new com.stonetolb.engine.Entity("Anchor");
 		anchor.addComponent(new ImageRenderComponent("Nothing", null));
 		anchor.addComponent(new KeyboardControlComponent("WASD", WorldProfile.Control.WASD));
 		anchor.addComponent(new OverworldMovementComponent("Complex"));
 		anchor.setPosition(new Pair<Float,Float>(150F, 150F));
 		
-		Camera.getCamera().setParent(anchor);
+//		Camera.getCamera().setParent(anchor);
+		Camera.getCamera().updatePosition(NULLWIDTH/2.0F, NULLHEIGHT/2.0F);
 		
 		// entity to sit right at 0,0 of the game world
-		origin = new Entity("Origin");
+		origin = new com.stonetolb.engine.Entity("Origin");
 		origin.addComponent(new ImageRenderComponent("Nothing", null));
 		origin.addComponent(
 				new CollisionComponent("Basic Bounds"
 						, new Rectangle(0,0,NULLWIDTH,NULLHEIGHT)
-						, world
+						, physicsWorld
 						)
 				);
 		origin.setPosition(new Pair<Float, Float>(0F,0F));
 		
 		// entity that is parented to the world
-		vaughnTwo = new Entity("Second Vaughn", origin);
+		vaughnTwo = new com.stonetolb.engine.Entity("Second Vaughn", origin);
 		vaughnTwo.addComponent(new KeyboardControlComponent("Arrows", WorldProfile.Control.ARROWS));
 		vaughnTwo.addComponent(
 				new OverworldMovementComponent("Basic"));
@@ -205,11 +227,83 @@ public class WorldModule implements Module {
 		vaughnTwo.addComponent(
 				new CollisionComponent("Half Bounds"
 						, new Rectangle(0,HEIGHT/2,WIDTH, HEIGHT/2)
-						, world
+						, physicsWorld
 						)
 				);
 		vaughnTwo.setPosition(new Pair<Float,Float>(150F,0F));
 		
+		//Artemis integration
+		world = new World();
+		rs = new RenderSystem(800,600);
+		world.setSystem(rs, true);
+		world.setSystem(new PlayerControlSystem());
+		world.setSystem(new MovementSystem());
+		world.setSystem(new SpriteControlSystem());
+		world.setSystem(new CameraSystem());
+		world.initialize();
+		
+		SpriteControl sc = new SpriteControl()
+				.setNoOp(NullDrawable.getInstance())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.DOWN.getDirection()
+								, WorldProfile.Speed.WALK.getSpeed()
+								)
+					, toward.clone())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.UP.getDirection()
+								, WorldProfile.Speed.WALK.getSpeed()
+								)
+					, away.clone())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.RIGHT.getDirection()
+								, WorldProfile.Speed.WALK.getSpeed()
+								)
+					, right.clone())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.LEFT.getDirection()
+								, WorldProfile.Speed.WALK.getSpeed()
+								)
+					, left.clone())
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.DOWN.getDirection()
+								, WorldProfile.Speed.STOP.getSpeed()
+								)
+					, standingToward)
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.UP.getDirection()
+								, WorldProfile.Speed.STOP.getSpeed()
+								)
+					, standingAway)
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.RIGHT.getDirection()
+								, WorldProfile.Speed.STOP.getSpeed()
+								)
+					, standingRight)
+				.addAction(
+						new WorldProfile.MovementContext(
+								WorldProfile.WorldDirection.LEFT.getDirection()
+								, WorldProfile.Speed.STOP.getSpeed()
+								)
+					, standingLeft);
+		
+		newEnt = world.createEntity();
+		newEnt.addComponent(new Position(30, 30));
+		Animation t = toward.clone();
+		t.ready();
+		newEnt.addComponent(new RenderComponent(t));
+		newEnt.addComponent(new Rotation(WorldProfile.WorldDirection.DOWN.getDirection()));
+		newEnt.addComponent(new Velocity(WorldProfile.Speed.STOP.getSpeed()));
+		newEnt.addComponent(new PlayerControl(WorldProfile.Control.ARROWS)); //Control profile does not matter. Moving away from that soon...
+		newEnt.addComponent(sc);
+		newEnt.addComponent(Camera.getCamera().attachTo(new CameraMount(WIDTH/2.0F, HEIGHT/2.0F)));
+		newEnt.addToWorld();
 	}
 
 	@Override
@@ -220,14 +314,24 @@ public class WorldModule implements Module {
 		vaughnTwo.update(delta);
 		
 		//Process collisions
-		world.resolveAllCollisions();
+		physicsWorld.resolveAllCollisions();
+		
+		world.setDelta(delta);
+		world.process();
 	}
 
 	@Override
 	public void render(long delta) {
+		rs.process();
+		
 		//Render Entites
 		origin.render(delta);
 		anchor.render(delta);
 		vaughnTwo.render(delta);
+	}
+	
+	@Override
+	public String toString() {
+		return "WorldModule";
 	}
 }

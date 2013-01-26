@@ -15,21 +15,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.engine.physics;
+package com.stonetolb.engine.component.movement;
+
+import com.artemis.Component;
 
 /**
- * Used to signal the engine how a collision resolution
- * was handled. NORMAL is for a standard resolution. 
- * PREVIOUSLY is for a successful resolution that took
- * place already during the update.
- * <p>
- * This is used to keep the engine from infinitely checking
- * if objects have resolved yet.
+ * Component that represents a speed that an Entity may posses.
+ * Despite the name Velocity, no orientation is stored. See
+ * {@link Rotation}
  * 
  * @author james.baiera
  *
  */
-public enum CollisionResolution {
-	NORMAL,
-	PREVIOUSLY;
+public class Velocity extends Component {
+	private float velocity;
+	
+	public Velocity(float pVelocity) {
+		velocity = pVelocity;
+	}
+	
+	public float getVelocity() {
+		return velocity;
+	}
+	
+	public void setVelocity(float pVelocity) {
+		velocity = pVelocity;
+	}
 }

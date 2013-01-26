@@ -19,16 +19,16 @@ package com.stonetolb.render;
 
 import org.lwjgl.opengl.GL11;
 
-import com.stonetolb.engine.Entity;
+import com.artemis.Entity;
+import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.util.Pair;
 
 /**
  * The Camera is a special class that controls where the player is looking at the moment.
  * <p>
  * Camera is a singleton since there can only ever be one camera at a time. The Camera can
- * be parented to an {@link Entity} object to control it's location. Normally, one would not 
- * directly set the coordinates of the camera, but instead attach the camera to an entity and
- * allow the entity to control the movement.
+ * be attached to a {@link CameraMount} component, providing methods to test which mount it
+ * is attached to as well as methods to move the camera around the screen.
  * 
  * @author james.baiera
  *
@@ -41,7 +41,8 @@ public class Camera {
 	private Pair<Float, Float> position;
 	private int screenWidth;
 	private int screenHeight;
-	private Entity parent;
+	private com.stonetolb.engine.Entity parent;
+	private CameraMount mount;
 	
 	public static synchronized void createCamera(int pWidth, int pHeight) {
 		if (INSTANCE == null) {
@@ -58,13 +59,30 @@ public class Camera {
 		screenHeight = pHeight;
 		position = ORIGIN;
 		parent = null;
+		mount = null;
 	}
 	
-	public void setParent(Entity pParent) {
+	public CameraMount attachTo(CameraMount pMount) {
+		mount = pMount;
+		return mount;
+	}
+	
+	public void detach() {
+		mount = null;
+		updatePosition(ORIGIN.x.floatValue(), ORIGIN.y.floatValue());
+	}
+	
+	public boolean isAttachedTo(CameraMount pMount) {
+		return mount == pMount;
+	}
+	
+	@Deprecated
+	public void setParent(com.stonetolb.engine.Entity pParent) {
 		parent = pParent;
 		updatePosition();
 	}
 	
+	@Deprecated
 	private void updatePosition() {
 		if (parent != null) {
 			position.x = parent.getAbsolute().x - ((float)screenWidth / 2.0F);
@@ -75,9 +93,12 @@ public class Camera {
 		}
 	}
 	
+	public void updatePosition(float x, float y) {
+		position.x = x - ((float)screenWidth / 2.0F);
+		position.y = y - ((float)screenHeight / 2.0F);
+	}
+	
 	public void moveCamera() {
-		updatePosition();
-		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		GL11.glOrtho(

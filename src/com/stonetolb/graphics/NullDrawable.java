@@ -22,12 +22,16 @@ import java.io.IOException;
 /**
  * Null object that implements the {@link Drawable} interface.
  * Used to represent non existant resources.
+ * 
  * @author james.baiera
  *
  */
 public class NullDrawable implements Drawable {
 	
-	public static NullDrawable INSTANCE = new NullDrawable();
+	private static final NullDrawable INSTANCE = new NullDrawable();
+	public static NullDrawable getInstance() {
+		return INSTANCE;
+	}
 	
 	private Drawable img;
 	
@@ -45,5 +49,10 @@ public class NullDrawable implements Drawable {
 	@Override
 	public void draw(int x, int y, int z, long delta) {
 		img.draw(x, y, z, delta);
+	}
+	
+	@Override
+	public void accept(Critic critic) {
+		critic.analyze(this);
 	}
 }

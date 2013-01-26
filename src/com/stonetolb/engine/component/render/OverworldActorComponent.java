@@ -30,20 +30,21 @@ import com.stonetolb.graphics.NullDrawable;
  * @author james.baiera
  *
  */
-public class OverworldActorComponent extends RenderComponent {
+@Deprecated
+public class OverworldActorComponent extends RenderComponentOld {
 
 	public OverworldActorComponent(String pId){
 		super(pId);
-		actionMapping = new HashMap<MovementContext, RenderComponent>();
-		noOpAction = new ImageRenderComponent("Drawing Missing", NullDrawable.INSTANCE);
+		actionMapping = new HashMap<MovementContext, RenderComponentOld>();
+		noOpAction = new ImageRenderComponent("Drawing Missing", NullDrawable.getInstance());
 		currentAction = noOpAction;
 	}
 	
-	private Map<MovementContext,RenderComponent> actionMapping;
-	private RenderComponent currentAction;
-	private RenderComponent noOpAction;
+	private Map<MovementContext,RenderComponentOld> actionMapping;
+	private RenderComponentOld currentAction;
+	private RenderComponentOld noOpAction;
 	
-	public void addAction(MovementContext pMovement, RenderComponent pComponent)
+	public void addAction(MovementContext pMovement, RenderComponentOld pComponent)
 	{
 		actionMapping.put(pMovement, pComponent);
 	}
@@ -56,7 +57,7 @@ public class OverworldActorComponent extends RenderComponent {
 	@Override
 	public void update(long delta) {
 		MovementContext context = new MovementContext(parent.getDirection(), parent.getSpeed());
-		RenderComponent newAction = actionMapping.get(context);
+		RenderComponentOld newAction = actionMapping.get(context);
 		
 		if(newAction == null)
 		{

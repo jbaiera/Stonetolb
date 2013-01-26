@@ -25,6 +25,7 @@ import com.stonetolb.engine.Entity;
  * @author james.baiera
  *
  */
+@Deprecated
 public abstract class EntityComponent {
 
 	protected String id;

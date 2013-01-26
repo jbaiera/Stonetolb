@@ -32,7 +32,7 @@ import com.stonetolb.graphics.StatefulDrawable;
  * @author comet
  *
  */
-public class ImageRenderComponent extends RenderComponent {
+public class ImageRenderComponent extends RenderComponentOld {
 	Drawable image;
 
 	public ImageRenderComponent(String pId, Drawable pImage) {
@@ -42,7 +42,7 @@ public class ImageRenderComponent extends RenderComponent {
 		}
 		else 
 		{
-			image = NullDrawable.INSTANCE;
+			image = NullDrawable.getInstance();
 		}
 	}
 

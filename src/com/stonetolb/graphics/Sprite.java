@@ -34,7 +34,7 @@ import com.stonetolb.graphics.engine.TextureLoader;
  * Implementation of sprite that uses an OpenGL quad and a Texture
  * to render a given image to the screen.
  * 
- * @author comet
+ * @author james.baiera
  */
 public class Sprite implements Drawable{
 	
@@ -154,6 +154,11 @@ public class Sprite implements Drawable{
 
 		// restore the model view matrix to prevent contamination
 		glPopMatrix();
+	}
+	
+	@Override
+	public void accept(Critic critic) {
+		critic.analyze(this);
 	}
 	
 	@Override

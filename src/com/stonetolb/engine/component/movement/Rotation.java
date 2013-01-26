@@ -15,21 +15,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.engine.physics;
+package com.stonetolb.engine.component.movement;
+
+import com.artemis.Component;
 
 /**
- * Used to signal the engine how a collision resolution
- * was handled. NORMAL is for a standard resolution. 
- * PREVIOUSLY is for a successful resolution that took
- * place already during the update.
- * <p>
- * This is used to keep the engine from infinitely checking
- * if objects have resolved yet.
+ * Component that represents a rotational orientation of an
+ * entity. Rotation values are angle values increasing clockwise 
+ * with zero degrees pointed towards the right of the screen.
  * 
  * @author james.baiera
- *
+ * 
  */
-public enum CollisionResolution {
-	NORMAL,
-	PREVIOUSLY;
+public class Rotation extends Component {
+	private double rotation;
+	
+	public Rotation(float pRotation) {
+		rotation = pRotation;
+	}
+	
+	public double getRotation() {
+		return rotation;
+	}
+	
+	public void setRotation(double pRotation) {
+		rotation = pRotation;
+	}
 }

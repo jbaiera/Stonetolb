@@ -38,6 +38,8 @@ import java.util.List;
  * storing non overlapping intervals. Should a need for storing intervals 
  * that may overlap arise, please use the Interval Tree object
  * 
+ * @author james.baiera
+ * 
  */
 public class IntervalQueue<T>{
 	

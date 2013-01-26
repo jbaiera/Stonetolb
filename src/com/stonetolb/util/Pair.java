@@ -20,7 +20,7 @@ package com.stonetolb.util;
 /**
  * A simple Pair utility object.
  * 
- * @author comet
+ * @author james.baiera
  *
  * @param <T1> First in pair
  * @param <T2> Second in pair

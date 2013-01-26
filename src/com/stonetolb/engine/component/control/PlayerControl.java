@@ -15,21 +15,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.engine.physics;
+package com.stonetolb.engine.component.control;
+
+import com.artemis.Component;
+import com.stonetolb.engine.profiles.WorldProfile.Control;
 
 /**
- * Used to signal the engine how a collision resolution
- * was handled. NORMAL is for a standard resolution. 
- * PREVIOUSLY is for a successful resolution that took
- * place already during the update.
- * <p>
- * This is used to keep the engine from infinitely checking
- * if objects have resolved yet.
+ * Component used to note that an Entity is capable of receiving
+ * player input.
  * 
  * @author james.baiera
- *
+ * 
  */
-public enum CollisionResolution {
-	NORMAL,
-	PREVIOUSLY;
+public class PlayerControl extends Component {
+	private Control controls;
+	
+	public PlayerControl(Control pControls) {
+		controls = pControls;
+	}
+	
+	public Control getControls() {
+		return controls;
+	}
 }

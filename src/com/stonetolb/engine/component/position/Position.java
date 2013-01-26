@@ -15,21 +15,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.engine.physics;
+package com.stonetolb.engine.component.position;
+
+import com.artemis.Component;
 
 /**
- * Used to signal the engine how a collision resolution
- * was handled. NORMAL is for a standard resolution. 
- * PREVIOUSLY is for a successful resolution that took
- * place already during the update.
- * <p>
- * This is used to keep the engine from infinitely checking
- * if objects have resolved yet.
+ * Component used to represent an Entity's location in space.
  * 
  * @author james.baiera
  *
  */
-public enum CollisionResolution {
-	NORMAL,
-	PREVIOUSLY;
+public class Position extends Component{
+	private float xpos;
+	private float ypos;
+	
+	public Position(float pXpos, float pYpos) {
+		xpos = pXpos;
+		ypos = pYpos;
+	}
+	
+	public float getX() {
+		return xpos;
+	}
+	
+	public void setX(float pNew) {
+		xpos = pNew;
+	}
+	
+	public float getY() {
+		return ypos;
+	}
+	
+	public void setY(float pNew) {
+		ypos = pNew;
+	}
+	
+	public void setPosition(Position other) {
+		xpos = other.xpos;
+		ypos = other.ypos;
+	}
+	
+	public void setPosition(float x, float y) {
+		xpos = x;
+		ypos = y;
+	}
 }

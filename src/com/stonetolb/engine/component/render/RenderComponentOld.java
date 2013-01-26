@@ -15,21 +15,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.engine.physics;
+package com.stonetolb.engine.component.render;
+
+import com.stonetolb.engine.component.EntityComponent;
 
 /**
- * Used to signal the engine how a collision resolution
- * was handled. NORMAL is for a standard resolution. 
- * PREVIOUSLY is for a successful resolution that took
- * place already during the update.
- * <p>
- * This is used to keep the engine from infinitely checking
- * if objects have resolved yet.
- * 
+ * RenderComponent extends on the {@link EntityComponent} to allow for rendering
  * @author james.baiera
  *
  */
-public enum CollisionResolution {
-	NORMAL,
-	PREVIOUSLY;
+@Deprecated
+public abstract class RenderComponentOld extends EntityComponent {
+	
+	public RenderComponentOld(String pId) {
+		id = pId;
+	}
+	
+	public abstract void render(long delta);
 }

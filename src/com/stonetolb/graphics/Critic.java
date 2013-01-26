@@ -15,21 +15,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb.engine.physics;
+package com.stonetolb.graphics;
 
 /**
- * Used to signal the engine how a collision resolution
- * was handled. NORMAL is for a standard resolution. 
- * PREVIOUSLY is for a successful resolution that took
- * place already during the update.
- * <p>
- * This is used to keep the engine from infinitely checking
- * if objects have resolved yet.
+ * Interface that defines handler methods for the general Drawable
+ * Interface Definition Tree. Should an object require to perform 
+ * specific actions based on the type of Drawable that an object 
+ * may be, it should implement this interface and override the 
+ * corresponding handler methods.
  * 
  * @author james.baiera
  *
  */
-public enum CollisionResolution {
-	NORMAL,
-	PREVIOUSLY;
+public interface Critic {
+	public void analyze(Drawable image);
+	
+	public void analyze(StatefulDrawable image);
 }

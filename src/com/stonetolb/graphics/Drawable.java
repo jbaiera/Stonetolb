@@ -21,7 +21,7 @@ package com.stonetolb.graphics;
  * All objects that are capable of being displayed to the screen
  * must implement this interface.
  * 
- * @author comet
+ * @author james.baiera
  */
 public interface Drawable {
 	
@@ -34,4 +34,6 @@ public interface Drawable {
 	 * @param delta amount of time that has past since last drawing
 	 */
 	public void draw(int x, int y, int z, long delta);
+	
+	public void accept(Critic critic);
 }
