@@ -20,6 +20,7 @@ public class AxisAlignedBoundingBox {
 	public int getY() { return y; }
 	public int getHalfWidth() { return width/2; }
 	public int getHalfHeight() { return height/2; }
+	public Vector2f getPosition() { return Vector2f.from(x, y); }
 	
 	public AxisAlignedBoundingBox transform(int pX, int pY) {
 		return new AxisAlignedBoundingBox(x + pX, y + pY, width, height);
