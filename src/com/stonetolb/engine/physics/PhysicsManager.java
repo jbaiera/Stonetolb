@@ -37,8 +37,9 @@ import com.stonetolb.engine.Entity;
  * PhysicsManager is an object that manages all physical objects in
  * a game world. 
  * @author james.baiera
- *
+ * @deprecated Use {@link CollisionSystem} instead
  */
+@Deprecated
 public class PhysicsManager {
 	private Deque<RigidBody> pool;
 	private Map<Entity, RigidBody> active;

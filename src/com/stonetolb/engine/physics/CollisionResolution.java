@@ -29,6 +29,7 @@ package com.stonetolb.engine.physics;
  * @author james.baiera
  *
  */
+@Deprecated
 public enum CollisionResolution {
 	NORMAL,
 	PREVIOUSLY;

@@ -24,6 +24,7 @@ package com.stonetolb.engine.physics;
  * @author james.baiera
  *
  */
+@Deprecated
 public interface CollisionEvent {
 	
 	public CollisionResolution onCollision();
