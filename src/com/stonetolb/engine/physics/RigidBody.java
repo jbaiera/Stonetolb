@@ -22,8 +22,9 @@ import java.awt.Rectangle;
 /**
  * RigidBody is an object that contains a location and a bounding box.
  * @author james.baiera
- *
+ * @deprecated Use {@link AxisAlignedBoundingBox} instead.
  */
+@Deprecated
 class RigidBody {
 	protected CollisionEvent event;
 	protected Rectangle bounds;

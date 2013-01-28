@@ -46,8 +46,9 @@ public class AxisAlignedBoundingBox {
 		int cw = getHalfWidth() + other.getHalfWidth();
 		int ch = getHalfHeight() + other.getHalfHeight();
 		
-		if (xAxis > cw ) { return Vector2f.NULLVECTOR; }
-		if (yAxis > ch ) { return Vector2f.NULLVECTOR; } 
+		//Early out for non overlaps
+		if (xAxis > cw ) { return Vector2f.NULL_VECTOR; }
+		if (yAxis > ch ) { return Vector2f.NULL_VECTOR; } 
 		
 		//overlap
 		int ox = (int)Math.abs(xAxis - cw);
@@ -60,23 +61,22 @@ public class AxisAlignedBoundingBox {
 	 * Returns an AABB in the resolved position according to the Single Axis Theorem
 	 * collision resolution strategy.
 	 * 
-	 * @param moving The AABB that is moving in the collision
 	 * @param pushing The AABB that is staying in it's location
 	 * @param overlap The overlap vector
-	 * @return AABB based on the moving parameter in the resolved position.
+	 * @return resolution vector that must be applied to this box to resolve collision
 	 */
-	public static AxisAlignedBoundingBox resolveCollision(AxisAlignedBoundingBox moving, AxisAlignedBoundingBox pushing, Vector2f overlap) {
+	public Vector2f getCollisionResolutionVector(AxisAlignedBoundingBox pushing, Vector2f overlap) {
 		Vector2f dir = Vector2f
-				.from(moving.x, moving.y)
+				.from(x, y)
 				.sub(Vector2f.from(pushing.x, pushing.y))
 				.normalize();
 		
 		if (overlap.getX() > overlap.getY()) {
-			return moving.transform(0, (int)(dir.getY() * (overlap.getY() + 1)));
+			return Vector2f.from(0, (int)(dir.getY() * (overlap.getY() + 1)));
 		} else if (overlap.getY() > overlap.getX()) {
-			return moving.transform((int)(dir.getX() * (overlap.getX() + 1)), 0);
+			return Vector2f.from((int)(dir.getX() * (overlap.getX() + 1)), 0);
 		} else {
-			return moving.transform((int)(dir.getX() * (overlap.getX() + 1)), (int)(dir.getY() * (overlap.getY() + 1)));
+			return Vector2f.from((int)(dir.getX() * (overlap.getX() + 1)), (int)(dir.getY() * (overlap.getY() + 1)));
 		}
 	}
 

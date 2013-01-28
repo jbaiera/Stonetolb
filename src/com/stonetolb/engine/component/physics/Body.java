@@ -13,7 +13,7 @@ public abstract class Body extends Component {
 	}
 	
 	public Body(AxisAlignedBoundingBox pAABB, int pXOffset, int pYOffset) {
-		aabb = pAABB;
+		aabb = pAABB.transform(pXOffset, pYOffset); //Offset the bounding box.
 		offset = Vector2f.from(pXOffset, pYOffset);
 	}
 	

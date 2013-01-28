@@ -30,6 +30,8 @@ import com.stonetolb.engine.component.movement.OverworldMovementComponent;
 import com.stonetolb.engine.component.movement.Rotation;
 import com.stonetolb.engine.component.movement.Velocity;
 import com.stonetolb.engine.component.physics.CollisionComponent;
+import com.stonetolb.engine.component.physics.DynamicBody;
+import com.stonetolb.engine.component.physics.StaticBody;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.AnimationRenderComponent;
 import com.stonetolb.engine.component.render.CameraMount;
@@ -40,6 +42,7 @@ import com.stonetolb.engine.component.render.SpriteControl;
 import com.stonetolb.engine.physics.PhysicsManager;
 import com.stonetolb.engine.profiles.WorldProfile;
 import com.stonetolb.engine.system.CameraSystem;
+import com.stonetolb.engine.system.CollisionSystem;
 import com.stonetolb.engine.system.MovementSystem;
 import com.stonetolb.engine.system.PlayerControlSystem;
 import com.stonetolb.engine.system.RenderSystem;
@@ -240,6 +243,7 @@ public class WorldModule implements Module {
 		world.setSystem(new MovementSystem());
 		world.setSystem(new SpriteControlSystem());
 		world.setSystem(new CameraSystem());
+		world.setSystem(new CollisionSystem());
 		world.initialize();
 		
 		SpriteControl sc = new SpriteControl()
@@ -303,7 +307,14 @@ public class WorldModule implements Module {
 		newEnt.addComponent(new PlayerControl(WorldProfile.Control.ARROWS)); //Control profile does not matter. Moving away from that soon...
 		newEnt.addComponent(sc);
 		newEnt.addComponent(Camera.getCamera().attachTo(new CameraMount(WIDTH/2.0F, HEIGHT/2.0F)));
+		newEnt.addComponent(new DynamicBody(30, 30, WIDTH, HEIGHT/2, WIDTH/2, HEIGHT*3/4));
 		newEnt.addToWorld();
+		
+		Entity brick = world.createEntity();
+		brick.addComponent(new Position(-50, -50));
+		brick.addComponent(new RenderComponent(NullDrawable.getInstance()));
+		brick.addComponent(new StaticBody(-50, -50, NULLWIDTH, NULLHEIGHT, NULLWIDTH/2, NULLHEIGHT/2));
+		brick.addToWorld();
 	}
 
 	@Override

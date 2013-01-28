@@ -12,11 +12,11 @@ public class Vector2f {
 	private float x;
 	private float y;
 
-	public static Vector2f NULLVECTOR = new Vector2f(0f, 0f);
+	public static Vector2f NULL_VECTOR = new Vector2f(0f, 0f);
 	
 	public static Vector2f from(float x, float y) {
 		if (x == 0f && y == 0f) {
-			return NULLVECTOR;
+			return NULL_VECTOR;
 		} else {
 			return new Vector2f(x,y);
 		}

@@ -30,6 +30,7 @@ import com.stonetolb.engine.Entity;
  * @author james.baiera
  *
  */
+@Deprecated
 class CollisionTask implements Callable<Set<CollisionEvent>> {
 	
 	private Entity objectKey;
