@@ -148,9 +148,6 @@ public class CollisionSystem extends EntityProcessingSystem {
 		}
 		
 		actives.put(e, physicalBody);
-		System.out.println("ADDING BODY");
-		System.out.println(physicalBody.getAABB());
-		System.out.println(actives);
 	}
 	
 	@Override
