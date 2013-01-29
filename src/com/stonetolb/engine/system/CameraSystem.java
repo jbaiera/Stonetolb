@@ -27,6 +27,8 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.render.Camera;
+import com.stonetolb.render.FixedVantage;
+import com.stonetolb.util.Vector2f;
 
 /**
  * System that handles Camera movement for any Entity with the Camera
@@ -47,7 +49,7 @@ public class CameraSystem extends EntityProcessingSystem {
 	protected void begin() {
 		// TODO Auto-generated method stub
 		super.begin();
-		Camera.getCamera().updatePosition(0f, 0f);
+		Camera.getInstance().updatePosition(Vector2f.NULL_VECTOR);
 	}
 	
 	@Override
@@ -55,12 +57,12 @@ public class CameraSystem extends EntityProcessingSystem {
 		Position pos = positionMap.get(arg0);
 		CameraMount mnt = mountMap.get(arg0);
 		
-		Camera cam = Camera.getCamera();
-		
-		if (cam.isAttachedTo(mnt)) {
-			cam.updatePosition(
-					  pos.getX() + mnt.getXOffset()
-					, pos.getY() + mnt.getYOffset()
+		if (Camera.isAttachedTo(mnt)) {
+			Camera.getInstance().updatePosition(
+					Vector2f.from(
+						  pos.getX() + mnt.getXOffset()
+						, pos.getY() + mnt.getYOffset()
+						)
 					);
 		}
 	}

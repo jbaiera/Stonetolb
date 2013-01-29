@@ -25,6 +25,7 @@ import org.lwjgl.opengl.DisplayMode;
 
 import com.stonetolb.game.module.Module;
 import com.stonetolb.render.Camera;
+import com.stonetolb.render.FixedVantage;
 
 /**
  * This is our hook for launching the game, and also the home
@@ -146,9 +147,9 @@ public class Game {
 			setDisplayMode();
 			Display.setTitle(windowTitle);
 			Display.create();
-
-			// Create the Camera and update it's position on the plane
-			Camera.createCamera(windowWidth, windowHeight);
+			
+			// Create the Camera
+			Camera.setVantage(FixedVantage.create());
 			
 			// Set starting time for game loop
 			lastLoopTime = getTime();
@@ -192,7 +193,7 @@ public class Game {
 		module.render(delta);
 		
 		// Update Camera's position
-		Camera.getCamera().moveCamera();
+		Camera.getInstance().update(delta);
 		
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))) {

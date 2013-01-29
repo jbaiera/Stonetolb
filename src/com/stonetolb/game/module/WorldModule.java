@@ -20,8 +20,6 @@ package com.stonetolb.game.module;
 
 import java.awt.Rectangle;
 
-import org.lwjgl.input.Keyboard;
-
 import com.artemis.Entity;
 import com.artemis.World;
 import com.stonetolb.engine.component.control.KeyboardControlComponent;
@@ -55,7 +53,9 @@ import com.stonetolb.graphics.Sprite;
 import com.stonetolb.graphics.Texture;
 import com.stonetolb.graphics.engine.TextureLoader;
 import com.stonetolb.render.Camera;
+import com.stonetolb.render.FixedVantage;
 import com.stonetolb.util.Pair;
+import com.stonetolb.util.Vector2f;
 
 /**
  * Implementation of an overworld movement game state
@@ -208,7 +208,8 @@ public class WorldModule implements Module {
 		anchor.setPosition(new Pair<Float,Float>(150F, 150F));
 		
 //		Camera.getCamera().setParent(anchor);
-		Camera.getCamera().updatePosition(NULLWIDTH/2.0F, NULLHEIGHT/2.0F);
+//		FixedVantage.create().updatePosition(NULLWIDTH/2.0F, NULLHEIGHT/2.0F);
+		Camera.getInstance().updatePosition(Vector2f.from(NULLWIDTH/2F, NULLHEIGHT/2F));
 		
 		// entity to sit right at 0,0 of the game world
 		origin = new com.stonetolb.engine.Entity("Origin");
@@ -306,7 +307,7 @@ public class WorldModule implements Module {
 		newEnt.addComponent(new Velocity(WorldProfile.Speed.STOP.getSpeed()));
 		newEnt.addComponent(new PlayerControl(WorldProfile.Control.ARROWS)); //Control profile does not matter. Moving away from that soon...
 		newEnt.addComponent(sc);
-		newEnt.addComponent(Camera.getCamera().attachTo(new CameraMount(WIDTH/2.0F, HEIGHT/2.0F)));
+		newEnt.addComponent(Camera.attachTo(new CameraMount(WIDTH/2.0F, HEIGHT/2.0F)));
 		newEnt.addComponent(new DynamicBody(30, 30, WIDTH, HEIGHT/2, WIDTH/2, HEIGHT*3/4));
 		newEnt.addToWorld();
 		

@@ -18,6 +18,7 @@
 package com.stonetolb.engine.component.render;
 
 import com.artemis.Component;
+import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.render.Camera;
 
 /**
@@ -39,13 +40,12 @@ public class CameraMount extends Component {
 	}
 	
 	public void activate() {
-		Camera.getCamera().attachTo(this);
+		Camera.attachTo(this);
 	}
 	
 	public void deactivate() {
-		Camera cam = Camera.getCamera();
-		if (cam.isAttachedTo(this)) {
-			cam.detach();
+		if (Camera.isAttachedTo(this)) {
+			Camera.detach();
 		}
 	}
 	
