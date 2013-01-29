@@ -4,7 +4,8 @@ import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.util.Vector2f;
 
 /**
- * The Camera is a special class that controls where the player is looking at the moment.
+ * The Camera is a special class that enforces a one to one relationship of Vantage
+ * to camera mount.
  * <p>
  * Camera is a static manager class that is capable of registering a Vantage and a
  * CameraMount object. The Vantage is used for view point manipulation, whilst the CameraMount
