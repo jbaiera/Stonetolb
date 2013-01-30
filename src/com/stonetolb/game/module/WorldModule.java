@@ -53,7 +53,7 @@ import com.stonetolb.graphics.Sprite;
 import com.stonetolb.graphics.Texture;
 import com.stonetolb.graphics.engine.TextureLoader;
 import com.stonetolb.render.Camera;
-import com.stonetolb.render.FixedVantage;
+import com.stonetolb.render.FluidVantage;
 import com.stonetolb.util.Pair;
 import com.stonetolb.util.Vector2f;
 
@@ -209,7 +209,8 @@ public class WorldModule implements Module {
 		
 //		Camera.getCamera().setParent(anchor);
 //		FixedVantage.create().updatePosition(NULLWIDTH/2.0F, NULLHEIGHT/2.0F);
-		Camera.getInstance().updatePosition(Vector2f.from(NULLWIDTH/2F, NULLHEIGHT/2F));
+//		Camera.getInstance().updatePosition(Vector2f.from(NULLWIDTH/2F, NULLHEIGHT/2F));
+		Camera.setVantage(FluidVantage.create(0.05F));
 		
 		// entity to sit right at 0,0 of the game world
 		origin = new com.stonetolb.engine.Entity("Origin");
@@ -299,7 +300,8 @@ public class WorldModule implements Module {
 					, standingLeft);
 		
 		newEnt = world.createEntity();
-		newEnt.addComponent(new Position(30, 30));
+		Position pos = new Position(30, 30);
+		newEnt.addComponent(pos);
 		Animation t = toward.clone();
 		t.ready();
 		newEnt.addComponent(new RenderComponent(t));
@@ -307,9 +309,12 @@ public class WorldModule implements Module {
 		newEnt.addComponent(new Velocity(WorldProfile.Speed.STOP.getSpeed()));
 		newEnt.addComponent(new PlayerControl(WorldProfile.Control.ARROWS)); //Control profile does not matter. Moving away from that soon...
 		newEnt.addComponent(sc);
-		newEnt.addComponent(Camera.attachTo(new CameraMount(WIDTH/2.0F, HEIGHT/2.0F)));
+		CameraMount cm = new CameraMount(WIDTH/2.0F, HEIGHT/2.0F);
+		newEnt.addComponent(Camera.attachTo(cm));
 		newEnt.addComponent(new DynamicBody(30, 30, WIDTH, HEIGHT/2, WIDTH/2, HEIGHT*3/4));
 		newEnt.addToWorld();
+		
+		Camera.getInstance().setPosition(Vector2f.from(pos.getY()+cm.getXOffset(), pos.getY()+cm.getYOffset()+500));
 		
 		Entity brick = world.createEntity();
 		brick.addComponent(new Position(-50, -50));

@@ -24,7 +24,7 @@ import com.stonetolb.util.Pair;
 import com.stonetolb.util.Vector2f;
 
 
-public class FixedVantage implements Vantage{
+public final class FixedVantage implements Vantage{
 	
 	private static volatile FixedVantage INSTANCE = null;
 	private static Pair<Float, Float> ORIGIN = new Pair<Float, Float>(0F, 0F);
@@ -60,7 +60,13 @@ public class FixedVantage implements Vantage{
 	}
 	
 	@Override
+	public void setPosition(Vector2f target) {
+		updatePosition(target);
+	}
+	
+	@Override
 	public void update(long delta) {
+		//TODO : Switch to Vector2f positioning and use Camera move command.
 		moveCamera();
 	}
 	

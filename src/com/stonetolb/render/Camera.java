@@ -1,5 +1,7 @@
 package com.stonetolb.render;
 
+import org.lwjgl.opengl.GL11;
+
 import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.util.Vector2f;
 
@@ -72,4 +74,21 @@ public final class Camera {
 		ACTIVE.updatePosition(Vector2f.NULL_VECTOR);
 	}
 
+	/**
+	 * 
+	 */
+	static final void moveCamera(Vector2f position, int screenWidth, int screenHeight) {
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		GL11.glOrtho(
+				  (double)position.getX()
+				, (double)position.getX() + (double)screenWidth
+				, (double)position.getY() + (double)screenHeight
+				, (double)position.getY()
+				, screenHeight
+				, screenHeight * -1
+			);
+		
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	}
 }
