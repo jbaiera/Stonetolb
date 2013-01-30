@@ -1,6 +1,6 @@
 package com.stonetolb.render;
 
-import com.stonetolb.Game;
+import com.stonetolb.game.Game;
 import com.stonetolb.util.Vector2f;
 
 public final class FluidVantage implements Vantage {

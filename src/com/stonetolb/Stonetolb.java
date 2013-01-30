@@ -24,6 +24,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 
+import com.stonetolb.game.Game;
+
 /**
  * Main entry point for the game Stonetolb.
  * 

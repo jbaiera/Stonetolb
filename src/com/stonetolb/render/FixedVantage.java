@@ -19,7 +19,7 @@ package com.stonetolb.render;
 
 import org.lwjgl.opengl.GL11;
 
-import com.stonetolb.Game;
+import com.stonetolb.game.Game;
 import com.stonetolb.util.Pair;
 import com.stonetolb.util.Vector2f;
 

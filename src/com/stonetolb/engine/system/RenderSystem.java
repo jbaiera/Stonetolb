@@ -39,9 +39,9 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
-import com.stonetolb.Game;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.RenderComponent;
+import com.stonetolb.game.Game;
 
 /**
  * System used to display Entities to the screen.

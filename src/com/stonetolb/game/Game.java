@@ -15,7 +15,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.stonetolb;
+package com.stonetolb.game;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
