@@ -44,6 +44,7 @@ public class SpriteControlSystem extends EntityProcessingSystem implements Criti
 	private @Mapper ComponentMapper<Velocity> velocityMap;
 	private @Mapper ComponentMapper<Rotation> rotationMap;
 	
+	@SuppressWarnings("unchecked")
 	public SpriteControlSystem() {
 		super(Aspect.getAspectForAll(SpriteControl.class, RenderComponent.class, Velocity.class, Rotation.class));
 	}

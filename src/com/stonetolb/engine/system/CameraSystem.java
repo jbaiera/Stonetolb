@@ -17,8 +17,6 @@
 
 package com.stonetolb.engine.system;
 
-import org.lwjgl.input.Keyboard;
-
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -27,7 +25,6 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.render.Camera;
-import com.stonetolb.render.FixedVantage;
 import com.stonetolb.util.Vector2f;
 
 /**
@@ -41,6 +38,7 @@ public class CameraSystem extends EntityProcessingSystem {
 	private @Mapper ComponentMapper<Position> positionMap;
 	private @Mapper ComponentMapper<CameraMount> mountMap;
 	
+	@SuppressWarnings("unchecked")
 	public CameraSystem() {
 		super(Aspect.getAspectForAll(Position.class, CameraMount.class));
 	}

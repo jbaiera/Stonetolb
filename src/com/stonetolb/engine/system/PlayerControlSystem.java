@@ -27,7 +27,6 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.stonetolb.engine.component.control.PlayerControl;
 import com.stonetolb.engine.component.movement.Rotation;
 import com.stonetolb.engine.component.movement.Velocity;
-import com.stonetolb.engine.profiles.WorldProfile;
 
 /**
  * System used to listen for input and modify an Entity's state accordingly
@@ -45,6 +44,7 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	private static double left = 180D;
 	private static float walk = 75f;
 	
+	@SuppressWarnings("unchecked")
 	public PlayerControlSystem() {
 		super(Aspect.getAspectForAll(PlayerControl.class, Velocity.class, Rotation.class));
 	}

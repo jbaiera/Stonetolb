@@ -50,8 +50,6 @@ import com.stonetolb.engine.component.render.RenderComponent;
  *
  */
 public class RenderSystem extends EntityProcessingSystem {
-	private final int width;
-	private final int height;
 	
 	private @Mapper ComponentMapper<Position> positionMap;
 	private @Mapper ComponentMapper<RenderComponent> renderMap; 
@@ -59,8 +57,6 @@ public class RenderSystem extends EntityProcessingSystem {
 	@SuppressWarnings("unchecked")
 	public RenderSystem(int pScreenWidth, int pScreenHeight) {
 		super(Aspect.getAspectForAll(Position.class, RenderComponent.class));
-		width = pScreenWidth;
-		height = pScreenHeight;
 	}
 	
 	@Override

@@ -27,6 +27,7 @@ public class CollisionSystem extends EntityProcessingSystem {
 	private @Mapper ComponentMapper<DynamicBody> dynamicMapper;
 	private @Mapper ComponentMapper<Velocity> velocityMapper;
 	
+	@SuppressWarnings({ "unchecked", "static-access" })
 	public CollisionSystem() {
 		super(Aspect.getAspectForAll(Position.class).getAspectForOne(StaticBody.class, KinematicBody.class, DynamicBody.class));
 		actives = new HashMap<Entity, Body>();

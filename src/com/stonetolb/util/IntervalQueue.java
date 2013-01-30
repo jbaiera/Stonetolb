@@ -147,7 +147,7 @@ public class IntervalQueue<T>{
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Interval other = (Interval) obj;
+			Interval<?> other = (Interval<?>) obj;
 			if (data == null) {
 				if (other.data != null)
 					return false;
@@ -159,7 +159,6 @@ public class IntervalQueue<T>{
 				return false;
 			return true;
 		}
-
 	}
 	
 	/**
