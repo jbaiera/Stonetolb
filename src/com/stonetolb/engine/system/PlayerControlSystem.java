@@ -54,16 +54,16 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 		Velocity vel = velocityMap.get(arg0);
 		Rotation rot = rotationMap.get(arg0);
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_I)) {
+		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			rot.setRotation(up);
 			vel.setVelocity(walk);
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_K)) {
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			rot.setRotation(down);
 			vel.setVelocity(walk);
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			rot.setRotation(left);
 			vel.setVelocity(walk);
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_L)) {
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			rot.setRotation(right);
 			vel.setVelocity(walk);
 		} else {

@@ -11,42 +11,26 @@
 	<property name="doc" location="doc" />
 	<property name="native" location="native"/>
 	
-	<property name="gamemodule" value="com.stonetolb.game.module.WorldModule" />
+	<property name="game.module" value="com.stonetolb.game.module.WorldModule" />
 
-	<condition property="nativelib" value="windows">
+	<condition property="native.lib" value="windows">
 		<os family="windows" />
 	</condition>
 	
-	<condition property="nativelib" value="macosx">
+	<condition property="native.lib" value="macosx">
 		<os family="mac" />
 	</condition>
 	
-	<condition property="nativelib" value="linux">
+	<condition property="native.lib" value="linux">
 		<os family="unix" />
 	</condition>
 	
 	<path id="stonetolb.classpath">
-		<!--
-		<pathelement location="${lib}/lwjgl.jar"/>
-		<pathelement location="${lib}/artemis.jar"/>
-		<pathelement location="${lib}/commons-cli-1.2.jar"/>
-		<pathelement location="${lib}/TWL.jar"/>
-		<pathelement location="${lib}/xpp3-1.1.4c.jar"/>
-		-->
 		<pathelement path="${java.class.path}" />
-		<!--
-		<fileset dir="${build}">
-			<include name="*.class" />
-		</fileset>
-		-->
-		
 		<pathelement path="${build}"/>
 		<fileset dir="${lib}">
 			<include name="**/*.jar" />
 		</fileset>
-		<!--<fileset dir="${res}">
-			<include name="**/*" />
-		</fileset>-->
 		<pathelement path="${res}"/>
 	</path>
 	
@@ -65,10 +49,10 @@
 	<target name="run" depends="build" description="Compile and run the game">
 		<java classname="com.stonetolb.Stonetolb" fork="true">
 			<classpath refid="stonetolb.classpath"/>
-			<sysproperty key="java.library.path" path="${native}/lwjgl/${nativelib}"/>
+			<sysproperty key="java.library.path" path="${native}/lwjgl/${native.lib}"/>
 			<arg value="-x800"/>
 			<arg value="-y600"/>
-			<arg value="-m${gamemodule}"/>
+			<arg value="-m${game.module}"/>
 		</java>
 	</target>
 
