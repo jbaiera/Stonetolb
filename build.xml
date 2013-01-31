@@ -40,7 +40,7 @@
 	</target>
 
 	<target name="build" depends="init" description="Compile the source">
-		<echo>Operating System detected : ${nativelib}</echo>
+		<echo>Operating System detected : ${native.lib}</echo>
 		<javac srcdir="${src}" destdir="${build}" includeantruntime="false">
 			<classpath refid="stonetolb.classpath"/>
 		</javac>
