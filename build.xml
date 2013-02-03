@@ -55,6 +55,16 @@
 			<arg value="-m${game.module}"/>
 		</java>
 	</target>
+	
+	<target name="run.demo" depends="build" description="Run the demo">
+		<java classname="com.stonetolb.Stonetolb" fork="true">
+			<classpath refid="stonetolb.classpath"/>
+			<sysproperty key="java.library.path" path="${native}/lwjgl/${native.lib}"/>
+			<arg value="-x800"/>
+			<arg value="-y600"/>
+			<arg value="-mcom.stonetolb.game.module.DemoModule"/>
+		</java>
+	</target>
 
 	<target name="dist" depends="build" description="Generate the distribution">
 		<mkdir dir="${dist}/lib/"/>

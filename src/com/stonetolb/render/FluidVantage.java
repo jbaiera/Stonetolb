@@ -3,6 +3,11 @@ package com.stonetolb.render;
 import com.stonetolb.game.Game;
 import com.stonetolb.util.Vector2f;
 
+/**
+ * Slightly jittery at short distance updates due to float based math
+ * @author james.baiera
+ *
+ */
 public final class FluidVantage implements Vantage {
 
 	private static volatile FluidVantage INSTANCE = null;
@@ -68,8 +73,8 @@ public final class FluidVantage implements Vantage {
 	@Override
 	public void update(long delta) {
 		currentPosition = Vector2f.from(
-				  fadeOut(currentPosition.getX(), targetPosition.getX(), normalSpeed)
-				, fadeOut(currentPosition.getY(), targetPosition.getY(), normalSpeed)
+				  Math.round(fadeOut(currentPosition.getX(), targetPosition.getX(), normalSpeed))
+				, Math.round(fadeOut(currentPosition.getY(), targetPosition.getY(), normalSpeed))
 				);
 		
 //		System.out.println(currentPosition);

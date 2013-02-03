@@ -80,7 +80,7 @@ public class Sprite implements Drawable{
 	 * @param pRenderMode mode to draw the image on the screen
 	 */
 	public Sprite(String pRef, ImageRenderMode pRenderMode) throws IOException{
-		this(TextureLoader.getInstance().getTexture("sprites/" + pRef), pRenderMode);
+		this(TextureLoader.getInstance().getTexture(pRef), pRenderMode);
 	}
 	
 	/**

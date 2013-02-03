@@ -68,16 +68,6 @@ public class RenderSystem extends EntityProcessingSystem {
 	}
 
 	@Override
-	protected void begin() {
-		super.begin();
-		
-		// clear screen
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-	}
-	
-	@Override
 	protected void initialize() {
 		super.initialize();
 		
@@ -99,5 +89,10 @@ public class RenderSystem extends EntityProcessingSystem {
 		glViewport(0, 0, Game.getGame().getWindowWidth(), Game.getGame().getWindowHeight());
 	}
 	
-	
+	public void clearScreen() {
+		// clear screen
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+	}
 }

@@ -78,8 +78,8 @@ public final class FixedVantage implements Vantage{
 				, position.x.doubleValue() + (double)screenWidth
 				, position.y.doubleValue() + (double)screenHeight
 				, position.y.doubleValue()
-				, screenHeight
-				, screenHeight * -1
+				, 2000
+				, 2000 * -1
 			);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);

@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="lib/TWL.jar"/>
 	<classpathentry kind="lib" path="lib/xpp3-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="lib/artemis.jar"/>
+	<classpathentry kind="lib" path="lib/slick.jar"/>
+	<classpathentry kind="lib" path="lib/guava-14.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

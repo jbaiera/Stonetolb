@@ -48,8 +48,8 @@ import com.stonetolb.render.FluidVantage;
 import com.stonetolb.util.Vector2f;
 
 /**
- * Implementation of an overworld movement game state
- * 
+ * Implementation of an overworld movement game state.
+ * Work In Progress
  * @author james.baiera
  *
  */
@@ -211,6 +211,7 @@ public class WorldModule implements Module {
 	@Override
 	public void render(long delta) {
 		// Render in separate call
+		rs.clearScreen();
 		rs.process();
 	}
 	

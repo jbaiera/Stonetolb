@@ -85,8 +85,8 @@ public final class Camera {
 				, (double)position.getX() + (double)screenWidth
 				, (double)position.getY() + (double)screenHeight
 				, (double)position.getY()
-				, screenHeight
-				, screenHeight * -1
+				, 2000
+				, 2000 * -1
 			);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);

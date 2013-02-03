@@ -38,7 +38,7 @@ public class NullDrawable implements Drawable {
 	private NullDrawable() {
 		try
 		{
-			img = new Sprite("null.gif");
+			img = new Sprite("sprites/null.gif");
 		}
 		catch (IOException ioe) {
 			ioe.printStackTrace();
