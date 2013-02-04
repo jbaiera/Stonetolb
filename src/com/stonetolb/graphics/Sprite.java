@@ -31,7 +31,7 @@ import java.io.IOException;
 import com.stonetolb.graphics.engine.TextureLoader;
 
 /**
- * Implementation of sprite that uses an OpenGL quad and a Texture
+ * Sprite object that uses an OpenGL quad and a Texture
  * to render a given image to the screen.
  * 
  * @author james.baiera

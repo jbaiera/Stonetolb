@@ -1,20 +1,3 @@
-/* 
- * Copyleft (o) 2012 James Baiera
- * All wrongs reserved.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.stonetolb;
 
 import org.apache.commons.cli.CommandLine;
@@ -27,7 +10,9 @@ import org.apache.commons.cli.PosixParser;
 import com.stonetolb.game.Game;
 
 /**
- * Main entry point for the game Stonetolb.
+ * Main entry point for the Stonetolb application.
+ * Parses command line arguments, constructs the Game
+ * object, then executes it.
  * 
  * @author james.baiera
  *
@@ -43,6 +28,10 @@ public class Stonetolb {
 	private static final String VERSION = "0.0.5";
 	private static final String USAGE = "stonetolb -m <module> [-xyhf]";
 	
+	/**
+	 * Main entry point.
+	 * @param args - Command line arguments.
+	 */
 	public static void main(String[] args) {
 		Options options = getOptions();
 		CommandLineParser optionParser = new PosixParser();
@@ -109,16 +98,29 @@ public class Stonetolb {
 		System.exit(0);
 	}
 	
+	/**
+	 * Prints the usage text to system out.
+	 * @param message - Message to display.
+	 * @param opts - {@link Options} object to base help on.
+	 */
 	public static void usage(String message, Options opts) {
 		HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(USAGE, message, opts, "");
 	}
 	
+	/**
+	 * Prints the help text to system out.
+	 * @param opts - {@link Options} object to base help on.
+	 */
 	public static void printHelp(Options opts) {
 		HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(USAGE, opts);
 	}
 
+	/**
+	 * Constructs the {@link Options} for this application.
+	 * @return {@link Options} for the Stonetolb application.
+	 */
 	public static Options getOptions() {
 		Options options = new Options();
 		

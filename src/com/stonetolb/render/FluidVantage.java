@@ -4,7 +4,10 @@ import com.stonetolb.game.Game;
 import com.stonetolb.util.Vector2f;
 
 /**
- * Slightly jittery at short distance updates due to float based math
+ * FluidVantage object used to create a ease-in-ease-out orthogonal camera movement.
+ * Slightly jittery at short distance updates due to float based math. Causes jerking
+ * in the rendered objects on screen.
+ * 
  * @author james.baiera
  *
  */
@@ -41,7 +44,12 @@ public final class FluidVantage implements Vantage {
 		return INSTANCE;
 	}
 	
-	
+	/**
+	 * Default Constructor.
+	 * @param pScreenW - Screen Width.
+	 * @param pScreenH - Screen Height.
+	 * @param pSpeed - Camera speed.
+	 */
 	private FluidVantage(int pScreenW, int pScreenH, float pSpeed) {
 		screenWidth = pScreenW;
 		screenHeight = pScreenH;
@@ -81,6 +89,13 @@ public final class FluidVantage implements Vantage {
 		Camera.moveCamera(currentPosition, screenWidth, screenHeight);
 	}
 
+	/**
+	 * Movement function used in calculating the Camera's actual position.
+	 * @param current - Current location.
+	 * @param target - Target location.
+	 * @param ratio - Speed to move.
+	 * @return new current location.
+	 */
 	private float fadeOut(float current, float target, float ratio) {
 		return (target * (ratio)) + ((1 - ratio) * current);
 	}

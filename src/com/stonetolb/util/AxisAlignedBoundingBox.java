@@ -1,14 +1,36 @@
 package com.stonetolb.util;
 
+/**
+ * A standard implementation of the Axis Aligned Bounding Box.
+ * Similar to the Rectangle, the AxisAlignedBoundingBox (AABB for short)
+ * is a shape that is rectangular, but has a different point of origin.
+ * <p>
+ * A standard Rectangle is denoted as the point (x,y) of it's top left corner
+ * and a vector (w,h) to denote it's dimensions. The AABB is denoted with the
+ * same dimension vector (w,h), but it's origin point (x,y) is that of it's center.
+ * <p>
+ * This implementation is immutable, therefore all calls will return new AABB objects
+ * instead of modifying internal state.
+ * 
+ * @author james.baiera
+ *
+ */
 public class AxisAlignedBoundingBox {
 	/* center coordinates */
-	private int x;
-	private int y;
+	private final int x;
+	private final int y;
 	
 	/* dimensions */
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 	
+	/**
+	 * Default constructor.
+	 * @param pX - Horizontal location.
+	 * @param pY - Vertical location.
+	 * @param pW - Box width.
+	 * @param pH - Box height.
+	 */
 	public AxisAlignedBoundingBox(int pX, int pY, int pW, int pH) {
 		x = pX;
 		y = pY;
@@ -16,26 +38,58 @@ public class AxisAlignedBoundingBox {
 		height = pH;
 	}
 	
+	/**
+	 * @return Horizontal location.
+	 */
 	public int getX() { return x; }
+	
+	/**
+	 * @return Vertical location.
+	 */
 	public int getY() { return y; }
+	
+	/**
+	 * @return Distance from origin to the lateral sides.
+	 */
 	public int getHalfWidth() { return width/2; }
+	
+	/**
+	 * @return Distance from origin to the dorsal sides.
+	 */
 	public int getHalfHeight() { return height/2; }
+	
+	/**
+	 * @return {@link Vector2f} of the box's position.
+	 */
 	public Vector2f getPosition() { return Vector2f.from(x, y); }
 	
+	/**
+	 * Translates the box the given distance.
+	 * @param pX - Distance to move horizontally.
+	 * @param pY - Distance to move vertically.
+	 * @return new AABB object in new location.
+	 */
 	public AxisAlignedBoundingBox transform(int pX, int pY) {
 		return new AxisAlignedBoundingBox(x + pX, y + pY, width, height);
 	}
 	
+	/**
+	 * Resizes the box to the given dimensions.
+	 * @param pW - New width.
+	 * @param pH - New height.
+	 * @return new AABB object with new dimensions.
+	 */
 	public AxisAlignedBoundingBox resize(int pW, int pH) {
 		return new AxisAlignedBoundingBox(x, y, pW, pH);
 	}
 	
 	/**
-	 * Returns the Vector2f needed to resolve a collision between this and the other AABB
-	 * object. If there is no collision, then the return value is a null vector.
+	 * Returns the Vector2f needed to resolve a collision between another AABB
+	 * object. If there is no collision, then the return value is {@link Vector2f#NULL_VECTOR}.
 	 * 
 	 * @param other
-	 * @return
+	 * @return {@link Vector2f} that resolves the collision if it exists. 
+	 * <br> {@link Vector2f#NULL_VECTOR} if no collision exists.
 	 */
 	public Vector2f getOverlapVector(AxisAlignedBoundingBox other) {
 		// distance between centers
@@ -58,11 +112,11 @@ public class AxisAlignedBoundingBox {
 	}
 	
 	/**
-	 * Returns an AABB in the resolved position according to the Single Axis Theorem
+	 * Returns position of this AABB in the resolved position according to the Single Axis Theorem
 	 * collision resolution strategy.
 	 * 
-	 * @param pushing The AABB that is staying in it's location
-	 * @param overlap The overlap vector
+	 * @param pushing - The AABB acting upon this AABB.
+	 * @param overlap - The overlap vector
 	 * @return resolution vector that must be applied to this box to resolve collision
 	 */
 	public Vector2f getCollisionResolutionVector(AxisAlignedBoundingBox pushing, Vector2f overlap) {

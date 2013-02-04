@@ -18,7 +18,7 @@
 package com.stonetolb.graphics;
 
 import com.stonetolb.util.IntervalQueue;
-import com.stonetolb.util.IntervalQueue.IntervalQueueBuilder;
+import com.stonetolb.util.IntervalQueue.Builder;
 
 /**
  * Animation is a StatefulDrawable object that represents a list of Sprites that
@@ -36,7 +36,7 @@ public class Animation implements StatefulDrawable{
 	
 	/**
 	 * Builder object used to construct Animation Objects. This object 
-	 * leverages an {@link IntervalQueueBuilder} to construct the
+	 * leverages an {@link Builder} to construct the
 	 * underlying {@link IntervalQueue} that the Animation object uses.
 	 * Subsequent calls to this builder after an object has been created
 	 * will not affect any Animations previously built by this object.
@@ -45,7 +45,7 @@ public class Animation implements StatefulDrawable{
 	 *
 	 */
 	public static class AnimationBuilder {
-		private IntervalQueueBuilder<Drawable> frameListBuilder;
+		private Builder<Drawable> frameListBuilder;
 
 		/**
 		 * Private constructor, called in static method of Animation.

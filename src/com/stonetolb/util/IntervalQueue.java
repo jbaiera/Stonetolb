@@ -1,20 +1,3 @@
-/* 
- * Copyleft (o) 2012 James Baiera
- * All wrongs reserved.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.stonetolb.util;
 
 import java.util.ArrayList;
@@ -23,20 +6,20 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * An immutable Container that stores Objects associated with an interval of time.
- * Similar to a time line.
+ * An immutable container that stores Objects associated with an interval of time.
+ * Similar to a changing time line.
  * <p>
  * An example of the internal structure can be viewed as such<br>
- * |--------1-------||---2---||3||-----------4-----------|
+ * <b>|{--------1-------} {---2---} {3} {-----------4-----------}|</b>
  * <p>
- * The usage case for this container is when objects must be stored in sequence but also
- * contain data on how "long" they are in time. To retrieve an object from the list, you can
- * specify any "point in time" along the time line and the {@link IntervalQueue} will return 
- * the object in that point in time
+ * The usage case for this container is for when objects must be stored in sequence but also
+ * contain an associated period of time. To retrieve an object from the list, you must
+ * specify a "point in time" along the time line and the {@link IntervalQueue} will return 
+ * the object that overlaps with the given point in time
  * <p>
  * NOTE: Not a full implementation of an Interval Tree. This container only supports
  * storing non overlapping intervals. Should a need for storing intervals 
- * that may overlap arise, please use the Interval Tree object
+ * that may overlap arise, please research the Interval Tree object.
  * 
  * @author james.baiera
  * 
@@ -53,27 +36,27 @@ public class IntervalQueue<T>{
 	 *
 	 * @param <T>
 	 */
-	public static class IntervalQueueBuilder<T> {
+	public static class Builder<T> {
 		private IntervalQueue<T> internalQueue;
 		
-		private IntervalQueueBuilder() {
+		private Builder() {
 			internalQueue = new IntervalQueue<T>();
 		}
 		
 		/**
 		 * Appends the given object to the time line
 		 * 
-		 * @param pObject Object to be added
-		 * @param pLifeTime Amount of time Object should be represented by an interval
-		 * @return This builder object for command chaining
+		 * @param pObject - Object to be added
+		 * @param pLifeTime - Length of the Object's lifetime period.
+		 * @return This current builder object for fluid command chaining.
 		 */
-		public IntervalQueueBuilder<T> append(T pObject, int pLifeTime) {
+		public Builder<T> append(T pObject, int pLifeTime) {
 			internalQueue.add(pObject, pLifeTime);
 			return this;
 		}
 		
 		/**
-		 * 
+		 * Constructs the {@link IntervalQueue} and reinitializes the builder.
 		 * @return New Immutable {@link IntervalQueue}
 		 */
 		public IntervalQueue<T> build() {
@@ -84,11 +67,12 @@ public class IntervalQueue<T>{
 	}
 	
 	/**
-	 * Object that stores start and stop information of a section of interval
+	 * Internal entry structure that couples a stored object with the beginning and
+	 * end of the object's lifetime.
 	 * 
 	 * @author james.baiera
 	 *
-	 * @param <T>
+	 * @param <T> - Type of object being stored.
 	 */
 	public static class Interval<T> {
 		
@@ -96,20 +80,31 @@ public class IntervalQueue<T>{
 		protected int stop;
 		protected T data;
 		
+		/**
+		 * Default constructor.
+		 * 
+		 * @param pStart - Start time of life time period.
+		 * @param pStop - End time of life time period.
+		 * @param pData - Object to be stored.
+		 */
 		public Interval(int pStart, int pStop, T pData){
 			start = pStart;
 			stop = pStop;
 			data = pData;
 		}
 		
+		/**
+		 * Gets stored object.
+		 * @return Object stored in this Interval.
+		 */
 		public T get() {
 			return data;
 		}
 		
 		/**
-		 * 
-		 * @param pOther
-		 * @return true if other interval overlaps, false if it does not
+		 * Method used to test overlapping Intervals.
+		 * @param pOther - Interval to test against.
+		 * @return true if the Intervals overlap, false if they do not.
 		 */
 		public boolean overlaps(Interval<? extends T> pOther)
 		{
@@ -125,6 +120,11 @@ public class IntervalQueue<T>{
 			return true;
 		}
 		
+		/**
+		 * Method used to test if a given point in time overlaps this Interval. 
+		 * @param pPoint - A point in the timeline.
+		 * @return true if the point overlaps this Interval, false if it does not.
+		 */
 		public boolean overlaps(int pPoint) {
 			return (start <= pPoint && pPoint <= stop);
 		}
@@ -204,10 +204,17 @@ public class IntervalQueue<T>{
 	private List<Interval<T>> data;
 	private int header;
 	
-	public static <T> IntervalQueueBuilder<T> builder(){
-		return new IntervalQueueBuilder<T>();
+	/**
+	 * Gets the builder object.
+	 * @return IntervalQueue builder object.
+	 */
+	public static <T> Builder<T> builder(){
+		return new Builder<T>();
 	}
 	
+	/**
+	 * Default constructor.
+	 */
 	private IntervalQueue() {
 		data = new ArrayList<Interval<T>>();
 		header = 0;
@@ -219,8 +226,8 @@ public class IntervalQueue<T>{
 	 * <p>
 	 * Internal method only.
 	 * 
-	 * @param pData Object to store
-	 * @param pDuration Length of interval to store for
+	 * @param pData - Object to store
+	 * @param pDuration - Length of interval to store for
 	 */
 	private void add(T pData, int pDuration) {
 		data.add(
@@ -236,7 +243,8 @@ public class IntervalQueue<T>{
 	}
 	
 	/**
-	 * @return The sum of the durations of Interval objects in the queue
+	 * Returns the total length of the queue.
+	 * @return The sum of the durations of all Interval objects in the queue.
 	 */
 	public int getQueueLength() {
 		return header;
@@ -245,10 +253,11 @@ public class IntervalQueue<T>{
 	/**
 	 * Returns value stored at given point in time on the time line.
 	 * 
-	 * @param pTime
-	 * @return null if value is not found in the time line
+	 * @param pTime - Point in time index.
+	 * @return object at given point. null if not found.
 	 */
 	public T getDataAt(int pTime) {
+		//TODO: return Optional object. throw Array out of bounds exception
 		Interval<T> value = getIntervalAt(pTime);
 		if (value == null)
 		{
@@ -263,8 +272,8 @@ public class IntervalQueue<T>{
 	/**
 	 * Returns Interval that overlaps the given point in the time line
 	 * 
-	 * @param pTime
-	 * @return null if value is not found in the time line
+	 * @param pTime - Point in time index.
+	 * @return Interval at given point. null if not found.
 	 */
 	private Interval<T> getIntervalAt(int pTime) {
 		Interval<T> index = new Interval<T>(pTime,pTime,null);
@@ -274,8 +283,8 @@ public class IntervalQueue<T>{
 	/**
 	 * Returns Interval that overlaps the given Interval in the time line
 	 * 
-	 * @param pSearchInterval
-	 * @return null if value is not found in the time line<br>
+	 * @param pSearchInterval - Singleton search interval index.
+	 * @return null if value is not found in the time line.<br>
 	 * first value found if multiple intervals overlap.
 	 */
 	private Interval<T> getAt(Interval<T> pSearchInterval) {
