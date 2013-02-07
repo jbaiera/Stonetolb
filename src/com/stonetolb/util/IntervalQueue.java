@@ -10,6 +10,7 @@ import java.util.List;
  * Similar to a changing time line.
  * <p>
  * An example of the internal structure can be viewed as such<br>
+ * <br>
  * <b>|{--------1-------} {---2---} {3} {-----------4-----------}|</b>
  * <p>
  * The usage case for this container is for when objects must be stored in sequence but also

@@ -39,6 +39,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
+import com.google.common.base.Preconditions;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.RenderComponent;
 import com.stonetolb.game.Game;
@@ -71,6 +72,8 @@ public class RenderSystem extends EntityProcessingSystem {
 	protected void initialize() {
 		super.initialize();
 		
+		Preconditions.checkState(Game.getGame().isPresent(), "Game Object not present for rendering");
+		
 		// enable textures since we're going to use these for our sprites
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
@@ -86,7 +89,7 @@ public class RenderSystem extends EntityProcessingSystem {
 		
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		glViewport(0, 0, Game.getGame().getWindowWidth(), Game.getGame().getWindowHeight());
+		glViewport(0, 0, Game.getGame().get().getWindowWidth(), Game.getGame().get().getWindowHeight());
 	}
 	
 	public void clearScreen() {

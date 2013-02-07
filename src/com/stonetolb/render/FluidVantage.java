@@ -5,8 +5,10 @@ import com.stonetolb.util.Vector2f;
 
 /**
  * FluidVantage object used to create a ease-in-ease-out orthogonal camera movement.
- * Slightly jittery at short distance updates due to float based math. Causes jerking
- * in the rendered objects on screen.
+ * 
+ * Causes objects on the screen to jitter during short distance updates due to float based 
+ * math. When used in integer mode, this creates a small bounding space that the Camera will 
+ * simply not move in. Further analysis is required to make this production worthy.
  * 
  * @author james.baiera
  *
@@ -32,10 +34,10 @@ public final class FluidVantage implements Vantage {
 	public static FluidVantage create(float speed) {
 		if(INSTANCE == null) {
 			synchronized(FluidVantage.class) {
-				if(INSTANCE == null) {
+				if(INSTANCE == null && Game.getGame().isPresent()) {
 					INSTANCE = new FluidVantage(
-							  Game.getGame().getWindowWidth()
-							, Game.getGame().getWindowHeight()
+							  Game.getGame().get().getWindowWidth()
+							, Game.getGame().get().getWindowHeight()
 							, speed
 							);
 				}
@@ -59,6 +61,9 @@ public final class FluidVantage implements Vantage {
 		targetPosition = Vector2f.NULL_VECTOR;
 	}
 	
+	/**
+	 * {@inheritDoc Vantage}
+	 */
 	@Override
 	public void updatePosition(Vector2f target) {
 		if(target != null) {
@@ -69,6 +74,9 @@ public final class FluidVantage implements Vantage {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc Vantage}
+	 */
 	@Override
 	public void setPosition(Vector2f newPosition) {
 		currentPosition = Vector2f.from(
@@ -78,6 +86,9 @@ public final class FluidVantage implements Vantage {
 		targetPosition = currentPosition;
 	}
 
+	/**
+	 *{@inheritDoc Vantage}
+	 */
 	@Override
 	public void update(long delta) {
 		currentPosition = Vector2f.from(

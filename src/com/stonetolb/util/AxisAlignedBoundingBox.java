@@ -9,8 +9,8 @@ package com.stonetolb.util;
  * and a vector (w,h) to denote it's dimensions. The AABB is denoted with the
  * same dimension vector (w,h), but it's origin point (x,y) is that of it's center.
  * <p>
- * This implementation is immutable, therefore all calls will return new AABB objects
- * instead of modifying internal state.
+ * This implementation is immutable, therefore all method calls will return new AABB 
+ * objects instead of modifying internal state.
  * 
  * @author james.baiera
  *

@@ -6,15 +6,15 @@ import com.stonetolb.engine.component.render.CameraMount;
 import com.stonetolb.util.Vector2f;
 
 /**
- * The Camera is a special class that enforces a one to one relationship of {@link Vantage}
- * to {@link CameraMount}.
+ * The Camera is a special class that represents the rendering world's camera object.
  * <p>
- * Camera is a static manager class that is capable of registering a Vantage and a
- * CameraMount object. The Vantage is used for view point manipulation and perspective control, 
- * whilst the CameraMount is used to link the Camera to an Entity.
+ * Camera is a static manager class that is capable of registering a {@link Vantage} and a
+ * {@link CameraMount} object. The {@link Vantage} object controls how the camera moves what 
+ * perspective the Camera uses, whilst the {@link CameraMount} is used to link the Camera 
+ * to an Entity.
  * <p>
- * Camera comes initialized out of the box, starting with a basic {@link FixedVantage} 
- * instance and no CameraMount object registered.
+ * Camera comes initialized out of the box, located at (0,0), starting with a basic 
+ * {@link FixedVantage} instance and no {@link CameraMount} object registered.
  * 
  * @author james.baiera
  *
@@ -26,7 +26,7 @@ public final class Camera {
 	/**
 	 * Registers the given Vantage object to the active Camera.
 	 * 
-	 * @param vantage - Vantage to be set. Ignores null values.
+	 * @param vantage - Vantage to be set. Ignores null.
 	 */
 	public static final synchronized void setVantage(Vantage vantage) {
 		if(vantage != null) {
@@ -46,7 +46,7 @@ public final class Camera {
 	/**
 	 * Attaches Camera to given CameraMount instance. 
 	 * 
-	 * @param mnt - Mount to attach to. Ignores null values.
+	 * @param mnt - Mount to attach to. Ignores null.
 	 * <br> If you need to clear this value, prefer to use {@link Camera#detach()} instead.
 	 * @return The CameraMount in the parameter field. Passes through for method chaining.
 	 */

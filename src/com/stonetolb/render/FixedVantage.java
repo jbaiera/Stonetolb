@@ -3,11 +3,11 @@ package com.stonetolb.render;
 import org.lwjgl.opengl.GL11;
 
 import com.stonetolb.game.Game;
-import com.stonetolb.util.Pair;
 import com.stonetolb.util.Vector2f;
 
 /**
- * FixedVantage object used to represent an orthogonal camera always at the given target location.
+ * FixedVantage object used to represent an orthogonal camera 
+ * that is always positioned at the given target location.
  * 
  * @author james.baiera
  *
@@ -15,9 +15,9 @@ import com.stonetolb.util.Vector2f;
 public final class FixedVantage implements Vantage{
 	
 	private static volatile FixedVantage INSTANCE = null;
-	private static Pair<Float, Float> ORIGIN = new Pair<Float, Float>(0F, 0F);
+	private static Vector2f ORIGIN = Vector2f.NULL_VECTOR;
 	
-	private Pair<Float, Float> position;
+	private Vector2f position;
 	private int screenWidth;
 	private int screenHeight;
 	
@@ -28,10 +28,10 @@ public final class FixedVantage implements Vantage{
 	public static FixedVantage create() {
 		if (INSTANCE == null) {
 			synchronized(FixedVantage.class) {
-				if (INSTANCE == null) {
+				if (INSTANCE == null && Game.getGame().isPresent()) {
 					INSTANCE = new FixedVantage(
-							  Game.getGame().getWindowWidth()
-							, Game.getGame().getWindowHeight()
+							  Game.getGame().get().getWindowWidth()
+							, Game.getGame().get().getWindowHeight()
 							);
 				}
 			}
@@ -50,17 +50,27 @@ public final class FixedVantage implements Vantage{
 		position = ORIGIN;
 	}
 	
+	/**
+	 * {@inheritDoc Vantage}
+	 */
 	@Override
 	public void updatePosition(Vector2f target) {
-		position.x = target.getX() - ((float) screenWidth / 2F);
-		position.y = target.getY() - ((float) screenHeight / 2F);
+		float newX = target.getX() - ((float) screenWidth / 2F);
+		float newY = target.getY() - ((float) screenHeight / 2F);
+		position = Vector2f.from(newX, newY);
 	}
 	
+	/**
+	 * {@inheritDoc Vantage}
+	 */
 	@Override
 	public void setPosition(Vector2f target) {
 		updatePosition(target);
 	}
 	
+	/**
+	 * {@inheritDoc Vantage}
+	 */
 	@Override
 	public void update(long delta) {
 		//TODO : Switch to Vector2f positioning and use Camera move command.
@@ -74,10 +84,10 @@ public final class FixedVantage implements Vantage{
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		GL11.glOrtho(
-				  position.x.doubleValue()
-				, position.x.doubleValue() + (double)screenWidth
-				, position.y.doubleValue() + (double)screenHeight
-				, position.y.doubleValue()
+				  (double)position.getX()
+				, (double)position.getX() + (double)screenWidth
+				, (double)position.getY() + (double)screenHeight
+				, (double)position.getY()
 				, 2000
 				, 2000 * -1
 			);

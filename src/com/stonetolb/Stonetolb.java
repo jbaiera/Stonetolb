@@ -8,6 +8,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 
 import com.stonetolb.game.Game;
+import com.stonetolb.game.GeneralGameException;
 
 /**
  * Main entry point for the Stonetolb application.
@@ -31,8 +32,11 @@ public class Stonetolb {
 	/**
 	 * Main entry point.
 	 * @param args - Command line arguments.
+	 * @throws GeneralGameException On irrecoverable application failure.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	throws GeneralGameException
+	{
 		Options options = getOptions();
 		CommandLineParser optionParser = new PosixParser();
 		CommandLine cmd = null;
