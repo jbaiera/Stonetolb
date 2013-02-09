@@ -5,6 +5,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 import com.stonetolb.engine.component.control.PlayerControl;
@@ -24,7 +25,7 @@ import com.stonetolb.engine.system.PlayerControlSystem;
 import com.stonetolb.engine.system.RenderSystem;
 import com.stonetolb.engine.system.SpriteControlSystem;
 import com.stonetolb.graphics.Animation;
-import com.stonetolb.graphics.Animation.AnimationBuilder;
+import com.stonetolb.graphics.Animation.Builder;
 import com.stonetolb.graphics.ImageRenderMode;
 import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.Sprite;
@@ -59,6 +60,9 @@ public class DemoModule implements Module {
 	
 	private TiledMap map;
 	
+	/**
+	 * {@inheritDoc Module}
+	 */
 	@Override
 	public void init() {
 		System.out.println("Loading Module Resources");
@@ -73,6 +77,7 @@ public class DemoModule implements Module {
 			this.worldCeiling = new Sprite("maps/TheGrotto.png",ImageRenderMode.STANDING);
 			this.environmentSheet = TextureLoader.getInstance().getTexture("maps/TreesRocksGate.gif");
 		} catch(Exception e) {
+			// TODO : Throw an actual exception
 			System.out.println("BAD THINGS HAPPENED");
 			e.printStackTrace();
 			System.exit(1);
@@ -82,7 +87,7 @@ public class DemoModule implements Module {
 		// Create the Sprites and Animations first:
 		Table<Integer, Integer, Sprite> vaughnSpriteAtlas = createCharacterAtlas();
 		
-		AnimationBuilder builder = Animation.builder();
+		Builder builder = Animation.builder();
 		Animation toward = builder
 				.addFrame(vaughnSpriteAtlas.get(0, 1), 175)
 				.addFrame(vaughnSpriteAtlas.get(0, 2), 175)
@@ -221,12 +226,16 @@ public class DemoModule implements Module {
 		try {
 			map = new TiledMap("res/maps/grotto.tmx");
 		} catch(SlickException se) {
+			// TODO : Throw an actual exception
 			se.printStackTrace();
 			System.exit(1);
 		}
 		System.out.println("Load Complete");
 	}
 
+	/**
+	 * {@inheritDoc Module}
+	 */
 	@Override
 	public void step(long delta) {
 		// Set delta in world object.
@@ -236,6 +245,9 @@ public class DemoModule implements Module {
 		world.process();
 	}
 
+	/**
+	 * {@inheritDoc Module}
+	 */
 	@Override
 	public void render(long delta) {
 		// Clear Screen
@@ -264,9 +276,11 @@ public class DemoModule implements Module {
 	 * @param sc
 	 * @param first - First Animation
 	 * @param rest - Array of three more Animations
-	 * @return
+	 * @return Initialized {@link SpriteControl} Object
 	 */
 	private SpriteControl addAnimations(SpriteControl sc, Animation first, Animation ... rest) {
+		Preconditions.checkArgument(rest.length >= 3, "Incorrect Animation List Size");
+		
 		return sc
 		.setNoOp(NullDrawable.getInstance())
 		.addAction(
@@ -300,9 +314,11 @@ public class DemoModule implements Module {
 	 * @param sc
 	 * @param first - First sprite
 	 * @param rest - Array of three more sprites
-	 * @return
+	 * @return Initialized {@link SpriteControl} Object
 	 */
 	private SpriteControl addSprites(SpriteControl sc, Sprite first, Sprite ... rest) {
+		Preconditions.checkArgument(rest.length >= 3, "Incorrect Sprite List Size");
+		
 		return sc
 		.addAction(
 				new WorldProfile.MovementContext(
@@ -332,7 +348,7 @@ public class DemoModule implements Module {
 	
 	/**
 	 * Spin off method to populate a Guava Table with textures for the character sprite sheet.
-	 * @return
+	 * @return Table representing a sprite atlas.
 	 */
 	private Table<Integer, Integer, Sprite> createCharacterAtlas() {
 		ImmutableTable.Builder<Integer, Integer, Sprite> builder = ImmutableTable.builder();

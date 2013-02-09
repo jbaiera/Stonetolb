@@ -1,7 +1,8 @@
 package com.stonetolb.game.module;
 
 /**
- * Interface that defines how the game state objects should act during the game loop
+ * A Module is a primary game state object that contains specific
+ * logic on what to accomplish during the game loop.
  * 
  * @author james.baiera
  *
@@ -9,21 +10,21 @@ package com.stonetolb.game.module;
 public interface Module {
 	
 	/**
-	 * Runs this method at the start of execution
+	 * Method call used to initialize a {@link Module} object.
 	 */
-	public abstract void init();
+	public void init();
 	
 	/**
-	 * One step of game logic
+	 * Method invoked to process a single 'tick' of game-time.
 	 * 
-	 * @param delta amount of time passed since last step
+	 * @param delta - Amount of time passed since last step
 	 */
-	public abstract void step(long delta);
+	public void step(long delta);
 	
 	/**
-	 * Render all entities
+	 * Method invoked to render all objects onto the screen.
 	 * 
-	 * @param delta amount of time passed since last render
+	 * @param delta - Amount of time passed since last render
 	 */
-	public abstract void render(long delta);
+	public void render(long delta);
 }

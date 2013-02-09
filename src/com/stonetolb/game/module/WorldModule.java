@@ -1,22 +1,4 @@
-/* 
- * Copyleft (o) 2012 James Baiera
- * All wrongs reserved.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.stonetolb.game.module;
-
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -37,7 +19,7 @@ import com.stonetolb.engine.system.PlayerControlSystem;
 import com.stonetolb.engine.system.RenderSystem;
 import com.stonetolb.engine.system.SpriteControlSystem;
 import com.stonetolb.graphics.Animation;
-import com.stonetolb.graphics.Animation.AnimationBuilder;
+import com.stonetolb.graphics.Animation.Builder;
 import com.stonetolb.graphics.ImageRenderMode;
 import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.Sprite;
@@ -65,6 +47,9 @@ public class WorldModule implements Module {
 	private Entity newEnt;
 	private RenderSystem rs;
 	
+	/**
+	 * {@inheritDoc Module}
+	 */
 	@Override
 	public void init() {
 
@@ -75,6 +60,7 @@ public class WorldModule implements Module {
 		try {
 			this.sheet = TextureLoader.getInstance().getTexture("sprites/Vaughn/world/Vaughn.png");
 		} catch(Exception e) {
+			// TODO : Throw an actual exception
 			System.out.println("BAD THINGS HAPPENED");
 			e.printStackTrace();
 			System.exit(1);
@@ -87,7 +73,7 @@ public class WorldModule implements Module {
 		Sprite standingRight = new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING);
 		Sprite standingAway =  new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING);
 		
-		AnimationBuilder builder = Animation.builder();
+		Builder builder = Animation.builder();
 		Animation toward = builder
 				.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 175)
 				.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 175)
@@ -199,6 +185,9 @@ public class WorldModule implements Module {
 		brick.addToWorld();
 	}
 
+	/**
+	 * {@inheritDoc Module}
+	 */
 	@Override
 	public void step(long delta) {
 		// Set delta in world object.
@@ -208,6 +197,9 @@ public class WorldModule implements Module {
 		world.process();
 	}
 
+	/**
+	 * {@inheritDoc Module}
+	 */
 	@Override
 	public void render(long delta) {
 		// Render in separate call
