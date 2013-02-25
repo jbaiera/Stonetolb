@@ -1,23 +1,9 @@
-/* 
- * Copyleft (o) 2012 James Baiera
- * All wrongs reserved.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.stonetolb.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 /**
  * A texture to be bound within OpenGL. This object is responsible for
@@ -34,41 +20,95 @@ import static org.lwjgl.opengl.GL11.*;
 public class Texture {
 
 	/** The GL target type */
-	private int		target;
+	private final int target;
 
 	/** The GL texture ID */
-	private int		textureID;
+	private final int textureID;
 
 	/** The width of the image */
-	private int		imgWidth;
+	private final int imgWidth;
 
 	/** The height of the image */
-	private int		imgHeight;
+	private final int imgHeight;
 	
 	/** The width of the texture */
-	private int		texWidth;
+	private final int texWidth;
 
 	/** The height of the texture */
-	private int		texHeight;
+	private final int texHeight;
 	
 	/** The offset x position */
-	private int 	xOffset;
+	private final int xOffset;
 	
 	/** The offset y position */
-	private int 	yOffset;
+	private final int yOffset;
 	
 	/** The ratio of the width of the image to the texture */
-	private float	imgWidthRatio;
+	private final float imgWidthRatio;
 
 	/** The ratio of the height of the image to the texture */
-	private float	imgHeightRatio;
+	private final float imgHeightRatio;
 	
 	/** The ratio of the x offset to the texture size */
-	private float 	imgXOrigin;
+	private final float imgXOrigin;
 	
 	/** The ratio of the y offset to the texture size */
-	private float 	imgYOrigin;
+	private final float imgYOrigin;
 	
+	public static class Builder {
+		private Integer target = null;
+		private Integer textureID = null;
+		private Integer textureWidth = null;
+		private Integer textureHeight = null;
+		private Integer imageWidth = null;
+		private Integer imageHeight = null;
+		
+		private Builder(int target, int textureId) {
+			this.target = target;
+			this.textureID = textureId;
+		}
+		
+		public Builder setImageHeight(int imageHeight) {
+			this.imageHeight = imageHeight;
+			return this;
+		}
+		
+		public Builder setImageWidth(int imageWidth) {
+			this.imageWidth = imageWidth;
+			return this;
+		}
+		
+		public Builder setTextureHeight(int textureHeight) {
+			this.textureHeight = textureHeight;
+			return this;
+		}
+		
+		public Builder setTextureWidth(int textureWidth) {
+			this.textureWidth = textureWidth;
+			return this;
+		}
+		
+		public Texture build() {
+			Preconditions.checkState(target != null, "Target was not set");
+			Preconditions.checkState(textureID != null, "Texture ID was not set");
+			Preconditions.checkState(textureWidth != null, "Texture Width was not set");
+			Preconditions.checkState(textureHeight != null, "Texture Height was not set");
+			Preconditions.checkState(imageWidth != null, "Image Width was not set");
+			Preconditions.checkState(imageHeight != null, "Image Height was not set");
+			
+			return new Texture(target, textureID, textureWidth, textureHeight, imageWidth, imageHeight, 0, 0);
+		}
+	}
+	
+	/**
+	 * Gets the builder for the Texture Object.
+	 * @param target - The Texture's target
+	 * @param textureId - The Texture's ID
+	 * @return a builder
+	 */
+	public static Builder builder(int target, int textureId) {
+		return new Builder(target, textureId);
+	}
 
 	/**
 	 * Create a new texture
@@ -76,21 +116,29 @@ public class Texture {
 	 * @param target The GL target
 	 * @param textureID The GL texture ID
 	 */
-	public Texture(int target, int textureID) {
+	private Texture(int target, int textureID, int texWidth, int texHeight, int imgWidth, int imgHeight, int xOffset, int yOffset) {
+		Preconditions.checkArgument(texWidth > 0, "Invalid texture width : " + texWidth);
+		Preconditions.checkArgument(texHeight > 0, "Invalid texture height : " + texHeight);
+		
 		this.target = target;
 		this.textureID = textureID;
 		
 		// No offset
-		this.xOffset = 0;
-		this.yOffset = 0;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 		
-		// init origins just in case
-		this.imgXOrigin = 0;
-		this.imgYOrigin = 0;
+		this.texWidth = texWidth;
+		this.texHeight = texHeight;
+		
+		this.imgHeight = imgHeight;
+		this.imgWidth = imgWidth;
 		
 		// update origin points
-		this.updateXOrigin();
-		this.updateYOrigin();
+		this.imgXOrigin = ((float) this.xOffset) / this.texWidth;
+		this.imgYOrigin = ((float) this.yOffset) / this.texHeight;
+			
+		this.imgHeightRatio = ((float) this.imgHeight) / this.texHeight;
+		this.imgWidthRatio = ((float) this.imgWidth) / this.texWidth;
 	}
 
 	/**
@@ -102,52 +150,12 @@ public class Texture {
 	
 	public Texture getSubTexture(int x, int y, int w, int h)
 	{
-		Texture subtex = new Texture(target, textureID);
+		Preconditions.checkArgument((0 <= x && x <= imgWidth), "X coordinate is out of image bounds");
+		Preconditions.checkArgument((0 <= y && y <= imgHeight), "Y coordinate is out of image bounds");
+		Preconditions.checkArgument((0 <= w && x+w <= imgWidth), "Width is out of image bounds");
+		Preconditions.checkArgument((0 <= h && y+h <= imgHeight), "Height is out of image bounds");
 		
-		if ((0 <= x && x <= imgWidth) && (0 <= y && y <= imgHeight))
-		{
-			if((0 <= w && x+w <= imgWidth) && (0 <= h && y+h <= imgHeight))
-			{
-				subtex.xOffset = x;
-				subtex.yOffset = y;
-				subtex.setWidth(w);
-				subtex.setHeight(h);
-				subtex.setTextureWidth(texWidth);
-				subtex.setTextureHeight(texHeight);
-			}
-			else
-			{
-				String msg = "Height or Width is out of image bounds";
-				throw new IllegalStateException(msg);
-			}
-		}
-		else 
-		{
-			String msg = "X or Y coordinate is out of image bounds";
-			throw new IllegalStateException(msg);
-		}
-		
-		return subtex;
-	}
-	
-	/**
-	 * Set the height of the image
-	 *
-	 * @param height The height of the image
-	 */
-	public void setHeight(int height) {
-		this.imgHeight = height;
-		setHeight();
-	}
-
-	/**
-	 * Set the width of the image
-	 *
-	 * @param width The width of the image
-	 */
-	public void setWidth(int width) {
-		this.imgWidth = width;
-		setWidth();
+		return new Texture(target, textureID, texWidth, texHeight, w, h, x, y);
 	}
 
 	/**
@@ -193,80 +201,23 @@ public class Texture {
 	public float getYOrigin() {
 		return imgYOrigin;
 	}
-	
-	/**
-	 * Set the height of the texture
-	 *
-	 * @param texHeight The height of the texture
-	 */
-	public void setTextureHeight(int texHeight) {
-		this.texHeight = texHeight;
-		setHeight();
-		updateYOrigin();
-	}
-
-	/**
-	 * Set the width of this texture
-	 *
-	 * @param texWidth The width of the texture
-	 */
-	public void setTextureWidth(int texWidth) {
-		this.texWidth = texWidth;
-		setWidth();
-		updateXOrigin();
-	}
-
-	/**
-	 * Set the height of the texture. This will update the
-	 * ratio also.
-	 */
-	private void setHeight() {
-		if (texHeight != 0) {
-			imgHeightRatio = ((float) imgHeight) / texHeight;
-		}
-	}
-
-	/**
-	 * Set the width of the texture. This will update the
-	 * ratio also.
-	 */
-	private void setWidth() {
-		if (texWidth != 0) {
-			imgWidthRatio = ((float) imgWidth) / texWidth;
-		}
-	}
-
-	private void updateXOrigin() {
-		if(texWidth != 0) {
-//			int rawOffset = xOffset + imgWidth;
-			imgXOrigin = ((float) xOffset) / texWidth;
-		}
-	}
-	
-	private void updateYOrigin() {
-		if(texHeight != 0) {
-//			int rawOffset = yOffset + imgHeight;
-			imgYOrigin = ((float) yOffset) / texHeight;
-		}
-	}
-	
+		
 	@Override
 	public int hashCode() {
-		int prime = 31;
-		int result = 17;
-		result = prime * result + target;
-		result = prime * result + textureID;
-		result = prime * result + imgWidth;
-		result = prime * result + imgHeight;
-		result = prime * result + texWidth;
-		result = prime * result + texHeight;
-		result = prime * result + xOffset;
-		result = prime * result + yOffset;
-		result = prime * result + Float.floatToIntBits(imgWidthRatio);
-		result = prime * result + Float.floatToIntBits(imgHeightRatio);
-		result = prime * result + Float.floatToIntBits(imgXOrigin);
-		result = prime * result + Float.floatToIntBits(imgYOrigin);
-		return result;
+		return Objects.hashCode(
+					target
+					, textureID
+					, imgWidth
+					, imgHeight
+					, texWidth
+					, texHeight
+					, xOffset
+					, yOffset
+					, imgWidthRatio
+					, imgHeightRatio
+					, imgXOrigin
+					, imgYOrigin
+				);
 	}
 	
 	@Override
@@ -278,35 +229,19 @@ public class Texture {
 		if (getClass() != obj.getClass())
 			return false;
 		Texture other = (Texture) obj;
-		if (imgHeight != other.imgHeight)
-			return false;
-		if (Float.floatToIntBits(imgHeightRatio) != Float
-				.floatToIntBits(other.imgHeightRatio))
-			return false;
-		if (imgWidth != other.imgWidth)
-			return false;
-		if (Float.floatToIntBits(imgWidthRatio) != Float
-				.floatToIntBits(other.imgWidthRatio))
-			return false;
-		if (Float.floatToIntBits(imgXOrigin) != Float
-				.floatToIntBits(other.imgXOrigin))
-			return false;
-		if (Float.floatToIntBits(imgYOrigin) != Float
-				.floatToIntBits(other.imgYOrigin))
-			return false;
-		if (target != other.target)
-			return false;
-		if (texHeight != other.texHeight)
-			return false;
-		if (texWidth != other.texWidth)
-			return false;
-		if (textureID != other.textureID)
-			return false;
-		if (xOffset != other.xOffset)
-			return false;
-		if (yOffset != other.yOffset)
-			return false;
-		return true;
+		return Objects.equal(target, other.target)
+				&& Objects.equal(textureID, other.textureID)
+				&& Objects.equal(imgWidth, other.imgWidth)
+				&& Objects.equal(imgHeight, other.imgHeight)
+				&& Objects.equal(texWidth, other.texWidth)
+				&& Objects.equal(texHeight, other.texHeight)
+				&& Objects.equal(xOffset, other.xOffset)
+				&& Objects.equal(yOffset, other.yOffset)
+				&& Objects.equal(imgWidthRatio, other.imgWidthRatio)
+				&& Objects.equal(imgHeightRatio, other.imgHeightRatio)
+				&& Objects.equal(imgXOrigin, other.imgXOrigin)
+				&& Objects.equal(imgYOrigin, other.imgYOrigin)
+				;
 	}
 	
 	@Override

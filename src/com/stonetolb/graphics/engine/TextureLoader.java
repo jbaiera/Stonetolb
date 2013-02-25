@@ -173,14 +173,18 @@ public class TextureLoader {
 
         // create the texture ID for this texture
         int textureID = createTextureID();
-        Texture texture = new Texture(target,textureID);
+        
+        Texture.Builder tb = Texture.builder(target, textureID);
+//      Texture texture = new Texture(target,textureID);
 
         // bind this texture
         glBindTexture(target, textureID);
 
         BufferedImage bufferedImage = loadImage(resourceName);
-        texture.setWidth(bufferedImage.getWidth());
-        texture.setHeight(bufferedImage.getHeight());
+//        texture.setWidth(bufferedImage.getWidth());
+//        texture.setHeight(bufferedImage.getHeight());
+        tb.setImageWidth(bufferedImage.getWidth());
+        tb.setImageHeight(bufferedImage.getHeight());
 
         if (bufferedImage.getColorModel().hasAlpha()) {
         	// DEBUG: System.out.println("Get : Has Alpha!");
@@ -191,7 +195,7 @@ public class TextureLoader {
         }
 
         // convert that image into a byte buffer of texture data
-        ByteBuffer textureBuffer = convertImageData(bufferedImage,texture);
+        ByteBuffer textureBuffer = convertImageData(bufferedImage, tb);
 
         if (target == GL_TEXTURE_2D) {
             glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter);
@@ -209,7 +213,8 @@ public class TextureLoader {
                       GL_UNSIGNED_BYTE,
                       textureBuffer );
 
-        return texture;
+//        return texture;
+        return tb.build();
     }
 
     /**
@@ -230,10 +235,10 @@ public class TextureLoader {
      * Convert the buffered image to a texture
      *
      * @param bufferedImage The image to convert to a texture
-     * @param texture The texture to store the data into
+     * @param textureBuilder The texture builder to store the data into
      * @return A buffer containing the data
      */
-    private ByteBuffer convertImageData(BufferedImage bufferedImage,Texture texture) {
+    private ByteBuffer convertImageData(BufferedImage bufferedImage,Texture.Builder textureBuilder) {
         ByteBuffer imageBuffer;
         WritableRaster raster;
         BufferedImage texImage;
@@ -250,8 +255,8 @@ public class TextureLoader {
             texHeight *= 2;
         }
 
-        texture.setTextureHeight(texHeight);
-        texture.setTextureWidth(texWidth);
+        textureBuilder.setTextureHeight(texHeight);
+        textureBuilder.setTextureWidth(texWidth);
 
         // create a raster that can be used by OpenGL as a source
         // for a texture
