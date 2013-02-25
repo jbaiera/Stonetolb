@@ -25,6 +25,7 @@ public class Pair<T1, T2> {
 	 * 
 	 * @param pXValue - X value.
 	 * @param pYValue - Y value.
+	 * @deprecated Use {@link Vector2f} instead
 	 */
 	public Pair(T1 pXValue, T2 pYValue) {
 		x = pXValue;

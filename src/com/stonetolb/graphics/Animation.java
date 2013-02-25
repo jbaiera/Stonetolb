@@ -19,7 +19,7 @@ import com.stonetolb.util.IntervalQueue;
  * @author james.baiera
  * 
  */
-public class Animation implements StatefulDrawable {
+public class Animation implements Cloneable, StatefulDrawable {
 	
 	/**
 	 * Builder object used to construct Animation Objects. This object 
@@ -147,6 +147,7 @@ public class Animation implements StatefulDrawable {
 	 * 
 	 * @return new Animation object with the same list of frames
 	 */
+	@Override
 	public Animation clone() {
 		return new Animation(frameList);
 	}
