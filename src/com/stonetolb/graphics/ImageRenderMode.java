@@ -1,24 +1,13 @@
-/* 
- * Copyleft (o) 2012 James Baiera
- * All wrongs reserved.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.stonetolb.graphics;
 
 /**
  * Designates the Rendering Style of an image.
+ * <p>
+ * <li>FLAT - Indicating that an image will display with all
+ * four corners of it's quad at zero depth.
+ * <li>STANDING - Indicating that an image will display with
+ * the top two corners lifted towards the camera at a 45 degree
+ * angle, allowing it to 'stand' in front of other images.
  * 
  * @author james.baiera
  */
@@ -28,10 +17,20 @@ public enum ImageRenderMode {
 	
 	private int multiplier;
 	
+	/**
+	 * Default Constructor
+	 * @param pMultiplier - value of the "standing" factor of a sprite
+	 */
 	private ImageRenderMode(int pMultiplier) {
 		multiplier = pMultiplier;
 	}
 	
+	/**
+	 * Returns multiplier to modify the height of the top of a Sprite object.
+	 * Multiply the sprite's 'vertical factor' by this number to either include
+	 * it (x1) or exclude it (x0). 
+	 * @return multiplier
+	 */
 	public int getModeMultiplier() {
 		return multiplier;
 	}

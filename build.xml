@@ -10,6 +10,7 @@
 	<property name="res" location="res" />
 	<property name="doc" location="doc" />
 	<property name="native" location="native"/>
+	<property name="project.doc" location="${doc}${file.separator}stonetolb" />
 	
 	<property name="game.module" value="com.stonetolb.game.module.WorldModule" />
 
@@ -55,14 +56,32 @@
 			<arg value="-m${game.module}"/>
 		</java>
 	</target>
+	
+	<target name="run.demo" depends="build" description="Run the demo">
+		<java classname="com.stonetolb.Stonetolb" fork="true">
+			<classpath refid="stonetolb.classpath"/>
+			<sysproperty key="java.library.path" path="${native}/lwjgl/${native.lib}"/>
+			<arg value="-x800"/>
+			<arg value="-y600"/>
+			<arg value="-mcom.stonetolb.game.module.DemoModule"/>
+		</java>
+	</target>
 
 	<target name="dist" depends="build" description="Generate the distribution">
 		<mkdir dir="${dist}/lib/"/>
 		<jar jarfile="${dist}/lib/Stonetolb-${DSTAMP}.jar" basedir="${build}"/>
 	</target>
 
+	<target name="javadoc" description="Generates the Javadoc for this project">
+		<mkdir dir="${project.doc}"/>
+		<javadoc sourcepath="${src}" destdir="${project.doc}">
+			<classpath refid="stonetolb.classpath"/>
+		</javadoc>
+	</target>
+	
 	<target name="clean" description="Clean up">
 		<delete dir="${build}"/>
 		<delete dir="${dist}"/>
+		<delete dir="${project.doc}"/>
 	</target>
 </project>

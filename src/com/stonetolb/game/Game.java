@@ -1,20 +1,3 @@
-/* 
- * Copyleft (o) 2012 James Baiera
- * All wrongs reserved.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.stonetolb.game;
 
 import org.lwjgl.LWJGLException;
@@ -23,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import com.google.common.base.Optional;
 import com.stonetolb.game.module.Module;
 import com.stonetolb.render.Camera;
 import com.stonetolb.render.FixedVantage;
@@ -56,14 +40,16 @@ public class Game {
 	/**
 	 * Creates the Game object and returns it.
 	 * 
-	 * @param pWindowTitle
-	 * @param pWindowWidth
-	 * @param pWindoHeight
-	 * @param pModuleToRun
-	 * @param fullscreen
-	 * @return
+	 * @param pWindowTitle - Title to display on the window header.
+	 * @param pWindowWidth - Width of the game window.
+	 * @param pWindowHeight - Height of the game window.
+	 * @param pModuleToRun - Module to load and run at start up.
+	 * @param fullscreen - Option to set fullscreen on or off.
+	 * @return Game instance
+	 * @throws GeneralGameException On failure to load Module for any reason.
 	 */
 	public static Game createGame(String pWindowTitle, int pWindowWidth, int pWindowHeight, String pModuleToRun, boolean fullscreen)
+	throws GeneralGameException
 	{
 		if (INSTANCE == null) {
 			INSTANCE = new Game(pWindowTitle, pWindowWidth, pWindowHeight, pModuleToRun, fullscreen);
@@ -73,31 +59,34 @@ public class Game {
 	
 	/**
 	 * Returns the singleton game object if it has been created. Null if not yet created.
-	 * @return
+	 * @return Optional of type Game. 
 	 */
-	public static Game getGame() {
-		return INSTANCE;
+	public static Optional<Game> getGame() {
+		return Optional.fromNullable(INSTANCE);
 	}
 	
 	/**
 	 * Construct our game and set it running.
-	 * @param pWindowWidth
-	 * @param pWindowHeight
-	 * @param pModuleToRun
-	 * @param fullscreen
+	 * @param pWindowTitle - Title of the Game Window
+	 * @param pWindowWidth - Game window width
+	 * @param pWindowHeight - Game window height
+	 * @param pModuleToRun - Game Module to run at start up
+	 * @param pFullscreen - Option to set fullscreen on or off
+	 * @throws GeneralGameException On failure to load given module
 	 */
 	private Game(
 			  String pWindowTitle
 			, int pWindowWidth
 			, int pWindowHeight
 			, String pModuleToRun
-			, boolean fullscreen) 
+			, boolean pFullscreen)
+	throws GeneralGameException
 	{
-		this.windowTitle = pWindowTitle;
-		this.windowWidth = pWindowWidth;
-		this.windowHeight = pWindowHeight;
-		this.fullscreen = fullscreen;
-		this.gameRunning = true;
+		windowTitle = pWindowTitle;
+		windowWidth = pWindowWidth;
+		windowHeight = pWindowHeight;
+		fullscreen = pFullscreen;
+		gameRunning = true;
 		
 		// Dynamically load a module by name
 		System.out.println("Loading Game Module...");
@@ -106,23 +95,29 @@ public class Game {
 			module = (Module) clazz.newInstance();
 			
 			System.out.println("Module Loaded : " + module.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (module == null) {
-				System.out.println("Failed to load module : " + pModuleToRun);
-				System.exit(1);
-			}
+		} catch(ClassNotFoundException cnfe) {
+			throw new GeneralGameException("Could not find module : " + pModuleToRun, cnfe);
+		} catch (InstantiationException ie) {
+			throw new GeneralGameException("Could not instantiate module : " + pModuleToRun, ie);
+		} catch (IllegalAccessException iae) {
+			throw new GeneralGameException("Could not access module : " + pModuleToRun, iae);
 		}
 	}
 
 	/**
 	 * Initializes game, runs game, then cleans up screen on game completion
+	 * @throws GeneralGameException On irrecoverable game failure.
 	 */
-	public void execute() {
-		initialize();
-		gameLoop();
-		Display.destroy();
+	public void execute() 
+	throws GeneralGameException
+	{
+		try {
+			initialize();
+			gameLoop();
+			Display.destroy();
+		} catch (Exception e) {
+			throw new GeneralGameException("Error occurred in game", e);
+		}
 	}
 	
 	/**
@@ -141,8 +136,11 @@ public class Game {
 
 	/**
 	 * Initialize the common elements for the game
+	 * @throws GeneralGameException On failure to set display mode or create display.
 	 */
-	private void initialize() {
+	private void initialize()
+	throws GeneralGameException
+	{
 		try {
 			setDisplayMode();
 			Display.setTitle(windowTitle);
@@ -155,10 +153,8 @@ public class Game {
 			lastLoopTime = getTime();
 			
 		} catch (LWJGLException le) {
-			System.out.println("Game exiting - exception in initialization:");
-			le.printStackTrace();
 			gameRunning = false;
-			return;
+			throw new GeneralGameException("Could not create display object", le);
 		}
 
 		// setup the initial game state
@@ -203,8 +199,14 @@ public class Game {
 
 	/**
 	* Sets the display mode
+	* 
+	* @throws GeneralGameException On failure to set window display mode.
 	*/
-	private boolean setDisplayMode() {
+	private boolean setDisplayMode()
+	throws GeneralGameException
+	{	
+		DisplayMode dm;
+		
 		try {
 			//----------------------------------------------------------------------
 			// TEST : Getting display modes
@@ -219,11 +221,16 @@ public class Game {
 			//----------------------------------------------------------------------
 			
 			// Set display mode for the window
-			DisplayMode dm = new DisplayMode(windowWidth,windowHeight);
+			dm = new DisplayMode(windowWidth,windowHeight);
 			System.out.println("Using Display Mode  : " + dm.toString());
 			System.out.println("Full Screen Capable : " + dm.isFullscreenCapable());
 	    	Display.setDisplayMode(dm);
-			
+		} 
+		catch (LWJGLException lwjgle) {
+			throw new GeneralGameException("Could not set display mode on LWJGL Display.", lwjgle);
+		}
+		
+		try {
 			//If full screen, set's full screen
 			if (fullscreen && dm.isFullscreenCapable())
 			{
@@ -232,8 +239,7 @@ public class Game {
 				
 			return true;
 		} 
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (LWJGLException lwjgle) {
 			System.out.println("Unable to enter fullscreen, continuing in windowed mode");
 		}
 		
@@ -255,7 +261,7 @@ public class Game {
 	
 	/**
 	 * Returns the set window width
-	 * @return
+	 * @return Game display width.
 	 */
 	public int getWindowWidth() {
 		return windowWidth;
@@ -263,7 +269,7 @@ public class Game {
 	
 	/**
 	 * Returns the set window height
-	 * @return
+	 * @return Game display height.
 	 */
 	public int getWindowHeight() {
 		return windowHeight;

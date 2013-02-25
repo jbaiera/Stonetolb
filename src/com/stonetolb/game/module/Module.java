@@ -1,24 +1,8 @@
-/* 
- * Copyleft (o) 2012 James Baiera
- * All wrongs reserved.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.stonetolb.game.module;
 
 /**
- * Interface that defines how the game state objects should act during the game loop
+ * A Module is a primary game state object that contains specific
+ * logic on what to accomplish during the game loop.
  * 
  * @author james.baiera
  *
@@ -26,21 +10,21 @@ package com.stonetolb.game.module;
 public interface Module {
 	
 	/**
-	 * Runs this method at the start of execution
+	 * Method call used to initialize a {@link Module} object.
 	 */
-	public abstract void init();
+	public void init();
 	
 	/**
-	 * One step of game logic
+	 * Method invoked to process a single 'tick' of game-time.
 	 * 
-	 * @param delta amount of time passed since last step
+	 * @param delta - Amount of time passed since last step
 	 */
-	public abstract void step(long delta);
+	public void step(long delta);
 	
 	/**
-	 * Render all entities
+	 * Method invoked to render all objects onto the screen.
 	 * 
-	 * @param delta amount of time passed since last render
+	 * @param delta - Amount of time passed since last render
 	 */
-	public abstract void render(long delta);
+	public void render(long delta);
 }

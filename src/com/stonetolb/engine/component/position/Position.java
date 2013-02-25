@@ -26,27 +26,27 @@ import com.artemis.Component;
  *
  */
 public class Position extends Component{
-	private float xpos;
-	private float ypos;
+	private int xpos;
+	private int ypos;
 	
-	public Position(float pXpos, float pYpos) {
+	public Position(int pXpos, int pYpos) {
 		xpos = pXpos;
 		ypos = pYpos;
 	}
 	
-	public float getX() {
+	public int getX() {
 		return xpos;
 	}
 	
-	public void setX(float pNew) {
+	public void setX(int pNew) {
 		xpos = pNew;
 	}
 	
-	public float getY() {
+	public int getY() {
 		return ypos;
 	}
 	
-	public void setY(float pNew) {
+	public void setY(int pNew) {
 		ypos = pNew;
 	}
 	
@@ -55,7 +55,7 @@ public class Position extends Component{
 		ypos = other.ypos;
 	}
 	
-	public void setPosition(float x, float y) {
+	public void setPosition(int x, int y) {
 		xpos = x;
 		ypos = y;
 	}

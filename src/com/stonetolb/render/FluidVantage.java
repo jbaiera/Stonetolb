@@ -3,6 +3,16 @@ package com.stonetolb.render;
 import com.stonetolb.game.Game;
 import com.stonetolb.util.Vector2f;
 
+/**
+ * FluidVantage object used to create a ease-in-ease-out orthogonal camera movement.
+ * 
+ * Causes objects on the screen to jitter during short distance updates due to float based 
+ * math. When used in integer mode, this creates a small bounding space that the Camera will 
+ * simply not move in. Further analysis is required to make this production worthy.
+ * 
+ * @author james.baiera
+ *
+ */
 public final class FluidVantage implements Vantage {
 
 	private static volatile FluidVantage INSTANCE = null;
@@ -24,10 +34,10 @@ public final class FluidVantage implements Vantage {
 	public static FluidVantage create(float speed) {
 		if(INSTANCE == null) {
 			synchronized(FluidVantage.class) {
-				if(INSTANCE == null) {
+				if(INSTANCE == null && Game.getGame().isPresent()) {
 					INSTANCE = new FluidVantage(
-							  Game.getGame().getWindowWidth()
-							, Game.getGame().getWindowHeight()
+							  Game.getGame().get().getWindowWidth()
+							, Game.getGame().get().getWindowHeight()
 							, speed
 							);
 				}
@@ -36,7 +46,12 @@ public final class FluidVantage implements Vantage {
 		return INSTANCE;
 	}
 	
-	
+	/**
+	 * Default Constructor.
+	 * @param pScreenW - Screen Width.
+	 * @param pScreenH - Screen Height.
+	 * @param pSpeed - Camera speed.
+	 */
 	private FluidVantage(int pScreenW, int pScreenH, float pSpeed) {
 		screenWidth = pScreenW;
 		screenHeight = pScreenH;
@@ -46,6 +61,9 @@ public final class FluidVantage implements Vantage {
 		targetPosition = Vector2f.NULL_VECTOR;
 	}
 	
+	/**
+	 * {@inheritDoc Vantage}
+	 */
 	@Override
 	public void updatePosition(Vector2f target) {
 		if(target != null) {
@@ -56,6 +74,9 @@ public final class FluidVantage implements Vantage {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc Vantage}
+	 */
 	@Override
 	public void setPosition(Vector2f newPosition) {
 		currentPosition = Vector2f.from(
@@ -65,17 +86,27 @@ public final class FluidVantage implements Vantage {
 		targetPosition = currentPosition;
 	}
 
+	/**
+	 *{@inheritDoc Vantage}
+	 */
 	@Override
 	public void update(long delta) {
 		currentPosition = Vector2f.from(
-				  fadeOut(currentPosition.getX(), targetPosition.getX(), normalSpeed)
-				, fadeOut(currentPosition.getY(), targetPosition.getY(), normalSpeed)
+				  Math.round(fadeOut(currentPosition.getX(), targetPosition.getX(), normalSpeed))
+				, Math.round(fadeOut(currentPosition.getY(), targetPosition.getY(), normalSpeed))
 				);
 		
 //		System.out.println(currentPosition);
 		Camera.moveCamera(currentPosition, screenWidth, screenHeight);
 	}
 
+	/**
+	 * Movement function used in calculating the Camera's actual position.
+	 * @param current - Current location.
+	 * @param target - Target location.
+	 * @param ratio - Speed to move.
+	 * @return new current location.
+	 */
 	private float fadeOut(float current, float target, float ratio) {
 		return (target * (ratio)) + ((1 - ratio) * current);
 	}

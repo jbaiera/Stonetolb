@@ -105,7 +105,7 @@ public class CollisionSystem extends EntityProcessingSystem {
 		Vector2f newPositionOfPositionComponent = newPositionOfBody.sub(bodyToMove.getOffset());
 
 		Position position = positionMapper.get(entityToMove);
-		position.setPosition(newPositionOfPositionComponent.getX(), newPositionOfPositionComponent.getY()); //POSITION UPDATED
+		position.setPosition((int)newPositionOfPositionComponent.getX(), (int)newPositionOfPositionComponent.getY()); //POSITION UPDATED
 	}
 	
 	private void resolveBounceCollision(Entity firstEntity, Body firstBody, Entity secondEntity, Body secondBody, Vector2f overlap) {
@@ -122,8 +122,8 @@ public class CollisionSystem extends EntityProcessingSystem {
 		Position firstPosition = positionMapper.get(firstEntity);
 		Position secondPosition = positionMapper.get(secondEntity);
 		
-		firstPosition.setPosition(newPositionOfFirstPositionComponent.getX(), newPositionOfFirstPositionComponent.getY());
-		secondPosition.setPosition(newPositionOfSecondPositionComponent.getX(), newPositionOfSecondPositionComponent.getY());
+		firstPosition.setPosition((int)newPositionOfFirstPositionComponent.getX(), (int)newPositionOfFirstPositionComponent.getY());
+		secondPosition.setPosition((int)newPositionOfSecondPositionComponent.getX(), (int)newPositionOfSecondPositionComponent.getY());
 	}
 	
 	@Override

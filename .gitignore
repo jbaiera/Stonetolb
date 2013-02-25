@@ -1,4 +1,6 @@
 bin/*
 dist/*
+doc/stonetolb/
+score
 .codepro/
 .settings/

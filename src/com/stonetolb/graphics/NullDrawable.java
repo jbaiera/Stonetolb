@@ -21,7 +21,7 @@ import java.io.IOException;
 
 /**
  * Null object that implements the {@link Drawable} interface.
- * Used to represent non existant resources.
+ * Used as a fall back in the event that an art asset does not exist.
  * 
  * @author james.baiera
  *
@@ -29,16 +29,24 @@ import java.io.IOException;
 public class NullDrawable implements Drawable {
 	
 	private static final NullDrawable INSTANCE = new NullDrawable();
+	
+	/**
+	 * Gets the instance of the NullDrawable.
+	 * @return NullDrawable sprite
+	 */
 	public static NullDrawable getInstance() {
 		return INSTANCE;
 	}
 	
 	private Drawable img;
 	
+	/**
+	 * Default Constructor.
+	 */
 	private NullDrawable() {
 		try
 		{
-			img = new Sprite("null.gif");
+			img = new Sprite("sprites/null.gif");
 		}
 		catch (IOException ioe) {
 			ioe.printStackTrace();
@@ -46,11 +54,17 @@ public class NullDrawable implements Drawable {
 		}
 	}
 
+	/**
+	 * {@inheritDoc Drawable}
+	 */
 	@Override
 	public void draw(int x, int y, int z, long delta) {
 		img.draw(x, y, z, delta);
 	}
 	
+	/**
+	 * {@inheritDoc Drawable}
+	 */
 	@Override
 	public void accept(Critic critic) {
 		critic.analyze(this);
