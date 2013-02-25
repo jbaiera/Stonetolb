@@ -163,14 +163,11 @@ public class TextureLoader {
         int textureID = createTextureID();
         
         Texture.Builder tb = Texture.builder(target, textureID);
-//      Texture texture = new Texture(target,textureID);
 
         // bind this texture
         glBindTexture(target, textureID);
 
         BufferedImage bufferedImage = loadImage(resourceName);
-//        texture.setWidth(bufferedImage.getWidth());
-//        texture.setHeight(bufferedImage.getHeight());
         tb.setImageWidth(bufferedImage.getWidth());
         tb.setImageHeight(bufferedImage.getHeight());
 
