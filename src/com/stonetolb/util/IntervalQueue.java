@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.base.Objects;
+
 /**
  * An immutable container that stores Objects associated with an interval of time.
  * Similar to a changing time line.
@@ -132,12 +134,7 @@ public class IntervalQueue<T>{
 		
 		@Override
 		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((data == null) ? 0 : data.hashCode());
-			result = prime * result + start;
-			result = prime * result + stop;
-			return result;
+			return Objects.hashCode(start, stop, data);
 		}
 
 		@Override
@@ -146,19 +143,12 @@ public class IntervalQueue<T>{
 				return true;
 			if (obj == null)
 				return false;
-			if (getClass() != obj.getClass())
+			if (!(obj instanceof Interval))
 				return false;
 			Interval<?> other = (Interval<?>) obj;
-			if (data == null) {
-				if (other.data != null)
-					return false;
-			} else if (!data.equals(other.data))
-				return false;
-			if (start != other.start)
-				return false;
-			if (stop != other.stop)
-				return false;
-			return true;
+			return Objects.equal(start, other.start)
+					&& Objects.equal(stop, other.stop)
+					&& Objects.equal(data, other.data);
 		}
 	}
 	

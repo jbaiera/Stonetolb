@@ -48,7 +48,7 @@ public class RenderSystem extends EntityProcessingSystem {
 		Position position = positionMap.get(arg0);
 		RenderComponent render = renderMap.get(arg0);
 		
-		render.getDrawable().draw((int)position.getX(), (int)position.getY(), 0, (long)world.getDelta());
+		render.getDrawable().draw(position.getX(), position.getY(), 0, (long)world.getDelta());
 	}
 
 	@Override

@@ -28,7 +28,6 @@ public class CameraSystem extends EntityProcessingSystem {
 	
 	@Override
 	protected void begin() {
-		// TODO Auto-generated method stub
 		super.begin();
 		Camera.getInstance().updatePosition(Vector2f.NULL_VECTOR);
 	}

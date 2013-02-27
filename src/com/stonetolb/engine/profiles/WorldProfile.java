@@ -2,6 +2,8 @@ package com.stonetolb.engine.profiles;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.common.base.Objects;
+
 /**
  * Module used to run any and all world movement and interaction
  * @author james.baiera
@@ -73,34 +75,21 @@ public class WorldProfile {
 		}
 		
 		@Override
-		public int hashCode()
-		{
-			int prime = 31;
-			int result = 17;
-			result = prime * result + Float.floatToIntBits(direction);
-			result = prime * result + speed;
-			return result;
+		public int hashCode() {
+			return Objects.hashCode(direction, speed);
 		}
 		
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj) {
+			if (this == obj)
 				return true;
-			}
-			else if (obj == null) 
-			{
+			if (obj == null)
 				return false;
-			}
-			else if(this.getClass().isInstance(obj))
-			{
-				MovementContext other = (MovementContext) obj;
-				return direction == other.direction
-						&& speed == other.speed;
-			}
-			else 
-			{
+			if (!(obj instanceof MovementContext))
 				return false;
-			}
+			MovementContext other = (MovementContext) obj;
+			return Objects.equal(direction, other.direction)
+					&& Objects.equal(speed, other.speed);
 		}
 	}
 	

@@ -240,7 +240,8 @@ public class Game {
 			return true;
 		} 
 		catch (LWJGLException lwjgle) {
-			System.out.println("Unable to enter fullscreen, continuing in windowed mode");
+			System.out.println("Unable to enter fullscreen : " + lwjgle.getMessage());
+			System.out.println("Continuing in windowed mode");
 		}
 		
 		return false;

@@ -1,7 +1,5 @@
 package com.stonetolb.render;
 
-import org.lwjgl.opengl.GL11;
-
 import com.stonetolb.game.Game;
 import com.stonetolb.util.Vector2f;
 
@@ -73,25 +71,6 @@ public final class FixedVantage implements Vantage{
 	 */
 	@Override
 	public void update(long delta) {
-		//TODO : Switch to Vector2f positioning and use Camera move command.
-		moveCamera();
-	}
-	
-	/**
-	 * Private helper method to move the camera.
-	 */
-	private void moveCamera() {
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(
-				  (double)position.getX()
-				, (double)position.getX() + (double)screenWidth
-				, (double)position.getY() + (double)screenHeight
-				, (double)position.getY()
-				, 2000
-				, 2000 * -1
-			);
-		
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		Camera.moveCamera(position, screenWidth, screenHeight);
 	}
 }

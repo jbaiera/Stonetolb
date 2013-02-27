@@ -15,6 +15,7 @@ import com.stonetolb.engine.component.physics.DynamicBody;
 import com.stonetolb.engine.component.physics.KinematicBody;
 import com.stonetolb.engine.component.physics.StaticBody;
 import com.stonetolb.engine.component.position.Position;
+import com.stonetolb.util.Floatation;
 import com.stonetolb.util.Vector2f;
 
 public class CollisionSystem extends EntityProcessingSystem {
@@ -81,8 +82,8 @@ public class CollisionSystem extends EntityProcessingSystem {
 						// Check for Movement
 						Velocity currentVelocity = velocityMapper.getSafe(currentEntity);
 						Velocity otherVelocity = velocityMapper.getSafe(otherEntity);
-						boolean currentMoving = ((currentVelocity != null) && (currentVelocity.getVelocity() == 0F));
-						boolean otherMoving = ((otherVelocity != null) && (otherVelocity.getVelocity() == 0F));
+						boolean currentMoving = ((currentVelocity != null) && (Floatation.nonZero(currentVelocity.getVelocity())));
+						boolean otherMoving = ((otherVelocity != null) && (Floatation.nonZero(otherVelocity.getVelocity())));
 						
 						// If one is moving and the other is not, fix the moving one.
 						if(currentMoving && !otherMoving) {

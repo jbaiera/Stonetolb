@@ -1,5 +1,6 @@
 package com.stonetolb.util;
 
+
 /**
  * Vector data object that represents a two dimensional matrix of floats.
  * This object can be treated as a standard (x,y) pair of type float. It
@@ -25,7 +26,7 @@ public class Vector2f {
 	 * @return A {@link Vector2f} object based on the given values.
 	 */
 	public static Vector2f from(float x, float y) {
-		if (x == 0f && y == 0f) {
+		if (Floatation.isZero(x, y)) {
 			return NULL_VECTOR;
 		} else {
 			return new Vector2f(x,y);
@@ -118,7 +119,7 @@ public class Vector2f {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Vector2f))
 			return false;
 		Vector2f other = (Vector2f) obj;
 		if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x))

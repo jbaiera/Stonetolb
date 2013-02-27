@@ -226,7 +226,7 @@ public class Texture {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Texture))
 			return false;
 		Texture other = (Texture) obj;
 		return Objects.equal(target, other.target)

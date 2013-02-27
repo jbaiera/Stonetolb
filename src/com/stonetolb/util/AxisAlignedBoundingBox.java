@@ -151,7 +151,7 @@ public class AxisAlignedBoundingBox {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof AxisAlignedBoundingBox))
 			return false;
 		AxisAlignedBoundingBox other = (AxisAlignedBoundingBox) obj;
 		if (height != other.height)

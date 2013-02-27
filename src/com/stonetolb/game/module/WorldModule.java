@@ -19,7 +19,6 @@ import com.stonetolb.engine.system.PlayerControlSystem;
 import com.stonetolb.engine.system.RenderSystem;
 import com.stonetolb.engine.system.SpriteControlSystem;
 import com.stonetolb.graphics.Animation;
-import com.stonetolb.graphics.Animation.Builder;
 import com.stonetolb.graphics.ImageRenderMode;
 import com.stonetolb.graphics.NullDrawable;
 import com.stonetolb.graphics.Sprite;
@@ -73,7 +72,7 @@ public class WorldModule implements Module {
 		Sprite standingRight = new Sprite(sheet.getSubTexture(0*WIDTH, 2*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING);
 		Sprite standingAway =  new Sprite(sheet.getSubTexture(0*WIDTH, 3*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING);
 		
-		Builder builder = Animation.builder();
+		Animation.Builder builder = Animation.builder();
 		Animation toward = builder
 				.addFrame(new Sprite(sheet.getSubTexture(1*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 175)
 				.addFrame(new Sprite(sheet.getSubTexture(2*WIDTH, 0*HEIGHT, WIDTH, HEIGHT), ImageRenderMode.STANDING), 175)
