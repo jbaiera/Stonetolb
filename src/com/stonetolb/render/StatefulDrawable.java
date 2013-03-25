@@ -1,4 +1,4 @@
-package com.stonetolb.graphics;
+package com.stonetolb.render;
 
 /**
  * This interface is for items that are Drawable but require either

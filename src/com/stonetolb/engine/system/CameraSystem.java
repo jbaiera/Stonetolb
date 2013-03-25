@@ -7,7 +7,7 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.stonetolb.engine.component.position.Position;
 import com.stonetolb.engine.component.render.CameraMount;
-import com.stonetolb.render.Camera;
+import com.stonetolb.render.util.Camera;
 import com.stonetolb.util.Vector2f;
 
 /**

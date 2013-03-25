@@ -1,4 +1,4 @@
-package com.stonetolb.graphics;
+package com.stonetolb.render;
 
 import java.io.IOException;
 

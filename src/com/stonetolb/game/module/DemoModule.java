@@ -8,6 +8,8 @@ import com.artemis.World;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
+import com.stonetolb.asset.graphics.Texture;
+import com.stonetolb.asset.graphics.TextureLoader;
 import com.stonetolb.engine.component.control.PlayerControl;
 import com.stonetolb.engine.component.movement.Rotation;
 import com.stonetolb.engine.component.movement.Velocity;
@@ -24,15 +26,12 @@ import com.stonetolb.engine.system.MovementSystem;
 import com.stonetolb.engine.system.PlayerControlSystem;
 import com.stonetolb.engine.system.RenderSystem;
 import com.stonetolb.engine.system.SpriteControlSystem;
-import com.stonetolb.graphics.Animation;
-import com.stonetolb.graphics.Animation.Builder;
-import com.stonetolb.graphics.ImageRenderMode;
-import com.stonetolb.graphics.NullDrawable;
-import com.stonetolb.graphics.Sprite;
-import com.stonetolb.graphics.Texture;
-import com.stonetolb.graphics.engine.TextureLoader;
-import com.stonetolb.render.Camera;
-import com.stonetolb.render.FluidVantage;
+import com.stonetolb.render.Animation;
+import com.stonetolb.render.ImageRenderMode;
+import com.stonetolb.render.NullDrawable;
+import com.stonetolb.render.Sprite;
+import com.stonetolb.render.util.Camera;
+import com.stonetolb.render.util.FluidVantage;
 import com.stonetolb.util.Vector2f;
 
 /**
@@ -87,7 +86,7 @@ public class DemoModule implements Module {
 		// Create the Sprites and Animations first:
 		Table<Integer, Integer, Sprite> vaughnSpriteAtlas = createCharacterAtlas();
 		
-		Builder builder = Animation.builder();
+		Animation.Builder builder = Animation.builder();
 		Animation toward = builder
 				.addFrame(vaughnSpriteAtlas.get(0, 1), 175)
 				.addFrame(vaughnSpriteAtlas.get(0, 2), 175)

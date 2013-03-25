@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.artemis.Component;
 import com.stonetolb.engine.profiles.WorldProfile.MovementContext;
-import com.stonetolb.graphics.Drawable;
-import com.stonetolb.graphics.NullDrawable;
+import com.stonetolb.render.Drawable;
+import com.stonetolb.render.NullDrawable;
 
 /**
  * Component that stores Drawable aspects that an Entity may 

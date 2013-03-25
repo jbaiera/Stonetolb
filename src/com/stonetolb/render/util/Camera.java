@@ -1,4 +1,4 @@
-package com.stonetolb.render;
+package com.stonetolb.render.util;
 
 import org.lwjgl.opengl.GL11;
 

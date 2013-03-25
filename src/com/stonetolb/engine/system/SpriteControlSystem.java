@@ -10,9 +10,9 @@ import com.stonetolb.engine.component.movement.Velocity;
 import com.stonetolb.engine.component.render.RenderComponent;
 import com.stonetolb.engine.component.render.SpriteControl;
 import com.stonetolb.engine.profiles.WorldProfile.MovementContext;
-import com.stonetolb.graphics.Critic;
-import com.stonetolb.graphics.Drawable;
-import com.stonetolb.graphics.StatefulDrawable;
+import com.stonetolb.render.Critic;
+import com.stonetolb.render.Drawable;
+import com.stonetolb.render.StatefulDrawable;
 
 /**
  * System used to change an Entity's visual representation based on 

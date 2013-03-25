@@ -1,4 +1,4 @@
-package com.stonetolb.render;
+package com.stonetolb.render.util;
 
 import com.stonetolb.game.Game;
 import com.stonetolb.util.Vector2f;

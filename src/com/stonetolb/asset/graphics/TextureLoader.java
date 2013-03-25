@@ -1,4 +1,4 @@
-package com.stonetolb.graphics.engine;
+package com.stonetolb.asset.graphics;
 
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_RGB;
@@ -36,7 +36,7 @@ import javax.swing.ImageIcon;
 
 import org.lwjgl.BufferUtils;
 
-import com.stonetolb.graphics.Texture;
+import com.stonetolb.asset.graphics.Texture;
 
 /**
  * A utility class to load textures for OpenGL. This source is based

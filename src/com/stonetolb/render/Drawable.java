@@ -1,4 +1,4 @@
-package com.stonetolb.graphics;
+package com.stonetolb.render;
 
 /**
  * All objects that are capable of being displayed to the screen

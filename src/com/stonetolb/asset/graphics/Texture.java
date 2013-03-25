@@ -1,4 +1,4 @@
-package com.stonetolb.graphics;
+package com.stonetolb.asset.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
 

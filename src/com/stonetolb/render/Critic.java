@@ -1,4 +1,4 @@
-package com.stonetolb.graphics;
+package com.stonetolb.render;
 
 /**
  * Interface that defines handler methods for the general Drawable

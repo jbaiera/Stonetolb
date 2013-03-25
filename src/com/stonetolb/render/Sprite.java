@@ -1,4 +1,4 @@
-package com.stonetolb.graphics;
+package com.stonetolb.render;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -11,7 +11,8 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import java.io.IOException;
 
-import com.stonetolb.graphics.engine.TextureLoader;
+import com.stonetolb.asset.graphics.Texture;
+import com.stonetolb.asset.graphics.TextureLoader;
 
 /**
  * The Sprite object takes care of rendering a Texture object

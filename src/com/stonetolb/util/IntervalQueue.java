@@ -248,7 +248,6 @@ public class IntervalQueue<T>{
 	 * @return object at given point. null if not found.
 	 */
 	public T getDataAt(int pTime) {
-		//TODO: return Optional object. throw Array out of bounds exception
 		Interval<T> value = getIntervalAt(pTime);
 		if (value == null)
 		{

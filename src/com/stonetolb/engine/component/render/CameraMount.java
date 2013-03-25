@@ -2,7 +2,7 @@ package com.stonetolb.engine.component.render;
 
 import com.artemis.Component;
 import com.stonetolb.engine.component.position.Position;
-import com.stonetolb.render.Camera;
+import com.stonetolb.render.util.Camera;
 
 /**
  * Component used to attach a Camera object to a specific Entity

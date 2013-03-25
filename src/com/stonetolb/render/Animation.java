@@ -1,4 +1,4 @@
-package com.stonetolb.graphics;
+package com.stonetolb.render;
 
 import com.stonetolb.util.IntervalQueue;
 

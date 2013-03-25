@@ -8,8 +8,8 @@ import org.lwjgl.opengl.DisplayMode;
 
 import com.google.common.base.Optional;
 import com.stonetolb.game.module.Module;
-import com.stonetolb.render.Camera;
-import com.stonetolb.render.FixedVantage;
+import com.stonetolb.render.util.Camera;
+import com.stonetolb.render.util.FixedVantage;
 
 /**
  * This is our hook for launching the game, and also the home

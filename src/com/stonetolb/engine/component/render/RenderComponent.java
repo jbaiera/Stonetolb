@@ -1,8 +1,8 @@
 package com.stonetolb.engine.component.render;
 
 import com.artemis.Component;
-import com.stonetolb.graphics.Drawable;
-import com.stonetolb.graphics.NullDrawable;
+import com.stonetolb.render.Drawable;
+import com.stonetolb.render.NullDrawable;
 
 /**
  * Component that represents the visual aspect of an Entity. 
