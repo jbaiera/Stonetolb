@@ -283,29 +283,25 @@ public class DemoModule implements Module {
 		return sc
 		.setNoOp(NullDrawable.getInstance())
 		.addAction(
-				new WorldProfile.MovementContext(
-						WorldProfile.WorldDirection.DOWN.getDirection()
-						, WorldProfile.Speed.WALK.getSpeed()
-						)
-			, first.clone())
+				first.clone(),
+				WorldProfile.Speed.WALK.getSpeed(),
+				WorldProfile.WorldDirection.DOWN.getDirection()
+			)
 		.addAction(
-				new WorldProfile.MovementContext(
-						WorldProfile.WorldDirection.UP.getDirection()
-						, WorldProfile.Speed.WALK.getSpeed()
-						)
-			, rest[0].clone())
+				rest[0].clone(),
+				WorldProfile.Speed.WALK.getSpeed(),
+				WorldProfile.WorldDirection.UP.getDirection()
+			)
 		.addAction(
-				new WorldProfile.MovementContext(
-						WorldProfile.WorldDirection.RIGHT.getDirection()
-						, WorldProfile.Speed.WALK.getSpeed()
-						)
-			, rest[1].clone())
+				rest[1].clone(),
+				WorldProfile.Speed.WALK.getSpeed(),
+				WorldProfile.WorldDirection.RIGHT.getDirection()
+			)
 		.addAction(
-				new WorldProfile.MovementContext(
-						WorldProfile.WorldDirection.LEFT.getDirection()
-						, WorldProfile.Speed.WALK.getSpeed()
-						)
-			, rest[2].clone());
+				rest[2].clone(),
+				WorldProfile.Speed.WALK.getSpeed(),
+				WorldProfile.WorldDirection.LEFT.getDirection()
+			);
 	}
 	
 	/**
@@ -320,29 +316,25 @@ public class DemoModule implements Module {
 		
 		return sc
 		.addAction(
-				new WorldProfile.MovementContext(
-						WorldProfile.WorldDirection.DOWN.getDirection()
-						, WorldProfile.Speed.STOP.getSpeed()
-						)
-			, first)
+				first,
+				WorldProfile.Speed.STOP.getSpeed(),
+				WorldProfile.WorldDirection.DOWN.getDirection()
+			)
 		.addAction(
-				new WorldProfile.MovementContext(
-						WorldProfile.WorldDirection.UP.getDirection()
-						, WorldProfile.Speed.STOP.getSpeed()
-						)
-			, rest[0])
+				rest[0],
+				WorldProfile.Speed.STOP.getSpeed(),
+				WorldProfile.WorldDirection.UP.getDirection()
+			)
 		.addAction(
-				new WorldProfile.MovementContext(
-						WorldProfile.WorldDirection.RIGHT.getDirection()
-						, WorldProfile.Speed.STOP.getSpeed()
-						)
-			, rest[1])
+				rest[1],
+				WorldProfile.Speed.STOP.getSpeed(),
+				WorldProfile.WorldDirection.RIGHT.getDirection()
+			)
 		.addAction(
-				new WorldProfile.MovementContext(
-						WorldProfile.WorldDirection.LEFT.getDirection()
-						, WorldProfile.Speed.STOP.getSpeed()
-						)
-			, rest[2]);
+				rest[2],
+				WorldProfile.Speed.STOP.getSpeed(),
+				WorldProfile.WorldDirection.LEFT.getDirection()
+			);
 	}
 	
 	/**

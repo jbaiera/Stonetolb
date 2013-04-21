@@ -2,8 +2,6 @@ package com.stonetolb.engine.profiles;
 
 import org.lwjgl.input.Keyboard;
 
-import com.google.common.base.Objects;
-
 /**
  * Module used to run any and all world movement and interaction
  * @author james.baiera
@@ -57,41 +55,6 @@ public class WorldProfile {
 		}
 	}
 	
-	/**
-	 * Used to key animations for movements based on the entity's state
-	 * 
-	 * @author james.baiera
-	 *
-	 */
-	public static class MovementContext
-	{
-		private float direction;
-		private int speed;
-		
-		public MovementContext(float pDirection, int pSpeed)
-		{
-			direction = pDirection;
-			speed = pSpeed;
-		}
-		
-		@Override
-		public int hashCode() {
-			return Objects.hashCode(direction, speed);
-		}
-		
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (!(obj instanceof MovementContext))
-				return false;
-			MovementContext other = (MovementContext) obj;
-			return Objects.equal(direction, other.direction)
-					&& Objects.equal(speed, other.speed);
-		}
-	}
 	
 	/**
 	 * Direction values are measured in degrees starting from the right and rotating clockwise

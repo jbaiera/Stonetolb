@@ -9,7 +9,6 @@ import com.stonetolb.engine.component.movement.Rotation;
 import com.stonetolb.engine.component.movement.Velocity;
 import com.stonetolb.engine.component.render.RenderComponent;
 import com.stonetolb.engine.component.render.SpriteControl;
-import com.stonetolb.engine.profiles.WorldProfile.MovementContext;
 import com.stonetolb.render.Critic;
 import com.stonetolb.render.Drawable;
 import com.stonetolb.render.StatefulDrawable;
@@ -39,11 +38,11 @@ public class SpriteControlSystem extends EntityProcessingSystem implements Criti
 		Velocity velocity = velocityMap.get(arg0);
 		Rotation rotation = rotationMap.get(arg0);
 		
-		// Construct the Movement Context key
-		MovementContext key = new MovementContext((float)rotation.getRotation(), (int)velocity.getVelocity());
-		
 		// Get the drawable for the context
-		Drawable newDrawable = spriteControl.getDrawable(key); 
+		Drawable newDrawable 
+			= spriteControl.getDrawable((int)velocity.getVelocity(), 
+										(float)rotation.getRotation()
+										); 
 		
 		// If Different :
 		if (!newDrawable.equals(renderComponent.getDrawable())) {

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.artemis.Component;
-import com.stonetolb.engine.profiles.WorldProfile.MovementContext;
+import com.google.common.base.Objects;
 import com.stonetolb.render.Drawable;
 import com.stonetolb.render.NullDrawable;
 
@@ -38,15 +38,40 @@ public class SpriteControl extends Component {
 	}
 	
 	/**
+	 * Maps the given drawable instance to the speed and direction given.
+	 * When the entity this component is attached to matches the given
+	 * criteria, the rendered instance is changed to be the given drawable.
+	 * 
+	 * @param pDrawable
+	 * @param pSpeed
+	 * @param pDirection
+	 * @return
+	 */
+	public SpriteControl addAction(Drawable pDrawable, int pSpeed, float pDirection) {
+		return addAction(new MovementContext(pDirection, pSpeed), pDrawable);
+	}
+	
+	/**
 	 * Adds a mapping of movement to drawable
 	 * 
 	 * @param pMovement
 	 * @param pDrawable
 	 * @return this SpriteControl for command chaining
 	 */
-	public SpriteControl addAction(MovementContext pMovement, Drawable pDrawable) {
+	private SpriteControl addAction(MovementContext pMovement, Drawable pDrawable) {
 		actionMapping.put(pMovement, pDrawable);
 		return this;
+	}
+	
+	/**
+	 * Returns the drawable object keyed by the given movement parameters.
+	 * 
+	 * @param pSpeed
+	 * @param pDirection
+	 * @return
+	 */
+	public Drawable getDrawable(int pSpeed, float pDirection) {
+		return getDrawable(new MovementContext(pDirection, pSpeed));
 	}
 	
 	/**
@@ -56,7 +81,7 @@ public class SpriteControl extends Component {
 	 * @param pMovement
 	 * @return
 	 */
-	public Drawable getDrawable(MovementContext pMovement) {
+	private Drawable getDrawable(MovementContext pMovement) {
 		Drawable returnVal;
 		returnVal = actionMapping.get(pMovement);
 		if (returnVal == null) {
@@ -74,5 +99,43 @@ public class SpriteControl extends Component {
 	public SpriteControl setNoOp(Drawable pDrawable) {
 		noOp = pDrawable;
 		return this;
+	}
+	
+
+	/**
+	 * Used to as a memory efficient key on animations for movements 
+	 * based on the entity's state.
+	 * 
+	 * @author james.baiera
+	 *
+	 */
+	private class MovementContext
+	{
+		private float direction;
+		private int speed;
+		
+		public MovementContext(float pDirection, int pSpeed)
+		{
+			direction = pDirection;
+			speed = pSpeed;
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hashCode(direction, speed);
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (!(obj instanceof MovementContext))
+				return false;
+			MovementContext other = (MovementContext) obj;
+			return Objects.equal(direction, other.direction)
+					&& Objects.equal(speed, other.speed);
+		}
 	}
 }

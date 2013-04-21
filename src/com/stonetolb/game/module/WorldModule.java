@@ -116,53 +116,45 @@ public class WorldModule implements Module {
 		SpriteControl spriteControl = new SpriteControl()
 				.setNoOp(NullDrawable.getInstance())
 				.addAction(
-						new WorldProfile.MovementContext(
-								WorldProfile.WorldDirection.DOWN.getDirection()
-								, WorldProfile.Speed.WALK.getSpeed()
-								)
-					, toward.clone())
+						toward.clone(),
+						WorldProfile.Speed.WALK.getSpeed(),
+						WorldProfile.WorldDirection.DOWN.getDirection()
+					)
 				.addAction(
-						new WorldProfile.MovementContext(
-								WorldProfile.WorldDirection.UP.getDirection()
-								, WorldProfile.Speed.WALK.getSpeed()
-								)
-					, away.clone())
+						away.clone(),
+						WorldProfile.Speed.WALK.getSpeed(),
+						WorldProfile.WorldDirection.UP.getDirection()
+					)
 				.addAction(
-						new WorldProfile.MovementContext(
-								WorldProfile.WorldDirection.RIGHT.getDirection()
-								, WorldProfile.Speed.WALK.getSpeed()
-								)
-					, right.clone())
+						right.clone(),
+						WorldProfile.Speed.WALK.getSpeed(),
+						WorldProfile.WorldDirection.RIGHT.getDirection()
+					)
 				.addAction(
-						new WorldProfile.MovementContext(
-								WorldProfile.WorldDirection.LEFT.getDirection()
-								, WorldProfile.Speed.WALK.getSpeed()
-								)
-					, left.clone())
+						left.clone(),
+						WorldProfile.Speed.WALK.getSpeed(),
+						WorldProfile.WorldDirection.LEFT.getDirection()
+					)
 				.addAction(
-						new WorldProfile.MovementContext(
-								WorldProfile.WorldDirection.DOWN.getDirection()
-								, WorldProfile.Speed.STOP.getSpeed()
-								)
-					, standingToward)
+						standingToward,
+						WorldProfile.Speed.STOP.getSpeed(),
+						WorldProfile.WorldDirection.DOWN.getDirection()
+					)
 				.addAction(
-						new WorldProfile.MovementContext(
-								WorldProfile.WorldDirection.UP.getDirection()
-								, WorldProfile.Speed.STOP.getSpeed()
-								)
-					, standingAway)
+						standingAway,
+						WorldProfile.Speed.STOP.getSpeed(),
+						WorldProfile.WorldDirection.UP.getDirection()
+					)
 				.addAction(
-						new WorldProfile.MovementContext(
-								WorldProfile.WorldDirection.RIGHT.getDirection()
-								, WorldProfile.Speed.STOP.getSpeed()
-								)
-					, standingRight)
+						standingRight,
+						WorldProfile.Speed.STOP.getSpeed(),
+						WorldProfile.WorldDirection.RIGHT.getDirection()
+					)
 				.addAction(
-						new WorldProfile.MovementContext(
-								WorldProfile.WorldDirection.LEFT.getDirection()
-								, WorldProfile.Speed.STOP.getSpeed()
-								)
-					, standingLeft);
+						standingLeft,
+						WorldProfile.Speed.STOP.getSpeed(),
+						WorldProfile.WorldDirection.LEFT.getDirection()
+					);
 		
 		newEnt = world.createEntity();
 		newEnt.addComponent(positionComponent);
