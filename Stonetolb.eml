@@ -5,7 +5,7 @@
 	<lib name="lwjgl.jar" scope="COMPILE">
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/lwjgl.jar!/"/>
 	</lib>
-	<lib name="res" scope="RUNTIME">
+	<lib name="res" scope="COMPILE">
 		<relative-module-cls project-related="file://$PROJECT_DIR$/Stonetolb/res"/>
 	</lib>
 	<lib name="commons-cli-1.2.jar" scope="COMPILE">
