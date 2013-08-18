@@ -41,8 +41,11 @@ public class IntervalQueue<T>{
 	 */
 	public static class Builder<T> {
 		private IntervalQueue<T> internalQueue;
-		
-		private Builder() {
+
+		/**
+		 * Creates new IntervalQueue Builder object.
+		 */
+		public Builder() {
 			internalQueue = new IntervalQueue<T>();
 		}
 		
