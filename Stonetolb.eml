@@ -5,36 +5,36 @@
 		<testFolder url="file://$MODULE_DIR$/test"/>
 	</contentEntry>
 	<lib name="lwjgl.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/lwjgl.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/lwjgl.jar!/"/>
 	</lib>
 	<lib name="res" scope="COMPILE">
-		<relative-module-cls project-related="file://$PROJECT_DIR$/res"/>
+		<relative-module-cls project-related="file://$PROJECT_DIR$/Stonetolb/res"/>
 	</lib>
 	<lib name="commons-cli-1.2.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/commons-cli-1.2.jar!/"/>
-		<relative-module-javadoc project-related="jar://$PROJECT_DIR$/doc/commons-cli-1.2-javadoc.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/commons-cli-1.2.jar!/"/>
+		<relative-module-javadoc project-related="jar://$PROJECT_DIR$/Stonetolb/doc/commons-cli-1.2-javadoc.jar!/"/>
 	</lib>
 	<lib name="TWL.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/TWL.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/TWL.jar!/"/>
 	</lib>
 	<lib name="xpp3-1.1.4c.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/xpp3-1.1.4c.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/xpp3-1.1.4c.jar!/"/>
 	</lib>
 	<lib name="artemis.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/artemis.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/artemis.jar!/"/>
 	</lib>
 	<lib name="slick.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/slick.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/slick.jar!/"/>
 	</lib>
 	<lib name="guava-14.0.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/guava-14.0.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/guava-14.0.jar!/"/>
 	</lib>
-	<lib name="junit-4.10" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/junit-4.10.jar!/"/>
+	<lib name="junit-4.10.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/junit-4.10.jar!/"/>
 	</lib>
-	<lib name="mockito-all-1.9.5" scope="COMPILE">
+	<lib name="mockito-all-1.9.5.jar" scope="COMPILE">
 		<srcroot url="jar://$MODULE_DIR$/lib/mockito-all-1.9.5.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/lib/mockito-all-1.9.5.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/mockito-all-1.9.5.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/Stonetolb/lib/mockito-all-1.9.5.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Stonetolb/lib/mockito-all-1.9.5.jar!/"/>
 	</lib>
 </component>
