@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import com.stonetolb.asset.graphics.Texture;
 import com.stonetolb.asset.graphics.TextureLoader;
+import com.stonetolb.resource.system.SystemContext;
 
 /**
  * The Sprite object takes care of rendering a Texture object
@@ -24,6 +25,9 @@ public class Sprite implements Drawable{
 	
 	/** The texture that stores the image for this sprite */
 	private final Texture texture;
+
+	/** System Object used to make calls to graphics api */
+	private final SystemContext system;
 
 	/** The width in pixels of this sprite */
 	private final int width;
@@ -82,28 +86,11 @@ public class Sprite implements Drawable{
 	 */
 	public Sprite(Texture pTexture, ImageRenderMode pRenderMode) {
 		texture = pTexture;
+		system = texture.getSystem();
 		height = pTexture.getImageHeight();
 		width = pTexture.getImageWidth();
 		renderMode = pRenderMode;
 		zDistance = (float)( ( (double)height ) * -TANGENT * renderMode.getModeMultiplier());
-	}
-	
-	/**
-	 * Get the width of this sprite in pixels.
-	 *
-	 * @return The width of this sprite in pixels.
-	 */
-	public int getWidth() {
-		return texture.getImageWidth();
-	}
-
-	/**
-	 * Get the height of this sprite in pixels.
-	 *
-	 * @return The height of this sprite in pixels.
-	 */
-	public int getHeight() {
-		return texture.getImageHeight();
 	}
 
 	/**
@@ -113,33 +100,43 @@ public class Sprite implements Drawable{
 	public void draw(int x, int y, int z, long delta) {
 		
 		// store the current model matrix
-		glPushMatrix();
+		system.pushMatrix();
+//		glPushMatrix();
 
 		// bind to the appropriate texture for this sprite
 		texture.bind();
 
 		// translate to the right location and prepare to draw
-		glTranslatef(x, y, z);
+		system.translate(x, y, z);
+//		glTranslatef(x, y, z);
 
 		// draw a quad textured to match the sprite
-		glBegin(GL_QUADS);
+		system.penDown(GL_QUADS);
+//		glBegin(GL_QUADS);
 		{
-			glTexCoord2f(texture.getXOrigin(), texture.getYOrigin());
-			glVertex3f(0, 0, zDistance);
-
-			glTexCoord2f(texture.getXOrigin(), texture.getHeight());
-			glVertex3f(0, height, 0);
-
-			glTexCoord2f(texture.getWidth(), texture.getHeight());
-			glVertex3f(width, height, 0);
-
-			glTexCoord2f(texture.getWidth(), texture.getYOrigin());
-			glVertex3f(width, 0, zDistance);
+			system.addTextureCoordinate(texture.getXOrigin(), texture.getYOrigin());
+			system.addVertex3f(0, 0, zDistance);
+//			glTexCoord2f(texture.getXOrigin(), texture.getYOrigin());
+//			glVertex3f(0, 0, zDistance);
+			system.addTextureCoordinate(texture.getXOrigin(), texture.getHeight());
+			system.addVertex3f(0, height, 0);
+//			glTexCoord2f(texture.getXOrigin(), texture.getHeight());
+//			glVertex3f(0, height, 0);
+			system.addTextureCoordinate(texture.getWidth(), texture.getHeight());
+			system.addVertex3f(width, height, 0);
+//			glTexCoord2f(texture.getWidth(), texture.getHeight());
+//			glVertex3f(width, height, 0);
+			system.addTextureCoordinate(texture.getWidth(), texture.getYOrigin());
+			system.addVertex3f(width, 0, zDistance);
+//			glTexCoord2f(texture.getWidth(), texture.getYOrigin());
+//			glVertex3f(width, 0, zDistance);
 		}
-		glEnd();
+		system.penUp();
+//		glEnd();
 
 		// restore the model view matrix to prevent contamination
-		glPopMatrix();
+		system.popMatrix();
+//		glPopMatrix();
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package com.stonetolb.render.util;
 
+import com.stonetolb.resource.ResourceContext;
 import org.lwjgl.opengl.GL11;
 
 import com.stonetolb.engine.component.render.CameraMount;
@@ -21,6 +22,7 @@ import com.stonetolb.util.Vector2f;
  */
 public final class Camera {
 	private static volatile Vantage ACTIVE = FixedVantage.create();
+	private static volatile ResourceContext RESOURCE_CONTEXT = ResourceContext.get();
 	private static volatile CameraMount MOUNT = null;
 	
 	/**
@@ -31,6 +33,17 @@ public final class Camera {
 	public static final synchronized void setVantage(Vantage vantage) {
 		if(vantage != null) {
 			ACTIVE = vantage;
+		}
+	}
+
+	/**
+	 * Registers the given ResourceContext to the Camera.
+	 *
+	 * @param ctx - ResourceContext to be set. Ignores null.
+	 */
+	public static final synchronized void setResourceContext(ResourceContext ctx) {
+		if(ctx != null) {
+			RESOURCE_CONTEXT = ctx;
 		}
 	}
 	
@@ -79,17 +92,21 @@ public final class Camera {
 	 * Helper method to move the Camera.
 	 */
 	static final void moveCamera(Vector2f position, int screenWidth, int screenHeight) {
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(
-				  (double)position.getX()
-				, (double)position.getX() + (double)screenWidth
-				, (double)position.getY() + (double)screenHeight
-				, (double)position.getY()
+//		GL11.glMatrixMode(GL11.GL_PROJECTION);
+//		GL11.glLoadIdentity();
+//		GL11.glOrtho(
+		RESOURCE_CONTEXT.getSystemContext().setMatrixMode(GL11.GL_PROJECTION);
+		RESOURCE_CONTEXT.getSystemContext().loadIdentityMatrix();
+		RESOURCE_CONTEXT.getSystemContext().createOrthogonal(
+				(double) position.getX()
+				, (double) position.getX() + (double) screenWidth
+				, (double) position.getY() + (double) screenHeight
+				, (double) position.getY()
 				, 2000
 				, 2000 * -1
-			);
-		
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		);
+
+		RESOURCE_CONTEXT.getSystemContext().setMatrixMode(GL11.GL_MODELVIEW);
+//		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
 }

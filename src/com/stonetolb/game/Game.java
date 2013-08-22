@@ -1,29 +1,26 @@
 package com.stonetolb.game;
 
+import com.google.common.base.Optional;
+import com.stonetolb.game.module.Module;
+import com.stonetolb.render.util.Camera;
+import com.stonetolb.render.util.FixedVantage;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import com.google.common.base.Optional;
-import com.stonetolb.game.module.Module;
-import com.stonetolb.render.util.Camera;
-import com.stonetolb.render.util.FixedVantage;
-
 /**
- * This is our hook for launching the game, and also the home
- * of the main game loop. From here, we'll be running the frame
- * render operation, which will draw each sprite contained in the 
- * list of things to draw.
- * 
+ * This is our hook for launching the game, and also the home of the main game
+ * loop. From here, we'll be running the frame render operation, which will draw
+ * each sprite contained in the list of things to draw.
+ *
  * @author james.baiera
- * 
  */
 public class Game {
 	private static long	TIMER_TICKS_PER_SECOND = Sys.getTimerResolution();
 	private static Game INSTANCE;
-	
+
 	private String windowTitle;
 	private int	windowWidth;
 	private int	windowHeight;
@@ -31,15 +28,15 @@ public class Game {
 	private long lastLoopTime;
 	private long lastFpsTime;
 	private int	fps;
-	
+
 	private boolean gameRunning;
 	private boolean	fullscreen;
 
 	private Module module;
-	
+
 	/**
 	 * Creates the Game object and returns it.
-	 * 
+	 *
 	 * @param pWindowTitle - Title to display on the window header.
 	 * @param pWindowWidth - Width of the game window.
 	 * @param pWindowHeight - Height of the game window.
@@ -56,15 +53,15 @@ public class Game {
 		}
 		return INSTANCE;
 	}
-	
+
 	/**
 	 * Returns the singleton game object if it has been created. Null if not yet created.
-	 * @return Optional of type Game. 
+	 * @return Optional of type Game.
 	 */
 	public static Optional<Game> getGame() {
 		return Optional.fromNullable(INSTANCE);
 	}
-	
+
 	/**
 	 * Construct our game and set it running.
 	 * @param pWindowTitle - Title of the Game Window
@@ -87,13 +84,13 @@ public class Game {
 		windowHeight = pWindowHeight;
 		fullscreen = pFullscreen;
 		gameRunning = true;
-		
+
 		// Dynamically load a module by name
 		System.out.println("Loading Game Module...");
 		try {
 			Class<?> clazz = Class.forName(pModuleToRun);
 			module = (Module) clazz.newInstance();
-			
+
 			System.out.println("Module Loaded : " + module.toString());
 		} catch(ClassNotFoundException cnfe) {
 			throw new GeneralGameException("Could not find module : " + pModuleToRun, cnfe);
@@ -108,7 +105,7 @@ public class Game {
 	 * Initializes game, runs game, then cleans up screen on game completion
 	 * @throws GeneralGameException On irrecoverable game failure.
 	 */
-	public void execute() 
+	public void execute()
 	throws GeneralGameException
 	{
 		try {
@@ -119,9 +116,9 @@ public class Game {
 			throw new GeneralGameException("Error occurred in game", e);
 		}
 	}
-	
+
 	/**
-	 * Initializes and runs the main game loop. Continues to run logic each 
+	 * Initializes and runs the main game loop. Continues to run logic each
 	 * frame until game ends.
 	 */
 	private void gameLoop() {
@@ -145,13 +142,13 @@ public class Game {
 			setDisplayMode();
 			Display.setTitle(windowTitle);
 			Display.create();
-			
+
 			// Create the Camera
 			Camera.setVantage(FixedVantage.create());
-			
+
 			// Set starting time for game loop
 			lastLoopTime = getTime();
-			
+
 		} catch (LWJGLException le) {
 			gameRunning = false;
 			throw new GeneralGameException("Could not create display object", le);
@@ -184,13 +181,13 @@ public class Game {
 
 		// Allow Game Logic
 		module.step(delta);
-		
+
 		// render the game frame
 		module.render(delta);
-		
+
 		// Update Camera's position
 		Camera.getInstance().update(delta);
-		
+
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))) {
 			gameRunning = false;
@@ -199,14 +196,14 @@ public class Game {
 
 	/**
 	* Sets the display mode
-	* 
+	*
 	* @throws GeneralGameException On failure to set window display mode.
 	*/
 	private boolean setDisplayMode()
 	throws GeneralGameException
-	{	
+	{
 		DisplayMode dm;
-		
+
 		try {
 			//----------------------------------------------------------------------
 			// TEST : Getting display modes
@@ -219,34 +216,34 @@ public class Game {
 //			}
 			// END TEST
 			//----------------------------------------------------------------------
-			
+
 			// Set display mode for the window
 			dm = new DisplayMode(windowWidth,windowHeight);
 			System.out.println("Using Display Mode  : " + dm.toString());
 			System.out.println("Full Screen Capable : " + dm.isFullscreenCapable());
 	    	Display.setDisplayMode(dm);
-		} 
+		}
 		catch (LWJGLException lwjgle) {
 			throw new GeneralGameException("Could not set display mode on LWJGL Display.", lwjgle);
 		}
-		
+
 		try {
 			//If full screen, set's full screen
 			if (fullscreen && dm.isFullscreenCapable())
 			{
 				Display.setFullscreen(fullscreen);
 			}
-				
+
 			return true;
-		} 
+		}
 		catch (LWJGLException lwjgle) {
 			System.out.println("Unable to enter fullscreen : " + lwjgle.getMessage());
 			System.out.println("Continuing in windowed mode");
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Get the high resolution time in milliseconds
 	 *
@@ -259,7 +256,7 @@ public class Game {
 		// us a nice clear time in milliseconds
 		return (Sys.getTime() * 1000) / TIMER_TICKS_PER_SECOND;
 	}
-	
+
 	/**
 	 * Returns the set window width
 	 * @return Game display width.
@@ -267,7 +264,7 @@ public class Game {
 	public int getWindowWidth() {
 		return windowWidth;
 	}
-	
+
 	/**
 	 * Returns the set window height
 	 * @return Game display height.

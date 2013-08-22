@@ -19,6 +19,7 @@
 	<classpathentry kind="lib" path="lib/artemis.jar"/>
 	<classpathentry kind="lib" path="lib/slick.jar"/>
 	<classpathentry kind="lib" path="lib/guava-14.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/junit-4.10"/>
+	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="lib/mockito-all-1.9.5.jar" sourcepath="lib/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

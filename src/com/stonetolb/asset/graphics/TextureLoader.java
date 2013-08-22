@@ -7,10 +7,6 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -25,18 +21,16 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
-import javax.swing.ImageIcon;
-
+import com.google.common.collect.Maps;
+import com.stonetolb.resource.ResourceContext;
 import org.lwjgl.BufferUtils;
-
-import com.stonetolb.asset.graphics.Texture;
 
 /**
  * A utility class to load textures for OpenGL. This source is based
@@ -62,42 +56,56 @@ public class TextureLoader {
     /** The color model for the GL image */
     private ColorModel glColorModel;
 
+	/** The context used for all system calls */
+	ResourceContext resourceContext;
+
     /** Scratch buffer for texture ID's */
     private IntBuffer textureIDBuffer = BufferUtils.createIntBuffer(1);
 
-    // Instance Variable
-    private static volatile TextureLoader instance = null;
-    
+	/**
+	 * TextureLoader registry. Contains any texture loader created keyed by it's system
+	 */
+	private static final Map<ResourceContext, TextureLoader> registry
+			= Maps.newConcurrentMap();
+
+	public static TextureLoader get(ResourceContext resourceContext) {
+		TextureLoader value = registry.get(resourceContext);
+		if(value == null) {
+			value = new TextureLoader(resourceContext);
+			registry.put(resourceContext, value);
+		}
+		return value;
+	}
+
     public static TextureLoader getInstance() {
-    	if (instance == null) {
-    		synchronized(TextureLoader.class)
-    		{
-    			if(instance == null)
-    			{
-    				instance = new TextureLoader();
-    			}
-    		}
-    	}
-    	return instance;
+		return TextureLoader.get(ResourceContext.get());
     }
     
     /**
      * Create a new texture loader based on the game panel
      */
-    private TextureLoader() {
-        glAlphaColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
-                                            new int[] {8,8,8,8},
-                                            true,
-                                            false,
-                                            ComponentColorModel.TRANSLUCENT,
-                                            DataBuffer.TYPE_BYTE);
+    private TextureLoader(ResourceContext resourceContext) {
+		this.resourceContext = resourceContext;
 
-        glColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
-                                            new int[] {8,8,8,0},
-                                            false,
-                                            false,
-                                            ComponentColorModel.OPAQUE,
-                                            DataBuffer.TYPE_BYTE);
+		glAlphaColorModel
+				= new ComponentColorModel(
+						ColorSpace.getInstance(ColorSpace.CS_sRGB),
+						new int[]{8, 8, 8, 8},
+						true,
+						false,
+						ComponentColorModel.TRANSLUCENT,
+						DataBuffer.TYPE_BYTE
+					);
+
+		glColorModel
+				= new ComponentColorModel(
+						ColorSpace.getInstance(ColorSpace.CS_sRGB),
+	                    new int[] {8,8,8,0},
+						false,
+						false,
+						ComponentColorModel.OPAQUE,
+						DataBuffer.TYPE_BYTE
+					);
     }
 
     /**
@@ -106,7 +114,7 @@ public class TextureLoader {
      * @return A new texture ID
      */
     private int createTextureID() {
-      glGenTextures(textureIDBuffer);
+      resourceContext.getSystemContext().generateTextures(textureIDBuffer);
       return textureIDBuffer.get(0);
     }
 
@@ -127,9 +135,9 @@ public class TextureLoader {
         }
 
         tex = getTexture(resourceName,
-                         GL_TEXTURE_2D, // target
-                         GL_RGBA,     // dst pixel format
-                         GL_LINEAR, // min filter (unused)
+                         GL_TEXTURE_2D,	// target
+                         GL_RGBA,     	// dst pixel format
+                         GL_LINEAR, 	// min filter (unused)
                          GL_LINEAR);
 
         table.put(resourceName,tex);
@@ -165,12 +173,14 @@ public class TextureLoader {
         Texture.Builder tb = Texture.builder(target, textureID);
 
         // bind this texture
-        glBindTexture(target, textureID);
+        resourceContext.getSystemContext().bindTexture(target, textureID);
 
+		// Load the image and set dimensions
         BufferedImage bufferedImage = loadImage(resourceName);
         tb.setImageWidth(bufferedImage.getWidth());
         tb.setImageHeight(bufferedImage.getHeight());
 
+		// Color mode of the image
         if (bufferedImage.getColorModel().hasAlpha()) {
         	// DEBUG: System.out.println("Get : Has Alpha!");
             srcPixelFormat = GL_RGBA;
@@ -182,23 +192,41 @@ public class TextureLoader {
         // convert that image into a byte buffer of texture data
         ByteBuffer textureBuffer = convertImageData(bufferedImage, tb);
 
+		// Perform loading of texture into system memory...
+
+		// Filters for 2D textures
         if (target == GL_TEXTURE_2D) {
-            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter);
-            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, magFilter);
-        }
+			resourceContext
+					.getSystemContext()
+					.textureParameterInt(target,
+										 GL_TEXTURE_MIN_FILTER,
+										 minFilter
+										);
+			resourceContext
+					.getSystemContext()
+					.textureParameterInt(target,
+										 GL_TEXTURE_MAG_FILTER,
+										 magFilter
+										);
+		}
 
         // produce a texture from the byte buffer
-        glTexImage2D(target,
-                      0,
-                      dstPixelFormat,
-                      get2Fold(bufferedImage.getWidth()),
-                      get2Fold(bufferedImage.getHeight()),
-                      0,
-                      srcPixelFormat,
-                      GL_UNSIGNED_BYTE,
-                      textureBuffer );
+		resourceContext
+				.getSystemContext()
+				.textureImage2d(target,
+								0,
+								dstPixelFormat,
+								get2Fold(bufferedImage.getWidth()),
+								get2Fold(bufferedImage.getHeight()),
+								0,
+								srcPixelFormat,
+								GL_UNSIGNED_BYTE,
+								textureBuffer
+							   );
 
-//        return texture;
+		// Set the texture's SystemContext reference to be the same as its parent loader
+		tb.setSystemContext(resourceContext.getSystemContext());
+
         return tb.build();
     }
 
@@ -209,11 +237,18 @@ public class TextureLoader {
      * @return The power of 2
      */
     private static int get2Fold(int fold) {
-        int ret = 2;
-        while (ret < fold) {
-            ret *= 2;
-        }
-        return ret;
+		if (fold <= 0) {
+			return 0;
+		}
+
+		--fold;
+		fold |= fold >> 1;
+		fold |= fold >> 2;
+		fold |= fold >> 4;
+		fold |= fold >> 8;
+		fold |= fold >> 16;
+		fold |= fold >> 32;
+		return ++fold;
     }
 
     /**
@@ -281,16 +316,15 @@ public class TextureLoader {
      * @throws IOException Indicates a failure to find a resource
      */
     private BufferedImage loadImage(String ref) throws IOException {
-        URL url = TextureLoader.class.getClassLoader().getResource(ref);
+//        URL url = TextureLoader.class.getClassLoader().getResource(ref);
+//
+//        if (url == null) {
+//            throw new IOException("Cannot find: " + ref);
+//        }
+//
+//        Image img = new ImageIcon(url).getImage();
 
-        if (url == null) {
-            throw new IOException("Cannot find: " + ref);
-        }
-
-        // due to an issue with ImageIO and mixed signed code
-        // we are now using good oldfashioned ImageIcon to load
-        // images and the paint it on top of a new BufferedImage
-        Image img = new ImageIcon(url).getImage();
+		Image img = resourceContext.getIOContext().loadImageFromResource(ref);
         BufferedImage bufferedImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics g = bufferedImage.getGraphics();
         g.drawImage(img, 0, 0, null);

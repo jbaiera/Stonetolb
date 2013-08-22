@@ -1,9 +1,11 @@
 package com.stonetolb.asset.graphics;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
+import com.stonetolb.game.Game;
+import com.stonetolb.resource.system.SystemContext;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * A texture to be bound within OpenGL. This object is responsible for
@@ -54,7 +56,14 @@ public class Texture {
 	
 	/** The ratio of the y offset to the texture size */
 	private final float imgYOrigin;
-	
+
+	/** Context used for any and all system calls */
+	private final SystemContext sysContext;
+
+	/**
+	 * Builder object used to store incremental state in order to chain calls to
+	 * build out an immutable Texture object.
+	 */
 	public static class Builder {
 		private Integer target = null;
 		private Integer textureID = null;
@@ -62,6 +71,7 @@ public class Texture {
 		private Integer textureHeight = null;
 		private Integer imageWidth = null;
 		private Integer imageHeight = null;
+		private SystemContext ctx = null;
 		
 		private Builder(int target, int textureId) {
 			this.target = target;
@@ -87,16 +97,22 @@ public class Texture {
 			this.textureWidth = textureWidth;
 			return this;
 		}
+
+		public Builder setSystemContext(SystemContext context) {
+			this.ctx = context;
+			return this;
+		}
 		
 		public Texture build() {
-			Preconditions.checkState(target != null, "Target was not set");
-			Preconditions.checkState(textureID != null, "Texture ID was not set");
-			Preconditions.checkState(textureWidth != null, "Texture Width was not set");
-			Preconditions.checkState(textureHeight != null, "Texture Height was not set");
-			Preconditions.checkState(imageWidth != null, "Image Width was not set");
-			Preconditions.checkState(imageHeight != null, "Image Height was not set");
+			checkState(target != null, "Target was not set");
+			checkState(textureID != null, "Texture ID was not set");
+			checkState(textureWidth != null, "Texture Width was not set");
+			checkState(textureHeight != null, "Texture Height was not set");
+			checkState(imageWidth != null, "Image Width was not set");
+			checkState(imageHeight != null, "Image Height was not set");
+			checkState(ctx != null, "SystemContext was not set");
 			
-			return new Texture(target, textureID, textureWidth, textureHeight, imageWidth, imageHeight, 0, 0);
+			return new Texture(target, textureID, textureWidth, textureHeight, imageWidth, imageHeight, 0, 0, ctx);
 		}
 	}
 	
@@ -116,9 +132,9 @@ public class Texture {
 	 * @param target The GL target
 	 * @param textureID The GL texture ID
 	 */
-	private Texture(int target, int textureID, int texWidth, int texHeight, int imgWidth, int imgHeight, int xOffset, int yOffset) {
-		Preconditions.checkArgument(texWidth > 0, "Invalid texture width : " + texWidth);
-		Preconditions.checkArgument(texHeight > 0, "Invalid texture height : " + texHeight);
+	private Texture(int target, int textureID, int texWidth, int texHeight, int imgWidth, int imgHeight, int xOffset, int yOffset, SystemContext context) {
+		checkArgument(texWidth > 0, "Invalid texture width : " + texWidth);
+		checkArgument(texHeight > 0, "Invalid texture height : " + texHeight);
 		
 		this.target = target;
 		this.textureID = textureID;
@@ -139,23 +155,25 @@ public class Texture {
 			
 		this.imgHeightRatio = ((float) this.imgHeight) / this.texHeight;
 		this.imgWidthRatio = ((float) this.imgWidth) / this.texWidth;
+
+		this.sysContext = context;
 	}
 
 	/**
 	 * Bind the specified GL context to a texture
 	 */
 	public void bind() {
-		glBindTexture(target, textureID);
+		sysContext.bindTexture(target, textureID);
 	}
 	
 	public Texture getSubTexture(int x, int y, int w, int h)
 	{
-		Preconditions.checkArgument((0 <= x && x <= imgWidth), "X coordinate is out of image bounds");
-		Preconditions.checkArgument((0 <= y && y <= imgHeight), "Y coordinate is out of image bounds");
-		Preconditions.checkArgument((0 <= w && x+w <= imgWidth), "Width is out of image bounds");
-		Preconditions.checkArgument((0 <= h && y+h <= imgHeight), "Height is out of image bounds");
+		checkArgument((0 <= x && x <= imgWidth), "X coordinate is out of image bounds");
+		checkArgument((0 <= y && y <= imgHeight), "Y coordinate is out of image bounds");
+		checkArgument((0 <= w && x + w <= imgWidth), "Width is out of image bounds");
+		checkArgument((0 <= h && y + h <= imgHeight), "Height is out of image bounds");
 		
-		return new Texture(target, textureID, texWidth, texHeight, w, h, x, y);
+		return new Texture(target, textureID, texWidth, texHeight, w, h, x, y, sysContext);
 	}
 
 	/**
@@ -201,7 +219,11 @@ public class Texture {
 	public float getYOrigin() {
 		return imgYOrigin;
 	}
-		
+
+	public SystemContext getSystem() {
+		return sysContext;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(
