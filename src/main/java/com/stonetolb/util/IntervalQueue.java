@@ -80,7 +80,7 @@ public class IntervalQueue<T>{
 			return returnValue;
 		}
 	}
-	
+
 	private RangeMap<Integer, T> data;
 	private int header;
 	

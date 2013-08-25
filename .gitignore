@@ -1,7 +1,5 @@
-bin/*
-dist/*
-doc/stonetolb/
 score
 .codepro/
 .settings/
 .idea
+target/
