@@ -1,13 +1,10 @@
 Stonetolb is a game I'm working on!
 
+To run :
+    mvn clean package
+    unzip target/stonetolb-<version>-release.zip
+    stonetolb-<version>-release/run.sh <args>
+
 What it currently is (P for planned milestones):
-    Stonetolb 0.0.0     :  Basic Texture Loader and Sprite drawing
-    Stonetolb 0.0.1     :  Animations using multiple Sprite objects in sequences
-    Stonetolb 0.0.3     :  Entity class added to take care of movement
-    Stonetolb 0.0.4     :  Refactoring into Game Modules
-    Stonetolb 0.0.4     :  Add an Actor version of Entity
-    Stonetolb 0.0.4     :  Move Actor around screen with keys
     Stonetolb 0.0.? (P) :  Add some sort of Sound managing system
     Stonetolb 0.0.? (P) :  Create a Layer and Layer list for rendering
-    
-    Stonetolb ?         :  Some sort of basic game play
