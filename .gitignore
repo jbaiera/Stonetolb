@@ -4,3 +4,7 @@ score
 .idea
 target/
 *-SNAPSHOT/
+*.iml
+*.eml
+.classpath
+.project
