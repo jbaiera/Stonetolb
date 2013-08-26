@@ -155,30 +155,6 @@
                     </execution>
                 </executions>
             </plugin>
-                    <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/resources/META-INF/assembly.xml</descriptor>
-                    </descriptors>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.stonetolb.Stonetolb</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-                    -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -187,10 +163,8 @@
                     <archive>
                         <manifest>
                             <mainClass>com.stonetolb.Stonetolb</mainClass>
-            <!-- IGNORE
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-            -->
                         </manifest>
                     </archive>
                 </configuration>
@@ -210,17 +184,10 @@
                             <descriptors>
                                 <descriptor>src/main/resources/META-INF/assembly.xml</descriptor>
                             </descriptors>
-                            <archive>
-                                <manifest>
-                                    <mainClass>com.stonetolb.Stonetolb</mainClass>
-                                </manifest>
-                            </archive>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!-- IGNORE
-            -->
         </plugins>
     </build>
 </project>

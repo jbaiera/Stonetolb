@@ -3,3 +3,4 @@ score
 .settings/
 .idea
 target/
+*-SNAPSHOT/

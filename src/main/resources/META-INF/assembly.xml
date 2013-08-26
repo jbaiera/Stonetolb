@@ -2,7 +2,7 @@
 <assembly>
     <id>release</id>
     <formats>
-        <format>jar</format>
+        <format>zip</format>
     </formats>
     
     <files>
