@@ -316,14 +316,6 @@ public class TextureLoader {
      * @throws IOException Indicates a failure to find a resource
      */
     private BufferedImage loadImage(String ref) throws IOException {
-//        URL url = TextureLoader.class.getClassLoader().getResource(ref);
-//
-//        if (url == null) {
-//            throw new IOException("Cannot find: " + ref);
-//        }
-//
-//        Image img = new ImageIcon(url).getImage();
-
 		Image img = resourceContext.getIOContext().loadImageFromResource(ref);
         BufferedImage bufferedImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics g = bufferedImage.getGraphics();

@@ -13,8 +13,9 @@ package com.stonetolb.util;
  * objects instead of modifying internal state.
  * 
  * @author james.baiera
- *
+ * @deprecated Use jBox2D features instead.
  */
+@Deprecated
 public class AxisAlignedBoundingBox {
 	/* center coordinates */
 	private final int x;

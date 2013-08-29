@@ -15,10 +15,6 @@ public class Floatation {
 	public static boolean closeEnough(float arg1, float arg2) {
 		return floatingPointEpsilonComparison(arg1, arg2);
 	}
-
-//	public static boolean equals(float arg1, float arg2) {
-//		return Float.floatToIntBits(arg1) == Float.floatToIntBits(arg2);
-//	}
 	
 	public static boolean isZero(float arg1) {
 		return Float.floatToIntBits(arg1) == Float.floatToIntBits(0F);

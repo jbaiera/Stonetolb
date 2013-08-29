@@ -8,30 +8,29 @@ import com.stonetolb.util.Vector2f;
 
 /**
  * The Camera is a special class that represents the rendering world's camera object.
- * <p>
- * Camera is a static manager class that is capable of registering a {@link Vantage} and a
- * {@link CameraMount} object. The {@link Vantage} object controls how the camera moves what 
- * perspective the Camera uses, whilst the {@link CameraMount} is used to link the Camera 
- * to an Entity.
- * <p>
- * Camera comes initialized out of the box, located at (0,0), starting with a basic 
- * {@link FixedVantage} instance and no {@link CameraMount} object registered.
- * 
- * @author james.baiera
+ * <p/>
+ * Camera is a static manager class that is capable of registering a {@link Vantage} and a {@link CameraMount} object.
+ * The {@link Vantage} object controls how the camera moves what perspective the Camera uses, whilst the {@link
+ * CameraMount} is used to link the Camera to an Entity.
+ * <p/>
+ * Camera comes initialized out of the box, located at (0,0), starting with a basic {@link FixedVantage} instance and no
+ * {@link CameraMount} object registered.
  *
+ * @author james.baiera
  */
 public final class Camera {
 	private static volatile Vantage ACTIVE = FixedVantage.create();
 	private static volatile ResourceContext RESOURCE_CONTEXT = ResourceContext.get();
 	private static volatile CameraMount MOUNT = null;
-	
+
 	/**
 	 * Registers the given Vantage object to the active Camera.
-	 * 
-	 * @param vantage - Vantage to be set. Ignores null.
+	 *
+	 * @param vantage
+	 * 		- Vantage to be set. Ignores null.
 	 */
 	public static final synchronized void setVantage(Vantage vantage) {
-		if(vantage != null) {
+		if (vantage != null) {
 			ACTIVE = vantage;
 		}
 	}
@@ -39,47 +38,51 @@ public final class Camera {
 	/**
 	 * Registers the given ResourceContext to the Camera.
 	 *
-	 * @param ctx - ResourceContext to be set. Ignores null.
+	 * @param ctx
+	 * 		- ResourceContext to be set. Ignores null.
 	 */
 	public static final synchronized void setResourceContext(ResourceContext ctx) {
-		if(ctx != null) {
+		if (ctx != null) {
 			RESOURCE_CONTEXT = ctx;
 		}
 	}
-	
+
 	/**
 	 * Returns a handle to the currently registered Vantage instance.
-	 * 
+	 *
 	 * @return Vantage object in use by this Camera.
 	 */
 	public static final Vantage getInstance() {
 		return ACTIVE;
 	}
-	
+
 	/**
-	 * Attaches Camera to given CameraMount instance. 
-	 * 
-	 * @param mnt - Mount to attach to. Ignores null.
-	 * <br> If you need to clear this value, prefer to use {@link Camera#detach()} instead.
+	 * Attaches Camera to given CameraMount instance.
+	 *
+	 * @param mnt
+	 * 		- Mount to attach to. Ignores null. <br> If you need to clear this value,
+	 * 		prefer to use {@link Camera#detach()}
+	 * 		instead.
 	 * @return The CameraMount in the parameter field. Passes through for method chaining.
 	 */
 	public static final synchronized CameraMount attachTo(CameraMount mnt) {
-		if(mnt != null) {
+		if (mnt != null) {
 			MOUNT = mnt;
 		}
 		return mnt;
 	}
-	
+
 	/**
 	 * Checks if Camera is attached to the given CameraMount
-	 * 
-	 * @param mnt - CameraMount object to test.
+	 *
+	 * @param mnt
+	 * 		- CameraMount object to test.
 	 * @return true if attached to given mount, false if not.
 	 */
 	public static final synchronized boolean isAttachedTo(CameraMount mnt) {
 		return MOUNT == mnt;
 	}
-	
+
 	/**
 	 * Detaches the Camera from it's mount, and sets the Camera position back to origin
 	 */
@@ -92,9 +95,6 @@ public final class Camera {
 	 * Helper method to move the Camera.
 	 */
 	static final void moveCamera(Vector2f position, int screenWidth, int screenHeight) {
-//		GL11.glMatrixMode(GL11.GL_PROJECTION);
-//		GL11.glLoadIdentity();
-//		GL11.glOrtho(
 		RESOURCE_CONTEXT.getSystemContext().setMatrixMode(GL11.GL_PROJECTION);
 		RESOURCE_CONTEXT.getSystemContext().loadIdentityMatrix();
 		RESOURCE_CONTEXT.getSystemContext().createOrthogonal(
@@ -107,6 +107,5 @@ public final class Camera {
 		);
 
 		RESOURCE_CONTEXT.getSystemContext().setMatrixMode(GL11.GL_MODELVIEW);
-//		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
 }

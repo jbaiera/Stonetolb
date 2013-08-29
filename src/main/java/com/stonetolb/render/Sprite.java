@@ -101,42 +101,32 @@ public class Sprite implements Drawable{
 		
 		// store the current model matrix
 		system.pushMatrix();
-//		glPushMatrix();
 
 		// bind to the appropriate texture for this sprite
 		texture.bind();
 
 		// translate to the right location and prepare to draw
 		system.translate(x, y, z);
-//		glTranslatef(x, y, z);
 
 		// draw a quad textured to match the sprite
 		system.penDown(GL_QUADS);
-//		glBegin(GL_QUADS);
 		{
 			system.addTextureCoordinate(texture.getXOrigin(), texture.getYOrigin());
 			system.addVertex3f(0, 0, zDistance);
-//			glTexCoord2f(texture.getXOrigin(), texture.getYOrigin());
-//			glVertex3f(0, 0, zDistance);
+
 			system.addTextureCoordinate(texture.getXOrigin(), texture.getHeight());
 			system.addVertex3f(0, height, 0);
-//			glTexCoord2f(texture.getXOrigin(), texture.getHeight());
-//			glVertex3f(0, height, 0);
+
 			system.addTextureCoordinate(texture.getWidth(), texture.getHeight());
 			system.addVertex3f(width, height, 0);
-//			glTexCoord2f(texture.getWidth(), texture.getHeight());
-//			glVertex3f(width, height, 0);
+
 			system.addTextureCoordinate(texture.getWidth(), texture.getYOrigin());
 			system.addVertex3f(width, 0, zDistance);
-//			glTexCoord2f(texture.getWidth(), texture.getYOrigin());
-//			glVertex3f(width, 0, zDistance);
 		}
 		system.penUp();
-//		glEnd();
 
 		// restore the model view matrix to prevent contamination
 		system.popMatrix();
-//		glPopMatrix();
 	}
 	
 	/**
