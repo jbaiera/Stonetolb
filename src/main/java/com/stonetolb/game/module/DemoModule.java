@@ -223,7 +223,7 @@ public class DemoModule implements Module {
 		
 		// Create Tiled Map
 		try {
-			map = new TiledMap("maps/grotto.tmx");
+			map = new TiledMap("src/main/resources/maps/grotto.tmx");
 		} catch(SlickException se) {
 			// TODO : Throw an actual exception
 			se.printStackTrace();
