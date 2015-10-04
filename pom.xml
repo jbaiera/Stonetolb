@@ -33,9 +33,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.newdawn.slick</groupId>
-            <artifactId>slick</artifactId>
-            <version>274</version>
+            <groupId>org.slick2d</groupId>
+            <artifactId>slick2d-core</artifactId>
+            <version>1.0.0</version>
             <exclusions>
                 <exclusion>
                     <artifactId>lwjgl</artifactId>
@@ -53,15 +53,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.artemis</groupId>
-            <artifactId>artemis</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.matthiasmann.twl</groupId>
-            <artifactId>twl</artifactId>
-            <version>1.0</version>
+            <groupId>net.onedaybeard.artemis</groupId>
+            <artifactId>artemis-odb</artifactId>
+            <version>0.9.0</version>
         </dependency>
 
         <dependency>
@@ -124,56 +118,6 @@
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <!-- Adds 3rd party jars to local repo SINCE SLICK ARTEMIS AND TWL DON'T MAVEN =( -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.3.1</version>
-                <executions>
-                    <execution>
-                        <id>slick-library-install</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <file>extern/slick-274.jar</file>
-                            <groupId>org.newdawn.slick</groupId>
-                            <artifactId>slick</artifactId>
-                            <version>274</version>
-                            <packaging>jar</packaging>
-                        </configuration>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>artemis-library-install</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <file>extern/artemis-1.0.jar</file>
-                            <groupId>com.artemis</groupId>
-                            <artifactId>artemis</artifactId>
-                            <version>1.0</version>
-                            <packaging>jar</packaging>
-                        </configuration>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>twl-library-install</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <file>extern/twl-1.0.jar</file>
-                            <groupId>de.matthiasmann.twl</groupId>
-                            <artifactId>twl</artifactId>
-                            <version>1.0</version>
-                            <packaging>jar</packaging>
-                        </configuration>
-                        <goals>
-                            <goal>install-file</goal>
                         </goals>
                     </execution>
                 </executions>
